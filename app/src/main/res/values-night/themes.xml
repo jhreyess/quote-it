@@ -1,0 +1,16 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.QuoteIt" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/yellow</item>
+        <item name="colorOnPrimary">@color/darker_gray</item>
+        <item name="colorSecondary">@color/yellow</item>
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/darker_gray</item>
+        <!-- Background color -->
+        <item name="android:windowBackground" tools:targetApi="l">@color/darker_gray</item>
+        <!-- Customize your theme here. -->
+    </style>
+</resources>

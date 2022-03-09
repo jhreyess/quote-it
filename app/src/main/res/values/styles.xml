@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextInputEditText">
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:background">@drawable/bg_edit_text</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="MaterialButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textSize">20sp</item>
+        <item name="android:letterSpacing">0.0</item>
+        <item name="cornerRadius">8dp</item>
+        <item name="android:insetTop">0.0dp</item>
+        <item name="android:insetBottom">0.0dp</item>
+    </style>
+
+    <style name="SectionLabel" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Navbar">
+        <item name="android:background">@color/dark_gray</item>
+        <item name="itemIconTint">@color/white</item>
+        <item name="labelVisibilityMode">unlabeled</item>
+    </style>
+
+</resources>

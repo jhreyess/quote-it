@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Quote It!</string>
+
+    <!-- LOGIN -->
+    <string name="prompt_email">Introduce tu correo electrónico</string>
+    <string name="prompt_password">Introduce tu contraseña</string>
+    <string name="prompt_login">Iniciar Sesión</string>
+    <string name="prompt_create_account">Crear una nueva cuenta</string>
+    <string name="prompt_no_account">Iniciar sin una cuenta</string>
+    <string name="prompt_register">Registrarse</string>
+    <string name="prompt_username">Introduce un nombre de usuario</string>
+    <string name="prompt_confirm_password">Confirma la contraseña</string>
+
+    <!-- MENU ITEMS -->
+    <string name="home_label">Mis frases</string>
+    <string name="discover_label">Descubrir</string>
+    <string name="community_label">Comunidad</string>
+    <string name="profile_label">Perfil</string>
+
+    <!-- HOME -->
+    <string name="folder_quantity">%1$d elementos</string>
+
+</resources>
