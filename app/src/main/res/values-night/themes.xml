@@ -5,12 +5,22 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/yellow</item>
         <item name="colorOnPrimary">@color/darker_gray</item>
+
+        <!-- Widgets -->
         <item name="colorSecondary">@color/yellow</item>
+        <item name="colorOnSecondary">@color/darker_gray</item>
+
+        <!-- Cards background -->
+        <item name="colorSurface">@color/lighter_gray</item>
+        <item name="colorSurfaceVariant">@color/light_gray</item>
+
+        <!-- Navbar inactive items -->
+        <item name="colorOnSurface">@color/white</item>
 
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/darker_gray</item>
         <!-- Background color -->
         <item name="android:windowBackground" tools:targetApi="l">@color/darker_gray</item>
-        <!-- Customize your theme here. -->
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 </resources>

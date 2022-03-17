@@ -3,10 +3,47 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/homeNavigation">
+
     <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.quoteit.activities.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/communityFragment"
+        android:name="com.example.quoteit.activities.CommunityFragment"
+        android:label="fragment_community"
+        tools:layout="@layout/fragment_community" />
+    <fragment
+        android:id="@+id/discoverFragment"
+        android:name="com.example.quoteit.activities.DiscoverFragment"
+        android:label="fragment_discover"
+        tools:layout="@layout/fragment_discover" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.quoteit.activities.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <navigation android:id="@+id/homeNavigation"
+        app:startDestination="@id/homeFragment">
+        <fragment
+            android:id="@+id/quotesListFragment"
+            android:name="com.example.quoteit.activities.QuotesListFragment"
+            android:label="fragment_quotes_list"
+            tools:layout="@layout/fragment_quotes_list">
+            <argument
+                android:name="folder"
+                app:argType="string" />
+            <action
+                android:id="@+id/action_quotesListFragment_to_homeFragment"
+                app:destination="@id/homeFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/homeFragment"
+            android:name="com.example.quoteit.activities.HomeFragment"
+            android:label="fragment_home"
+            tools:layout="@layout/fragment_home">
+            <action
+                android:id="@+id/action_homeFragment_to_quotesListFragment"
+                app:destination="@id/quotesListFragment" />
+        </fragment>
+    </navigation>
+
 </navigation>

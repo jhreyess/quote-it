@@ -6,6 +6,7 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
 
+    <color name="green">#4D00FFEA</color>
     <color name="yellow">#FFC400</color>
     <color name="pink">#FE1A3F</color>
     <color name="lighter_gray">#26CCCCCC</color> <!-- Used in some texts -->

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.DiscoverFragment"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp" >
+
+    <TextView
+        android:id="@+id/fragment_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/discover_label"
+        style="@style/SectionLabel"
+        android:layout_marginTop="28dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/api_reference"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_label"
+        android:textSize="14sp"
+        android:textColor="@color/light_gray"
+        android:text="@string/api_reference" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:cardBackgroundColor="@color/green"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp"
+        app:layout_constraintTop_toBottomOf="@id/api_reference"
+        app:layout_constraintBottom_toTopOf="@id/favorite_icon"
+        app:contentPadding="42dp"
+        android:layout_marginBottom="32dp"
+        android:layout_marginTop="16dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/quote_author_placeholder"
+                android:layout_alignParentTop="true"
+                android:fillViewport="true"
+                android:overScrollMode="never"
+                android:scrollbars="vertical">
+
+                <TextView
+                    android:id="@+id/quote_placeholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="40sp"
+                    android:textStyle="bold"
+                    tools:text="Lorem ipsum dolor sit amet." />
+
+            </ScrollView>
+
+            <TextView
+                android:id="@+id/quote_author_placeholder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="- John Doe" />
+
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <CheckBox
+        android:id="@+id/favorite_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="52dp"
+        android:button="@drawable/like_icon"
+        android:theme="@style/LikeIcon"
+        android:checked="false"
+        android:scaleX="2"
+        android:scaleY="2"
+        android:importantForAccessibility="no"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/next_button"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/favorite_icon"
+        app:layout_constraintBottom_toBottomOf="@id/favorite_icon"
+        android:text="@string/go_next"
+        app:icon="@drawable/ic_arrow_next"
+        app:iconTint="@color/light_gray"
+        app:iconSize="16dp"
+        app:iconGravity="end"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:textColor="@color/light_gray"
+        android:textAllCaps="false"
+        android:textSize="16sp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

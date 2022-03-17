@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    android:id="@+id/card_post"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="10dp"
+    app:cardElevation="0dp"
+    app:cardCornerRadius="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/profile_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_profile" />
+
+            <TextView
+                android:id="@+id/post_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="12dp"
+                android:layout_toStartOf="@id/post_quote_author"
+                android:layout_toEndOf="@id/profile_pic"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                tools:text="John Doe" />
+
+            <TextView
+                android:id="@+id/post_quote_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:maxLines="1"
+                android:textColor="@color/light_gray"
+                android:textStyle="bold"
+                tools:ignore="TextContrastCheck"
+                tools:text="Quote by: Richard Roe" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/post_quote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="300dp"
+            android:background="@color/green"
+            android:paddingTop="50dp"
+            android:paddingBottom="50dp"
+            android:gravity="center"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textStyle="italic"
+            android:textSize="22sp"
+            tools:text="Lorem ipsum Lorem ipsum" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="6dp">
+
+            <CheckBox
+                android:id="@+id/favorite_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:button="@drawable/like_icon"
+                android:checked="false"
+                android:importantForAccessibility="no"
+                android:theme="@style/LikeIcon"
+                tools:ignore="ImageContrastCheck" />
+
+            <TextView
+                android:id="@+id/post_likes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@id/more_actions"
+                android:layout_toEndOf="@+id/favorite_button"
+                android:maxLines="1"
+                android:text="@string/likes_count"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="123 people liked this" />
+
+            <ImageButton
+                android:id="@+id/more_actions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:importantForAccessibility="no"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:src="@drawable/ic_more_horiz"
+                app:tint="@color/light_gray"
+                tools:ignore="ImageContrastCheck" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

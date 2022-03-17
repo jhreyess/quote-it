@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.quoteit.R
 import com.example.quoteit.databinding.FragmentSignInBinding
 
-interface SignInView {
+interface FragmentSignInView {
    fun launchApp()
    fun showLoadingScreen()
    fun showEmptyEmailError()
@@ -19,7 +19,7 @@ interface SignInView {
    fun goToRegister()
 }
 
-class SignInFragment : Fragment(), SignInView {
+class SignInFragment : Fragment(), FragmentSignInView {
 
    private var _binding: FragmentSignInBinding? = null
    private val binding get() = _binding!!
@@ -33,7 +33,10 @@ class SignInFragment : Fragment(), SignInView {
 
       // Listeners
       binding.registerLink.setOnClickListener { goToRegister() }
-      binding.loginButton.setOnClickListener { TODO("presenter.signIn()") }
+      binding.loginButton.setOnClickListener {
+         //TODO("presenter.signIn()")
+         launchApp()
+      }
 
       return view
    }
@@ -44,7 +47,7 @@ class SignInFragment : Fragment(), SignInView {
    override fun showEmptyPasswordError() { TODO("Not yet implemented") }
    override fun showLoadingScreen() { TODO("Not yet implemented") }
    override fun showWrongCredentialsError() { TODO("Not yet implemented") }
-   override fun launchApp() { TODO("Not yet implemented")  }
+   override fun launchApp() { (activity as SignIn).launchApp()  }
 
    override fun onDestroyView() {
       super.onDestroyView()

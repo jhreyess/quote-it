@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.quoteit.R
 import com.example.quoteit.databinding.FragmentRegisterBinding
-import com.example.quoteit.databinding.FragmentSignInBinding
 
 interface RegisterView {
     fun launchApp()
@@ -30,13 +29,15 @@ class RegisterFragment : Fragment(), RegisterView {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
-        val view = binding.root
 
         // Listeners
         binding.loginLink.setOnClickListener { goToLogin() }
-        binding.registerButton.setOnClickListener { TODO("presenter.register()") }
+        binding.registerButton.setOnClickListener {
+            //TODO("presenter.register()")
+            launchApp()
+        }
 
-        return view
+        return binding.root
     }
 
     override fun goToLogin() { findNavController().navigate(R.id.action_registerFragment_to_signInFragment) }
@@ -45,7 +46,7 @@ class RegisterFragment : Fragment(), RegisterView {
     override fun showEmptyPasswordError() { TODO("Not yet implemented") }
     override fun showLoadingScreen() { TODO("Not yet implemented") }
     override fun showWrongCredentialsError() { TODO("Not yet implemented") }
-    override fun launchApp() { TODO("Not yet implemented")  }
+    override fun launchApp() { (activity as SignIn).launchApp()  }
 
     override fun onDestroyView() {
         super.onDestroyView()
