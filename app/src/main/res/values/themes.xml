@@ -22,4 +22,11 @@
         <!-- Background color -->
         <item name="android:windowBackground" tools:targetApi="l">@color/darker_gray</item>
     </style>
+
+    <style name="Theme.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splashscreen</item>
+        <item name="postSplashScreenTheme">@style/Theme.QuoteIt</item>
+        <item name="windowSplashScreenAnimationDuration">2000</item>
+    </style>
 </resources>
