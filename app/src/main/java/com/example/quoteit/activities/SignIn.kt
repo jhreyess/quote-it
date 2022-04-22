@@ -17,8 +17,8 @@ class SignIn : AppCompatActivity(), SignInView {
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         installSplashScreen()
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
         val navHostFragment = supportFragmentManager
