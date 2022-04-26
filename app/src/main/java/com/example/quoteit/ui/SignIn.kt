@@ -1,6 +1,5 @@
-package com.example.quoteit.activities
+package com.example.quoteit.ui
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -8,11 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.quoteit.R
 
-interface SignInView {
-    fun launchApp()
-}
-
-class SignIn : AppCompatActivity(), SignInView {
+class SignIn : AppCompatActivity() {
 
     private lateinit var navController: NavController
 
@@ -25,12 +20,4 @@ class SignIn : AppCompatActivity(), SignInView {
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
     }
-
-    override fun launchApp() {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
-    }
-
-
 }

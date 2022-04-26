@@ -1,5 +1,6 @@
-package com.example.quoteit.activities
+package com.example.quoteit.ui.signin
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,18 +9,9 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.quoteit.R
 import com.example.quoteit.databinding.FragmentRegisterBinding
+import com.example.quoteit.ui.MainActivity
 
-interface RegisterView {
-    fun launchApp()
-    fun showLoadingScreen()
-    fun showEmptyEmailError()
-    fun showEmptyPasswordError()
-    fun showEmptyFieldsError()
-    fun showWrongCredentialsError()
-    fun goToLogin()
-}
-
-class RegisterFragment : Fragment(), RegisterView {
+class RegisterFragment : Fragment(), RegisterContract.View {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
@@ -45,8 +37,11 @@ class RegisterFragment : Fragment(), RegisterView {
     override fun showEmptyFieldsError() { TODO("Not yet implemented") }
     override fun showEmptyPasswordError() { TODO("Not yet implemented") }
     override fun showLoadingScreen() { TODO("Not yet implemented") }
-    override fun showWrongCredentialsError() { TODO("Not yet implemented") }
-    override fun launchApp() { (activity as SignIn).launchApp()  }
+    override fun launchApp() {
+        val intent = Intent(activity, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

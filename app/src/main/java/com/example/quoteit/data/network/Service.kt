@@ -1,4 +1,4 @@
-package com.example.quoteit.network
+package com.example.quoteit.data.network
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -27,9 +27,9 @@ interface QuotesApiService {
     suspend fun getSingleQuote(
         @Header("X-RapidAPI-Key") key: String,
         @Query("language_code") lang: String
-    ) : Quote
+    ) : QuoteApi
 }
 
-object QuotesApi{
+object QuotesApiNetwork{
     val retrofitService: QuotesApiService by lazy { retrofit.create(QuotesApiService::class.java) }
 }

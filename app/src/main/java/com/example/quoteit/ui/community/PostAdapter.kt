@@ -1,4 +1,4 @@
-package com.example.quoteit.adapters
+package com.example.quoteit.ui.community
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,14 +6,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.quoteit.R
-import com.example.quoteit.activities.CommunityFragment
-import com.example.quoteit.data.Datasource
+import com.example.quoteit.data.TestingDatasource
 
 class PostAdapter(
     private val context: CommunityFragment?,
 ): RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
-    private val posts = Datasource.posts
+    private val posts = TestingDatasource.posts
 
     class PostViewHolder(val view: View?): RecyclerView.ViewHolder(view!!) {
         // Declare and initialize all of the list item UI components

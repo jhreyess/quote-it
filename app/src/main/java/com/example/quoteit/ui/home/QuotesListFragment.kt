@@ -1,4 +1,4 @@
-package com.example.quoteit.activities
+package com.example.quoteit.ui.home
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.example.quoteit.adapters.QuoteAdapter
 import com.example.quoteit.databinding.FragmentQuotesListBinding
 
 class QuotesListFragment : Fragment() {
@@ -34,16 +33,13 @@ class QuotesListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentQuotesListBinding.inflate(inflater, container, false)
-
-        // Bindings
-        binding.backButton.setOnClickListener {findNavController().popBackStack()}
-        binding.fragmentLabel.text = folderTitle
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // Recycler Viewer
+        // Bindings
+        binding.backButton.setOnClickListener {findNavController().popBackStack()}
+        binding.fragmentLabel.text = folderTitle
         binding.quotesRecycler.adapter = QuoteAdapter(folderTitle)
         binding.quotesRecycler.setHasFixedSize(true)
     }

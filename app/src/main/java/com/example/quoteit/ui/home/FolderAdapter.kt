@@ -1,4 +1,4 @@
-package com.example.quoteit.adapters
+package com.example.quoteit.ui.home
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +7,6 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.quoteit.R
-import com.example.quoteit.activities.HomeFragment
-import com.example.quoteit.activities.HomeFragmentDirections
 import com.example.quoteit.data.models.Folder
 import com.google.android.material.card.MaterialCardView
 

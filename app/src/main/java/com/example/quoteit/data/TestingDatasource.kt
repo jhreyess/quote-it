@@ -4,7 +4,7 @@ import com.example.quoteit.data.models.Folder
 import com.example.quoteit.data.models.Post
 import com.example.quoteit.data.models.Quote
 
-object Datasource {
+object TestingDatasource {
 
     /* TODO: TESTING */
     private val quotes: MutableList<Quote> = mutableListOf(

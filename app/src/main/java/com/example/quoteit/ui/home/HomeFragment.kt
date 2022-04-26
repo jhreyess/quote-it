@@ -1,4 +1,4 @@
-package com.example.quoteit.activities
+package com.example.quoteit.ui.home
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,8 +8,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import com.example.quoteit.R
-import com.example.quoteit.adapters.FolderAdapter
-import com.example.quoteit.data.Datasource
+import com.example.quoteit.data.TestingDatasource
 import com.example.quoteit.databinding.FragmentHomeBinding
 import com.example.quoteit.data.models.Folder
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -24,18 +23,15 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
-        // Bindings
-        binding.createFolderButton.setOnClickListener { showDialog() }
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // Recycler Viewer
-        binding.folderRecycler.adapter = FolderAdapter(this, Datasource.folders)
+        super.onViewCreated(view, savedInstanceState)
+        // Bindings
+        binding.createFolderButton.setOnClickListener { showDialog() }
+        binding.folderRecycler.adapter = FolderAdapter(this, TestingDatasource.folders)
         binding.folderRecycler.setHasFixedSize(true)
-
     }
 
     override fun onDestroyView() {
@@ -44,7 +40,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun showDialog(){
-
         val view = layoutInflater.inflate(R.layout.new_folder_dialog, null)
         val editText = view.findViewById<EditText>(R.id.new_folder_name)
 
@@ -57,7 +52,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun createFolder(name: String){
-        Datasource.addFolder(Folder(name))
+        TestingDatasource.addFolder(Folder(name))
         binding.folderRecycler.adapter?.notifyItemInserted(2)
     }
 

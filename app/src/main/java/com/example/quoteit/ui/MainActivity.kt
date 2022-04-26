@@ -1,4 +1,4 @@
-package com.example.quoteit.activities
+package com.example.quoteit.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

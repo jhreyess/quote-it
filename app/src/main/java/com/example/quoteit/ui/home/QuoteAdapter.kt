@@ -1,4 +1,4 @@
-package com.example.quoteit.adapters
+package com.example.quoteit.ui.home
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.quoteit.R
-import com.example.quoteit.data.Datasource
+import com.example.quoteit.data.TestingDatasource
 
 class QuoteAdapter(
     private val folderTitle: String
     ) : RecyclerView.Adapter<QuoteAdapter.QuoteViewHolder>() {
 
-        private var quotes = Datasource.folders.single { it.title == folderTitle }.quotes
+        private var quotes = TestingDatasource.folders.single { it.title == folderTitle }.quotes
 
         class QuoteViewHolder(view: View?) : RecyclerView.ViewHolder(view!!) {
             val preview: TextView = view!!.findViewById(R.id.quote_preview)

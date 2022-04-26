@@ -1,12 +1,10 @@
-package com.example.quoteit.activities
+package com.example.quoteit.ui.profile
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.quoteit.R
-import com.example.quoteit.databinding.FragmentDiscoverBinding
 import com.example.quoteit.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
