@@ -15,42 +15,32 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                android:paddingTop="28dp">
+                android:paddingTop="28dp"
+                android:paddingBottom="8dp">
 
-                <ImageView
-                    android:id="@+id/logo"
+                <TextView
+                    android:id="@+id/fragment_label"
                     android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_logo"
-                    android:adjustViewBounds="true"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home_label"
+                    style="@style/SectionLabel"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:importantForAccessibility="no" />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_settings"
                     android:layout_marginEnd="16dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/logo"
+                    app:layout_constraintBottom_toBottomOf="@+id/fragment_label"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/logo"
+                    app:layout_constraintTop_toTopOf="@id/fragment_label"
                     android:importantForAccessibility="no"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/fragment_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/home_label"
-            style="@style/SectionLabel"
-            app:layout_constraintTop_toBottomOf="@id/logo"
-            app:layout_constraintStart_toStartOf="@id/logo"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -62,6 +52,7 @@
         app:spanCount="2"
         android:paddingStart="6dp"
         android:paddingEnd="6dp"
+        android:overScrollMode="never"
         android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:listitem="@layout/folder_list_items" />
@@ -70,9 +61,10 @@
         android:id="@+id/create_folder_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_add"
-        android:contentDescription="@string/folder_new"
+        android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
-        android:layout_gravity="end|bottom" />
+        android:contentDescription="@string/folder_new"
+        android:src="@drawable/ic_add"
+        tools:ignore="ImageContrastCheck" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

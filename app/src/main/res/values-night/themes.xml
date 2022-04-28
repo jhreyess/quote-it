@@ -22,6 +22,10 @@
         <!-- Background color -->
         <item name="android:windowBackground" tools:targetApi="l">@color/darker_gray</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+
+        <!-- Prefs -->
+        <item name="bottomSheetDialogTheme">@style/Theme.BottomSheetDialog</item>
+        <item name="bottomNavigationStyle">@style/Navbar</item>
     </style>
 
     <style name="Theme.Splash" parent="Theme.SplashScreen">
@@ -29,5 +33,11 @@
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splashscreen</item>
         <item name="postSplashScreenTheme">@style/Theme.QuoteIt</item>
         <item name="windowSplashScreenAnimationDuration">2000</item>
+    </style>
+
+    <style name="Theme.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetModal</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 </resources>

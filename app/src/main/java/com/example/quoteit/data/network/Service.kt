@@ -20,7 +20,7 @@ private val retrofit = Retrofit.Builder()
     .baseUrl(BASE_URL)
     .build()
 
-// Endpoints
+// Endpoints ~ Api DataSource
 interface QuotesApiService {
     @Headers("X-RapidAPI-Host: quotes15.p.rapidapi.com")
     @GET("quotes/random/")

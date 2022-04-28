@@ -18,8 +18,8 @@
 
     <!-- HOME -->
     <string name="folder_quantity">%1$d elementos</string>
-    <string name="folder_new">Nuevo</string>
-    <string name="prompt_new">Introduce el nombre del nuevo grupo</string>
+    <string name="folder_new">Crear un grupo</string>
+    <string name="prompt_new">Nombre del nuevo grupo</string>
 
     <!-- COMMUNITY -->
     <string name="likes_count">A %1$d personas le gustaron esto</string>
@@ -36,4 +36,5 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be > 5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="confirm">Aceptar</string>
 </resources>

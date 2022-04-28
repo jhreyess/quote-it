@@ -1,17 +1,22 @@
 package com.example.quoteit.ui.home
 
 import android.os.Bundle
+import android.text.Editable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import androidx.core.content.ContextCompat
+import androidx.core.widget.doOnTextChanged
 import com.example.quoteit.R
 import com.example.quoteit.data.TestingDatasource
 import com.example.quoteit.databinding.FragmentHomeBinding
 import com.example.quoteit.data.models.Folder
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputLayout
 
 class HomeFragment : Fragment() {
 
@@ -40,20 +45,27 @@ class HomeFragment : Fragment() {
     }
 
     private fun showDialog(){
-        val view = layoutInflater.inflate(R.layout.new_folder_dialog, null)
-        val editText = view.findViewById<EditText>(R.id.new_folder_name)
+        val bottomSheet = BottomSheetDialog(requireContext())
+        bottomSheet.setContentView(R.layout.new_folder_dialog)
+        bottomSheet.behavior.isHideable = true
 
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Nuevo").setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-            .setView(view)
-            .setPositiveButton(R.string.ok) { _,_ -> createFolder(editText.text.toString()) }
-            .setNegativeButton(R.string.cancel) { dialog, _  -> dialog.cancel() }
-            .show()
+        val cancel = bottomSheet.findViewById<MaterialButton>(R.id.cancel_button)
+        val confirm = bottomSheet.findViewById<MaterialButton>(R.id.confirm_button)
+        val input = bottomSheet.findViewById<TextInputLayout>(R.id.new_folder_name)
+
+        input?.editText?.doOnTextChanged { _, _, _, count ->
+            confirm?.isEnabled = count != 0
+        }
+        confirm?.setOnClickListener { createFolder(input?.editText?.text.toString()) }
+        cancel?.setOnClickListener { bottomSheet.dismiss() }
+
+        bottomSheet.show()
     }
 
     private fun createFolder(name: String){
         TestingDatasource.addFolder(Folder(name))
-        binding.folderRecycler.adapter?.notifyItemInserted(2)
+        val size = TestingDatasource.folders.size
+        binding.folderRecycler.adapter?.notifyItemInserted(size - 1)
     }
 
 }

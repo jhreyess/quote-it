@@ -2,14 +2,23 @@ package com.example.quoteit.ui.signin
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.quoteit.R
+import com.example.quoteit.data.network.DatabaseApi
+import com.example.quoteit.data.network.UserLoginRequest
+import com.example.quoteit.data.network.UserRequest
 import com.example.quoteit.databinding.FragmentSignInBinding
 import com.example.quoteit.ui.MainActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.lang.Exception
 
 class SignInFragment : Fragment(), SignInContract.View {
 
@@ -40,9 +49,21 @@ class SignInFragment : Fragment(), SignInContract.View {
    override fun showLoadingScreen() { TODO("Not yet implemented") }
    override fun showWrongCredentialsError() { TODO("Not yet implemented") }
    override fun launchApp() {
-      val intent = Intent(activity, MainActivity::class.java)
-      intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-      startActivity(intent)
+      lifecycleScope.launch {
+         try {
+            val data = withContext(Dispatchers.IO) {
+               DatabaseApi.retrofitService.queryUser(UserLoginRequest("admin@example.com", "rootroot"))
+            }
+            Log.d("DATA", data.toString())
+            if(data.success){
+               val intent = Intent(activity, MainActivity::class.java)
+               intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+               startActivity(intent)
+            }
+         } catch (e: Exception) {
+            Log.d("Error", e.message.toString())
+         }
+      }
    }
 
    override fun onDestroyView() {

@@ -10,6 +10,7 @@
     <color name="yellow">#FFC400</color>
     <color name="pink">#FE1A3F</color>
     <color name="lighter_gray">#26CCCCCC</color> <!-- Used in some texts -->
+    <color name="lighter_gray_no_alpha">#4A4848</color>
     <color name="light_gray">#73CCCCCC</color> <!-- Used in cards -->
     <color name="gray">#737373</color> <!-- placeholders -->
     <color name="dark_gray">#333333</color> <!-- navbar background -->
