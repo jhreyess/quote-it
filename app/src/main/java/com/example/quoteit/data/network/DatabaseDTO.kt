@@ -7,13 +7,18 @@ data class UserLoginRequest(
     val password: String = ""
 )
 
-data class UserRequest(
+data class UserRegisterRequest(
     val username: String = "",
     val email: String =  "",
     val password: String = ""
 )
 
-data class DatabaseResult(
+sealed class Result<out R> {
+    data class Success<out T>(val data: T) : Result<T>()
+    data class Error(val exception: Exception) : Result<Nothing>()
+}
+
+data class LoginResponse(
     @Json(name = "success") val success: Boolean,
     @Json(name = "errors") var errors: Map<String, String>? = null,
 )

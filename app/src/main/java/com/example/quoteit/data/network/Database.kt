@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
 
-private const val BASE_URL = "https://quote-it-app.herokuapp.com/"
+private const val BASE_URL = "https://quote-it-app.herokuapp.com/api/"
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
@@ -19,11 +19,11 @@ private val retrofit = Retrofit.Builder()
 
 // Endpoints ~ Api DataSource
 interface DatabaseService {
-    @POST("api/users/register")
-    suspend fun insertUser(@Body body: UserRequest) : DatabaseResult
+    @POST("users/register")
+    suspend fun insertUser(@Body body: UserRegisterRequest) : LoginResponse
 
-    @POST("api/users/login")
-    suspend fun queryUser(@Body body: UserLoginRequest) : DatabaseResult
+    @POST("users/login")
+    suspend fun queryUser(@Body body: UserLoginRequest) : LoginResponse
 
 }
 

@@ -7,38 +7,46 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.quoteit.R
-import com.example.quoteit.data.network.DatabaseApi
-import com.example.quoteit.data.network.UserLoginRequest
-import com.example.quoteit.data.network.UserRequest
+import com.example.quoteit.data.PreferencesDataStore
 import com.example.quoteit.databinding.FragmentRegisterBinding
 import com.example.quoteit.ui.MainActivity
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.lang.Exception
 
 class RegisterFragment : Fragment(), RegisterContract.View {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
 
+    private val presenter: RegisterContract.Presenter<RegisterContract.View> by lazy {
+        RegisterPresenter(this, requireActivity())
+    }
+
+    private lateinit var userPreferences: PreferencesDataStore
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        // Listeners
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        userPreferences = PreferencesDataStore(requireContext())
+        // Bindings
         binding.loginLink.setOnClickListener { goToLogin() }
         binding.registerButton.setOnClickListener {
-            //TODO("presenter.register()")
-            launchApp()
+            val email = binding.userEmail.text.toString()
+            val username = binding.userEmail.text.toString()
+            val password = binding.userPassword.text.toString()
+            val confirmPassword = binding.confirmPassword.text.toString()
+            presenter.register(email, username, password, confirmPassword)
         }
-
-        return binding.root
     }
 
     override fun goToLogin() { findNavController().navigate(R.id.action_registerFragment_to_signInFragment) }
@@ -46,20 +54,10 @@ class RegisterFragment : Fragment(), RegisterContract.View {
     override fun showEmptyFieldsError() { TODO("Not yet implemented") }
     override fun showEmptyPasswordError() { TODO("Not yet implemented") }
     override fun showLoadingScreen() { TODO("Not yet implemented") }
+    override fun showWrongCredentialsError() { Log.d("Error", "Wrong Credentials...") }
     override fun launchApp() {
-        lifecycleScope.launch {
-            try {
-                val data = withContext(Dispatchers.IO) {
-                    DatabaseApi.retrofitService.insertUser(UserRequest("admin","admin@example.com", "rootroot"))
-                }
-                if(data.success){
-                    val intent = Intent(activity, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                }
-            } catch (e: Exception) {
-                Log.d("Error", e.message.toString())
-            }
+        CoroutineScope(Dispatchers.IO).launch {
+            userPreferences.saveLogInPreference(true, requireContext())
         }
     }
 
