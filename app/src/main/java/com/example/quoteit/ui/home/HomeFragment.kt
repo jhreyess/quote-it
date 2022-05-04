@@ -1,7 +1,6 @@
 package com.example.quoteit.ui.home
 
 import android.os.Bundle
-import android.text.Editable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +10,8 @@ import com.example.quoteit.R
 import com.example.quoteit.data.TestingDatasource
 import com.example.quoteit.databinding.FragmentHomeBinding
 import com.example.quoteit.data.models.Folder
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 
 class HomeFragment : Fragment() {

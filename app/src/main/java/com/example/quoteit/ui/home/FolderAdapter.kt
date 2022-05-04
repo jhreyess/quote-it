@@ -43,7 +43,7 @@ class FolderAdapter(
         // Assign onClickListener to each card
         holder.cardButton.setOnClickListener {
             val action = HomeFragmentDirections.actionHomeFragmentToQuotesListFragment(folder = folder.title)
-            holder.view?.findNavController()!!.navigate(action)
+            holder.view?.findNavController()?.navigate(action)
         }
     }
 }
