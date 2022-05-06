@@ -1,7 +1,6 @@
 package com.example.quoteit.ui.signin
 
 import android.app.Activity
-import android.util.Log
 import com.example.quoteit.data.UsersRepository
 import com.example.quoteit.data.network.DatabaseApi
 import com.example.quoteit.data.network.LoginResponse
@@ -16,30 +15,47 @@ class SignInPresenter(
 ) : SignInContract.Presenter<SignInContract.View> {
 
     override fun logIn(email: String, password: String){
-        // TODO: Client-side validation
-        CoroutineScope(Dispatchers.Main).launch {
-            val result = try{
-                db.loginUser(email, password)
-            }catch (e: Exception){
-                Result.Error(Exception(e.message))
-            }
-            Log.d("Debug", result.toString())
-            when (result) {
-                is Result.Success<LoginResponse> -> {
-                    if(result.data.success){
-                        view?.launchApp()
-                    }else{
-                        view?.showWrongCredentialsError()
+        when(validation(email, password)){
+            Validation.EMPTY_FIELDS -> { view?.showEmptyFieldsError() }
+            Validation.EMPTY_EMAIL -> { view?.showEmptyEmailError() }
+            Validation.EMPTY_PASSWORD -> { view?.showEmptyPasswordError() }
+            Validation.IS_VALID -> {
+                view?.showLoadingScreen()
+                CoroutineScope(Dispatchers.Main).launch {
+                    val result = try{
+                        db.loginUser(email, password)
+                    }catch (e: Exception){
+                        Result.Error(Exception(e.message))
+                    }finally {
+                        view?.hideLoadingScreen()
                     }
-                }
-                else -> {
-                    // TODO: Show toast of invalid request
-                    view?.showWrongCredentialsError()
+                    when (result) {
+                        is Result.Success<LoginResponse> -> {
+                            if(result.data.success){ view?.launchApp()
+                            }else{ view?.showWrongCredentialsError(result.data.error) }
+                        }
+                        is Result.Error -> { view?.showExceptionError(result.exception) }
+                    }
                 }
             }
         }
     }
 
+    private fun validation(email: String, password: String): Validation {
+        return when {
+            (email.isBlank() && password.isBlank()) -> { Validation.EMPTY_FIELDS }
+            password.isBlank() -> { Validation.EMPTY_PASSWORD }
+            email.isBlank() -> { Validation.EMPTY_PASSWORD }
+            else -> { Validation.IS_VALID }
+        }
+    }
+
+    private enum class Validation{
+        EMPTY_FIELDS,
+        EMPTY_EMAIL,
+        EMPTY_PASSWORD,
+        IS_VALID
+    }
 
 }
 

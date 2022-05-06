@@ -11,5 +11,7 @@ class RegisterContract {
 
     interface View : BaseView, ValidationView {
         fun goToLogin()
+        fun showInvalidPasswordsError()
+        fun showWeakPasswordError()
     }
 }

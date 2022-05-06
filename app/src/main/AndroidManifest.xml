@@ -16,7 +16,8 @@
         <activity
             android:name=".ui.SignIn"
             android:exported="true"
-            android:theme="@style/Theme.Splash">
+            android:theme="@style/Theme.Splash"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

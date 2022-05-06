@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.quoteit.BuildConfig
-import com.example.quoteit.data.network.QuotesApiNetwork.retrofitService
+import com.example.quoteit.data.network.QuotesApi.retrofitService
 import com.example.quoteit.data.network.QuoteApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

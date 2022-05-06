@@ -36,9 +36,10 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <requestFocus/>
+                    android:layout_height="match_parent"
+                    android:maxLines="1"
+                    android:inputType="text"
+                    android:maxLength="25"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -52,7 +53,7 @@
                     android:id="@+id/cancel_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.Button"
+                    style="@style/MaterialButton"
                     android:layout_marginEnd="16dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/lighter_gray_no_alpha"
@@ -64,7 +65,7 @@
                     android:id="@+id/confirm_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.Button"
+                    style="@style/MaterialButton"
                     android:layout_marginStart="16dp"
                     android:layout_weight="1"
                     android:enabled="false"

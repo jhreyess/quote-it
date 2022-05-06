@@ -21,7 +21,7 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 // Endpoints ~ Api DataSource
-interface QuotesApiService {
+interface QuotesService {
     @Headers("X-RapidAPI-Host: quotes15.p.rapidapi.com")
     @GET("quotes/random/")
     suspend fun getSingleQuote(
@@ -30,6 +30,6 @@ interface QuotesApiService {
     ) : QuoteApi
 }
 
-object QuotesApiNetwork{
-    val retrofitService: QuotesApiService by lazy { retrofit.create(QuotesApiService::class.java) }
+object QuotesApi{
+    val retrofitService: QuotesService by lazy { retrofit.create(QuotesService::class.java) }
 }

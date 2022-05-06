@@ -32,14 +32,16 @@ class DiscoverFragment : Fragment() {
             binding.quotePlaceholder.text = it.content
             binding.quoteAuthorPlaceholder.text = it.author.name
             binding.nextButton.isEnabled = true
-            // TODO Remove loader
+            binding.loadingScreen.visibility = View.GONE
         })
 
         binding.nextButton.setOnClickListener { fetchQuote() }
     }
 
     private fun fetchQuote(){
-        // TODO Show loader
+        binding.loadingScreen.visibility = View.VISIBLE
+        binding.quotePlaceholder.text = ""
+        binding.quoteAuthorPlaceholder.text = ""
         binding.nextButton.isEnabled = false
         model.fetchQuote()
     }

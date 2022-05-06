@@ -12,5 +12,7 @@ interface SignInContract {
 
     interface View : BaseView, ValidationView {
         fun goToRegister()
+        fun showEmptyEmailError()
+        fun showEmptyPasswordError()
     }
 }

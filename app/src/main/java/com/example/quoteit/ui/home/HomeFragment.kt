@@ -5,14 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.doOnTextChanged
-import com.example.quoteit.R
 import com.example.quoteit.data.TestingDatasource
 import com.example.quoteit.databinding.FragmentHomeBinding
 import com.example.quoteit.data.models.Folder
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.textfield.TextInputLayout
+import com.example.quoteit.ui.utils.BottomSheet
+import com.example.quoteit.ui.utils.BottomSheetListener
 
 class HomeFragment : Fragment() {
 
@@ -32,7 +29,7 @@ class HomeFragment : Fragment() {
         // Bindings
         binding.createFolderButton.setOnClickListener { showDialog() }
         binding.folderRecycler.adapter = FolderAdapter(this, TestingDatasource.folders)
-        binding.folderRecycler.setHasFixedSize(true)
+        binding.folderRecycler.setHasFixedSize(false)
     }
 
     override fun onDestroyView() {
@@ -41,27 +38,18 @@ class HomeFragment : Fragment() {
     }
 
     private fun showDialog(){
-        val bottomSheet = BottomSheetDialog(requireContext())
-        bottomSheet.setContentView(R.layout.new_folder_dialog)
-        bottomSheet.behavior.isHideable = true
-
-        val cancel = bottomSheet.findViewById<MaterialButton>(R.id.cancel_button)
-        val confirm = bottomSheet.findViewById<MaterialButton>(R.id.confirm_button)
-        val input = bottomSheet.findViewById<TextInputLayout>(R.id.new_folder_name)
-
-        input?.editText?.doOnTextChanged { _, _, _, count ->
-            confirm?.isEnabled = count != 0
-        }
-        confirm?.setOnClickListener { createFolder(input?.editText?.text.toString()) }
-        cancel?.setOnClickListener { bottomSheet.dismiss() }
-
-        bottomSheet.show()
+        val bottomSheet = BottomSheet()
+        bottomSheet.onActionCompleteListener(object : BottomSheetListener {
+            override fun onConfirm(str: String) { createFolder(str) }
+            override fun onCancel() {}
+        })
+        bottomSheet.show(parentFragmentManager, "new_folder_bottom_sheet")
     }
 
     private fun createFolder(name: String){
         TestingDatasource.addFolder(Folder(name))
         val size = TestingDatasource.folders.size
-        binding.folderRecycler.adapter?.notifyItemInserted(size - 1)
+        binding.folderRecycler.adapter?.notifyItemInserted(size)
     }
 
 }

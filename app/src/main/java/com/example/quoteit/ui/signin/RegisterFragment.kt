@@ -1,17 +1,16 @@
 package com.example.quoteit.ui.signin
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.quoteit.R
 import com.example.quoteit.data.PreferencesDataStore
 import com.example.quoteit.databinding.FragmentRegisterBinding
-import com.example.quoteit.ui.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -41,20 +40,26 @@ class RegisterFragment : Fragment(), RegisterContract.View {
         // Bindings
         binding.loginLink.setOnClickListener { goToLogin() }
         binding.registerButton.setOnClickListener {
+            binding.errorView.text = ""
             val email = binding.userEmail.text.toString()
-            val username = binding.userEmail.text.toString()
+            val username = binding.userName.text.toString()
             val password = binding.userPassword.text.toString()
             val confirmPassword = binding.confirmPassword.text.toString()
             presenter.register(email, username, password, confirmPassword)
         }
     }
 
-    override fun goToLogin() { findNavController().navigate(R.id.action_registerFragment_to_signInFragment) }
-    override fun showEmptyEmailError() { TODO("Not yet implemented") }
-    override fun showEmptyFieldsError() { TODO("Not yet implemented") }
-    override fun showEmptyPasswordError() { TODO("Not yet implemented") }
-    override fun showLoadingScreen() { TODO("Not yet implemented") }
-    override fun showWrongCredentialsError() { Log.d("Error", "Wrong Credentials...") }
+    override fun goToLogin() { findNavController().popBackStack() }
+    override fun showEmptyFieldsError() { binding.errorView.text = resources.getString(R.string.error_empty_fields) }
+    override fun showInvalidPasswordsError() { binding.errorView.text = resources.getString(R.string.error_invalid_passwords) }
+    override fun showWeakPasswordError() { binding.errorView.text = resources.getString(R.string.error_weak_password) }
+    override fun showLoadingScreen() { binding.loadingScreen.visibility = View.VISIBLE }
+    override fun hideLoadingScreen() { binding.loadingScreen.visibility = View.GONE }
+    override fun showExceptionError(exception: Exception) {
+        Toast.makeText(requireActivity(),
+            exception.message, Toast.LENGTH_LONG).show()
+    }
+    override fun showWrongCredentialsError(error: String?) { binding.errorView.text = error ?: "" }
     override fun launchApp() {
         CoroutineScope(Dispatchers.IO).launch {
             userPreferences.saveLogInPreference(true, requireContext())

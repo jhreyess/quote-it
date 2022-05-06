@@ -34,5 +34,5 @@ object TestingDatasource {
         Post("Jane Doe", "The love you take is equal to the love you make", "Beatles", 38),
     )
 
-    val addFolder = {x: Folder -> folders.add(folders.size-1, x)}
+    val addFolder = {x: Folder -> folders.add(folders.size, x)}
 }

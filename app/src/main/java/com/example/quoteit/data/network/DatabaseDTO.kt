@@ -20,5 +20,5 @@ sealed class Result<out R> {
 
 data class LoginResponse(
     @Json(name = "success") val success: Boolean,
-    @Json(name = "errors") var errors: Map<String, String>? = null,
+    @Json(name = "error") var error: String? = null,
 )

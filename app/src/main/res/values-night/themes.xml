@@ -10,6 +10,8 @@
         <item name="colorSecondary">@color/yellow</item>
         <item name="colorOnSecondary">@color/darker_gray</item>
 
+        <item name="errorTextColor">@color/coral</item>
+
         <!-- Cards background -->
         <item name="colorSurface">@color/lighter_gray</item>
         <item name="colorSurfaceVariant">@color/light_gray</item>

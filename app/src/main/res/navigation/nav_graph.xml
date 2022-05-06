@@ -11,15 +11,15 @@
         tools:layout="@layout/fragment_sign_in">
         <action
             android:id="@+id/action_signInFragment_to_registerFragment"
-            app:destination="@id/registerFragment" />
+            app:destination="@id/registerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.quoteit.ui.signin.RegisterFragment"
         android:label="RegisterFragment"
-        tools:layout="@layout/fragment_register">
-        <action
-            android:id="@+id/action_registerFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_register"/>
 </navigation>
