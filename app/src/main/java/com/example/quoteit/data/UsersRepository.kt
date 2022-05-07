@@ -13,13 +13,13 @@ import java.io.IOException
 import java.lang.Exception
 
 class UsersRepository(
-    private val database: DatabaseApi,
+    private val apiService: DatabaseService,
 ) {
 
     suspend fun loginUser(email: String, password: String): Result<LoginResponse>{
         val body = UserLoginRequest(email, password)
         return try {
-            val response = database.retrofitService.queryUser(body)
+            val response = apiService.queryUser(body)
             Result.Success(response)
         } catch (e: HttpException) {
             when(e.code()){
@@ -33,7 +33,7 @@ class UsersRepository(
     suspend fun registerUser(username: String, email: String, password: String): Result<LoginResponse> {
         val body = UserRegisterRequest(username, email, password)
         return try {
-            val response = database.retrofitService.insertUser(body)
+            val response = apiService.insertUser(body)
             Result.Success(response)
         } catch (e: HttpException) {
             when(e.code()){

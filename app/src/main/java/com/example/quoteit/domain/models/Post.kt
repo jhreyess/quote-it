@@ -1,4 +1,4 @@
-package com.example.quoteit.data.models
+package com.example.quoteit.domain.models
 
 data class Post(
     val user: String,

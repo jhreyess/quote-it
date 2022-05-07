@@ -25,6 +25,9 @@ interface DatabaseService {
     @POST("users/login")
     suspend fun queryUser(@Body body: UserLoginRequest) : LoginResponse
 
+    @GET("folders/:id")
+    suspend fun getFolders() // TODO: Set Response Type
+
 }
 
 object DatabaseApi{

@@ -7,12 +7,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.quoteit.R
 import com.example.quoteit.data.TestingDatasource
+import com.example.quoteit.domain.models.Quote
 
 class QuoteAdapter(
     private val folderTitle: String
     ) : RecyclerView.Adapter<QuoteAdapter.QuoteViewHolder>() {
 
-        private var quotes = TestingDatasource.folders.single { it.title == folderTitle }.quotes
+        private var quotes: List<Quote> = listOf()
 
         class QuoteViewHolder(view: View?) : RecyclerView.ViewHolder(view!!) {
             val preview: TextView = view!!.findViewById(R.id.quote_preview)
@@ -29,7 +30,6 @@ class QuoteAdapter(
     }
 
     override fun onBindViewHolder(holder: QuoteViewHolder, position: Int) {
-        println(quotes)
         val quote = quotes[position]
         holder.preview.text = quote.quote
     }

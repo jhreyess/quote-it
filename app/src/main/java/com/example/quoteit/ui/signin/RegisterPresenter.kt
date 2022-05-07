@@ -5,6 +5,7 @@ import com.example.quoteit.data.UsersRepository
 import com.example.quoteit.data.network.DatabaseApi
 import com.example.quoteit.data.network.LoginResponse
 import com.example.quoteit.data.network.Result
+import com.example.quoteit.ui.QuoteItApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,9 +13,10 @@ import java.lang.Exception
 
 class RegisterPresenter(
     override var view: RegisterContract.View?,
-    private val activity: Activity,
-    private val db: UsersRepository = UsersRepository(DatabaseApi)
+    activity: Activity,
 ) : RegisterContract.Presenter<RegisterContract.View> {
+
+    private val usersDao = (activity.application as QuoteItApp).usersRepository
 
     override fun register(email: String, username: String, password: String, confirm: String) {
 
@@ -26,7 +28,7 @@ class RegisterPresenter(
                 CoroutineScope(Dispatchers.Main).launch {
                     view?.showLoadingScreen()
                     val result = try{
-                        db.registerUser(username, email, password)
+                        usersDao.registerUser(username, email, password)
                     }catch (e: Exception){
                         Result.Error(Exception("Fallo en la solicitud..."))
                     }finally {

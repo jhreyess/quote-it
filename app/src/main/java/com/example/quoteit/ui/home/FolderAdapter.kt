@@ -5,15 +5,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.quoteit.R
-import com.example.quoteit.data.models.Folder
+import com.example.quoteit.domain.models.Folder
 import com.google.android.material.card.MaterialCardView
 
 class FolderAdapter(
     private val context: HomeFragment?,
-    private val folders: List<Folder>
 ): RecyclerView.Adapter<FolderAdapter.FolderViewHolder>() {
+
+    private var folders: List<Folder> = listOf()
 
     class FolderViewHolder(val view: View?): RecyclerView.ViewHolder(view!!) {
         // Declare and initialize all of the list item UI components
@@ -46,4 +48,31 @@ class FolderAdapter(
             holder.view?.findNavController()?.navigate(action)
         }
     }
+
+    fun setData(newData: List<Folder>){
+        val result = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+            override fun getOldListSize() = folders.size
+            override fun getNewListSize() = newData.size
+
+            override fun areContentsTheSame(
+                oldItemPosition: Int,
+                newItemPosition: Int
+            ): Boolean {
+                val oldItem = folders[oldItemPosition]
+                val newItem = newData[newItemPosition]
+                return oldItem.id == newItem.id
+                        && oldItem.title == newItem.title
+                        && oldItem.quantity == oldItem.quantity
+            }
+
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                val oldItem = folders[oldItemPosition]
+                val newItem = newData[newItemPosition]
+                return oldItem.id == newItem.id
+            }
+        })
+        folders = newData
+        result.dispatchUpdatesTo(this)
+    }
+
 }

@@ -5,14 +5,16 @@ import com.example.quoteit.data.UsersRepository
 import com.example.quoteit.data.network.DatabaseApi
 import com.example.quoteit.data.network.LoginResponse
 import com.example.quoteit.data.network.Result
+import com.example.quoteit.ui.QuoteItApp
 import kotlinx.coroutines.*
 import java.lang.Exception
 
 class SignInPresenter(
     override var view: SignInContract.View?,
-    private val activity: Activity,
-    private val db: UsersRepository = UsersRepository(DatabaseApi)
+    activity: Activity,
 ) : SignInContract.Presenter<SignInContract.View> {
+
+    private val usersDao = (activity.application as QuoteItApp).usersRepository
 
     override fun logIn(email: String, password: String){
         when(validation(email, password)){
@@ -23,7 +25,7 @@ class SignInPresenter(
                 view?.showLoadingScreen()
                 CoroutineScope(Dispatchers.Main).launch {
                     val result = try{
-                        db.loginUser(email, password)
+                        usersDao.loginUser(email, password)
                     }catch (e: Exception){
                         Result.Error(Exception(e.message))
                     }finally {
