@@ -61,4 +61,8 @@
     <string name="share_quote">Compartir frase</string>
     <string name="add_to_widgets">Añadir a widgets</string>
 
+    <!-- WIDGETS -->
+    <string name="widget_description">Descubre una frase nueva cada día</string>
+    <string name="widget_qod_prompt">Frase del día</string>
+
 </resources>

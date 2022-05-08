@@ -56,4 +56,14 @@
         <item name="colorSecondary">@color/pink</item>
         <item name="android:textColorSecondary">@color/light_gray</item>
     </style>
+
+    <style name="Widget.QuoteIt.AppWidget.Container" parent="android:Widget">
+        <item name="android:id">@android:id/background</item>
+        <item name="android:background">?android:attr/colorBackground</item>
+    </style>
+
+    <style name="Widget.QuoteIt.AppWidget.InnerView" parent="android:Widget">
+        <item name="android:background">?android:attr/colorBackground</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
 </resources>
