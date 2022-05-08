@@ -1,6 +1,5 @@
 package com.example.quoteit.data.local
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.quoteit.domain.models.Folder
 import com.example.quoteit.domain.models.FolderWQuotes
@@ -17,7 +16,8 @@ data class DatabaseFolder(
 data class DatabaseQuote(
     @PrimaryKey(autoGenerate = true) val quoteId: Long = 0,
     val author: String,
-    val content: String
+    val content: String,
+    val isFavorite: Boolean = false
 )
 
 @Entity(primaryKeys = ["folderId", "quoteId"])
@@ -36,11 +36,15 @@ data class FolderWithQuotes(
     val quotes: List<DatabaseQuote>
 )
 
-fun List<DatabaseFolder>.asDomainModel(): List<Folder> {
+fun List<DatabaseFolder>.asFolderDomainModel(): List<Folder> {
     return map { Folder(it.folderId, it.folderName, it.folderQty) }
 }
 
-fun FolderWithQuotes.asDomainModel(): FolderWQuotes {
-    val copyQuotes = quotes.map { Quote(it.author, it.content) }
+fun List<DatabaseQuote>.asQuoteDomainModel(): List<Quote> {
+    return map { Quote(it.quoteId, it.author, it.content, it.isFavorite) }
+}
+
+fun FolderWithQuotes.asFolderWQuotesDomainModel(): FolderWQuotes {
+    val copyQuotes = quotes.map { Quote(it.quoteId, it.author, it.content, it.isFavorite) }
     return FolderWQuotes(folder.folderName, copyQuotes)
 }

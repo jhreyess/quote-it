@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.home.NewQuoteFragment"
+    android:clickable="true"
+    android:focusable="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:padding="16dp">
+
+        <ImageButton
+            android:id="@+id/back_to_folder_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:backgroundTint="@android:color/transparent"
+            android:importantForAccessibility="no"
+            android:minHeight="48dp"
+            android:src="@drawable/ic_arrow_back" />
+
+        <TextView
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_toStartOf="@id/confirm_quote_btn"
+            android:layout_toEndOf="@id/back_to_folder_btn"
+            android:gravity="center"
+            android:text="@string/add_folder_quote"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/confirm_quote_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:backgroundTint="@android:color/transparent"
+            android:importantForAccessibility="no"
+            android:minHeight="48dp"
+            android:src="@drawable/ic_check" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="96dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
+
+        <TextView android:id="@+id/tip_view"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="@string/tip_new_quote"
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textColor="@color/mustard"
+            android:gravity="center"
+            android:visibility="visible"
+            android:layout_marginBottom="32dp"
+            android:layout_gravity="center_horizontal" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/quote_author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/OutlinedTextInputLayout"
+            app:placeholderText="@string/form_quote_author_placeholder">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/gray"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:inputType="text"
+                android:maxLength="25"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/quote_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            app:placeholderText="@string/form_quote_content_placeholder"
+            style="@style/OutlinedTextInputLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/gray"
+                android:textColor="@color/white"
+                android:lines="7"
+                android:gravity="start" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

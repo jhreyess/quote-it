@@ -8,6 +8,7 @@
 
     <color name="green">#4D00FFEA</color>
     <color name="yellow">#FFC400</color>
+    <color name="mustard">#CFB665</color>
     <color name="pink">#FE1A3F</color>
     <color name="coral">#CF6679</color>
     <color name="lighter_gray">#26CCCCCC</color> <!-- Used in some texts -->

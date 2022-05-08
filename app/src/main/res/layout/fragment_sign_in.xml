@@ -39,7 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:hint="@string/prompt_email"
-            android:importantForAutofill="no"
+            android:importantForAutofill="yes"
+            android:autofillHints="emailAddress"
             android:inputType="textEmailAddress"
             tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/delete_quote"
+        android:title="@string/delete_quote" />
+    <item android:id="@+id/add_quote_to_folder"
+        android:title="@string/add_quote_to_folder" />
+    <item android:id="@+id/share_quote"
+        android:title="@string/share_quote" />
+    <item android:id="@+id/add_to_widgets"
+        android:title="@string/add_to_widgets" />
+</menu>

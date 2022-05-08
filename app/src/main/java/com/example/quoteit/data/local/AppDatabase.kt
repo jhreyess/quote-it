@@ -32,8 +32,7 @@ abstract class AppDatabase: RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "quote-it-db"
-                )
+                    "quote-it-db")
                     .addCallback(AppDatabaseCallback(scope))
                     .build()
                 INSTANCE = instance

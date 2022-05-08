@@ -5,19 +5,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.coroutineScope
+import androidx.navigation.fragment.findNavController
+import com.example.quoteit.R
 import com.example.quoteit.databinding.FragmentHomeBinding
 import com.example.quoteit.ui.QuoteItApp
+import com.example.quoteit.ui.utils.AdapterCallback
 import com.example.quoteit.ui.utils.BottomSheet
-import com.example.quoteit.ui.utils.BottomSheetListener
+import com.example.quoteit.ui.utils.DialogCallback
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val model: HomeViewModel by viewModels {
-        HomeViewModelFactory((requireActivity().application as QuoteItApp).foldersRepository)
+    private val model: HomeViewModel by activityViewModels {
+        val repos = (requireActivity().application) as QuoteItApp
+        HomeViewModelFactory(repos.foldersRepository, repos.foldersQuoteRepository, repos.quotesRepository)
     }
 
     override fun onCreateView(
@@ -30,16 +38,23 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = FolderAdapter(this)
+        val adapter = FolderAdapter(this, object: AdapterCallback{
+            override fun onItemSelected(id: Long) {
+                val bundle = bundleOf("folder" to id)
+                val action = R.id.action_homeFragment_to_quotesListFragment
+                findNavController().navigate(action, bundle)
+            }
+        })
 
         // Bindings
         binding.createFolderButton.setOnClickListener { showDialog() }
         binding.folderRecycler.adapter = adapter
         binding.folderRecycler.setHasFixedSize(false)
 
-        model.folders.observe(viewLifecycleOwner) { folders ->
-            binding.emptyView.visibility = if (folders.isEmpty()) View.VISIBLE else View.GONE
-            folders.let { adapter.setData(it) }
+        lifecycle.coroutineScope.launch {
+            model.getFolders().collect {
+                adapter.setData(it)
+            }
         }
     }
 
@@ -49,9 +64,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun showDialog(){
-        val bottomSheet = BottomSheet()
-        bottomSheet.onActionCompleteListener(object : BottomSheetListener {
-            override fun onConfirm(str: String) { model.insertFolder(str) }
+        val bottomSheet = BottomSheet(resources.getString(R.string.dialog_folder_new))
+        bottomSheet.onActionCompleteListener(object : DialogCallback {
+            override fun onConfirm(str: String?) { model.insertFolder(str!!) }
             override fun onCancel() {}
         })
         bottomSheet.show(parentFragmentManager, "new_folder_bottom_sheet")

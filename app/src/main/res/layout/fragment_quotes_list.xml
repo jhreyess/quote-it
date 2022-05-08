@@ -16,7 +16,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:layout_scrollFlags="scroll"
             android:paddingTop="28dp"
             android:paddingBottom="18dp">
 
@@ -36,15 +36,18 @@
                 android:textAllCaps="false"
                 android:textSize="16sp" />
 
-            <ImageView
+            <ImageButton android:id="@+id/folder_detail_options"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/back_button"
                 android:layout_marginEnd="16dp"
+                android:backgroundTint="@android:color/transparent"
                 android:importantForAccessibility="no"
+                android:minHeight="48dp"
+                android:visibility="gone"
+                android:src="@drawable/ic_more_horiz"
                 app:layout_constraintBottom_toBottomOf="@id/back_button"
-                android:src="@drawable/ic_more_horiz" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/back_button" />
 
             <TextView
                 android:id="@+id/fragment_label"
@@ -63,10 +66,37 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/quotes_recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:overScrollMode="never"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/quotes_list_items" />
+
+    <TextView android:id="@+id/empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:text="@string/empty"
+        android:textColor="@color/gray"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_marginTop="64dp"
+        app:drawableTopCompat="@drawable/ic_folder"
+        app:drawableTint="@color/gray"/>
+
+    <TextView android:id="@+id/empty_favs_view"
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:text="@string/empty_favs"
+        android:textColor="@color/gray"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_marginTop="64dp"
+        app:drawableBottomCompat="@drawable/ic_favorite_75"
+        android:drawablePadding="16dp"
+        app:drawableTint="@color/gray"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -4,15 +4,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.quoteit.R
 import com.example.quoteit.domain.models.Folder
+import com.example.quoteit.ui.utils.AdapterCallback
 import com.google.android.material.card.MaterialCardView
 
 class FolderAdapter(
     private val context: HomeFragment?,
+    private val callback: AdapterCallback
 ): RecyclerView.Adapter<FolderAdapter.FolderViewHolder>() {
 
     private var folders: List<Folder> = listOf()
@@ -43,10 +44,7 @@ class FolderAdapter(
         holder.quantityTextView.text =  resources?.getString(R.string.folder_quantity, folder.quantity)
 
         // Assign onClickListener to each card
-        holder.cardButton.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToQuotesListFragment(folder = folder.title)
-            holder.view?.findNavController()?.navigate(action)
-        }
+        holder.cardButton.setOnClickListener { callback.onItemSelected(folder.id) }
     }
 
     fun setData(newData: List<Folder>){

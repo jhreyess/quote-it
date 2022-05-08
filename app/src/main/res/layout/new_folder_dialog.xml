@@ -3,6 +3,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="?attr/bottomSheetStyle"
@@ -18,12 +19,12 @@
         android:orientation="vertical"
         android:gravity="center">
 
-            <TextView
+            <TextView android:id="@+id/dialog_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 style="@style/TextAppearance.MaterialComponents.Headline6"
-                android:text="@string/folder_new"
+                tools:text="@string/dialog_folder_new"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"/>
 
@@ -38,6 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:maxLines="1"
+                    android:textColor="@color/white"
                     android:inputType="text"
                     android:maxLength="25"/>
 

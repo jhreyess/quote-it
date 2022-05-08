@@ -1,14 +1,19 @@
 package com.example.quoteit.data.local
 
-import androidx.room.Dao
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.lifecycle.LiveData
+import androidx.room.*
 
 @Dao
 interface FolderQuoteDAO {
 
     @Transaction
     @Query("SELECT * FROM folder WHERE folderId = :id")
-    suspend fun getFolderWithQuotes(id: Long): List<FolderWithQuotes>
+    fun getFolderWithQuotes(id: Long): LiveData<FolderWithQuotes>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertFolderQuote(join: FolderQuoteCrossRef)
+
+    @Delete
+    fun deleteFolderQuote(join: FolderQuoteCrossRef)
 
 }

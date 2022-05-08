@@ -72,7 +72,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:hint="@string/prompt_username"
-            android:importantForAutofill="no"
+            android:importantForAutofill="yes"
+            android:autofillHints="username"
             android:inputType="text"
             tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
@@ -83,7 +84,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:hint="@string/prompt_email"
-            android:importantForAutofill="no"
+            android:importantForAutofill="yes"
+            android:autofillHints="emailAddress"
             android:inputType="textEmailAddress"
             tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
