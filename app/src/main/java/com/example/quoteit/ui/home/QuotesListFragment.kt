@@ -14,7 +14,7 @@ import com.example.quoteit.databinding.FragmentQuotesListBinding
 import com.example.quoteit.ui.QuoteItApp
 import com.example.quoteit.ui.utils.*
 
-class QuotesListFragment : Fragment(), PopupMenu.OnMenuItemClickListener{
+class QuotesListFragment : Fragment(){
 
     companion object{
         const val FOLDER = "folder"
@@ -52,6 +52,8 @@ class QuotesListFragment : Fragment(), PopupMenu.OnMenuItemClickListener{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val toolbar = binding.quotesListToolbar
+        if(!isfavFolder) toolbar.inflateMenu(R.menu.folder_content_menu)
         placeholderView = if(isfavFolder) binding.emptyFavsView else binding.emptyView
         val adapter = QuoteAdapter(object: AdapterCallback{
             override fun onItemSelected(id: Long) { /* TODO: Possible share screen? */ }
@@ -69,30 +71,37 @@ class QuotesListFragment : Fragment(), PopupMenu.OnMenuItemClickListener{
         })
 
         // Bindings
-        binding.backButton.setOnClickListener {findNavController().popBackStack()}
+        toolbar.setOnMenuItemClickListener { optionItemSelected(it) }
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+        toolbar.setNavigationOnClickListener { findNavController().popBackStack() }
         binding.quotesRecycler.adapter = adapter
         binding.quotesRecycler.setHasFixedSize(false)
-        if(!isfavFolder){
-            binding.folderDetailOptions.setOnClickListener { showPopUp(it, R.menu.folder_content_menu) }
-            binding.folderDetailOptions.visibility = View.VISIBLE
-        }
 
         model.getQuotes(folderId).observe(viewLifecycleOwner) {
             placeholderView.visibility = if (it.quotes.isEmpty()) View.VISIBLE else View.GONE
-            binding.fragmentLabel.text = it.parentFolder
+            toolbar.title = it.parentFolder
             adapter.setData(it.quotes)
         }
     }
 
     private fun showPopUp(view: View, menu: Int){
         PopupMenu(requireContext(), view).apply {
-            setOnMenuItemClickListener(this@QuotesListFragment)
+            setOnMenuItemClickListener { popUpMenuItem(it) }
             inflate(menu)
             show()
         }
     }
 
-    override fun onMenuItemClick(item: MenuItem): Boolean {
+    private fun popUpMenuItem(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.delete_quote -> { true }
+            R.id.add_quote_to_folder -> { true }
+            R.id.share_quote -> { true }
+            else -> false
+        }
+    }
+
+    private fun optionItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
             R.id.add_to_folder -> {
                 val action = R.id.action_quotesListFragment_to_newQuote
@@ -108,7 +117,7 @@ class QuotesListFragment : Fragment(), PopupMenu.OnMenuItemClickListener{
                 showAlert()
                 true
             }
-            else -> false
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

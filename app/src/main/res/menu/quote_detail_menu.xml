@@ -7,6 +7,4 @@
         android:title="@string/add_quote_to_folder" />
     <item android:id="@+id/share_quote"
         android:title="@string/share_quote" />
-    <item android:id="@+id/add_to_widgets"
-        android:title="@string/add_to_widgets" />
 </menu>

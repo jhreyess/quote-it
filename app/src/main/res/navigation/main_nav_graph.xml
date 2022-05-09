@@ -8,17 +8,17 @@
     <fragment
         android:id="@+id/communityFragment"
         android:name="com.example.quoteit.ui.community.CommunityFragment"
-        android:label="fragment_community"
+        android:label="@string/community_label"
         tools:layout="@layout/fragment_community" />
     <fragment
         android:id="@+id/discoverFragment"
         android:name="com.example.quoteit.ui.discover.DiscoverFragment"
-        android:label="fragment_discover"
+        android:label="@string/discover_label"
         tools:layout="@layout/fragment_discover" />
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.quoteit.ui.profile.ProfileFragment"
-        android:label="fragment_profile"
+        android:label="@string/profile_label"
         tools:layout="@layout/fragment_profile" />
 
     <navigation android:id="@+id/homeNavigation"
@@ -26,7 +26,6 @@
         <fragment
             android:id="@+id/quotesListFragment"
             android:name="com.example.quoteit.ui.home.QuotesListFragment"
-            android:label="fragment_quotes_list"
             tools:layout="@layout/fragment_quotes_list">
             <action
                 android:id="@+id/action_quotesListFragment_to_newQuote"
@@ -35,7 +34,7 @@
         <fragment
             android:id="@+id/homeFragment"
             android:name="com.example.quoteit.ui.home.HomeFragment"
-            android:label="fragment_home"
+            android:label="@string/home_label"
             tools:layout="@layout/fragment_home">
             <action
                 android:id="@+id/action_homeFragment_to_quotesListFragment"
@@ -48,7 +47,7 @@
         <fragment
             android:id="@+id/newQuote"
             android:name="com.example.quoteit.ui.home.NewQuoteFragment"
-            android:label="new_quote_fragment"
+            android:label="@string/add_folder_quote"
             tools:layout="@layout/fragment_new_quote" />
     </navigation>
 

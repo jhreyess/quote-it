@@ -1,14 +1,13 @@
 package com.example.quoteit.ui.home
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.quoteit.R
 import com.example.quoteit.databinding.FragmentHomeBinding
 import com.example.quoteit.ui.QuoteItApp
@@ -38,6 +37,9 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val toolbar = binding.homeToolbar
+        toolbar.title = resources.getString(R.string.home_label)
+        toolbar.inflateMenu(R.menu.home_menu)
         val adapter = FolderAdapter(this, object: AdapterCallback{
             override fun onItemSelected(id: Long) {
                 val bundle = bundleOf("folder" to id)
@@ -55,6 +57,13 @@ class HomeFragment : Fragment() {
             model.getFolders().collect {
                 adapter.setData(it)
             }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.home_settings -> { /* TODO: Settings Fragment */ true }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

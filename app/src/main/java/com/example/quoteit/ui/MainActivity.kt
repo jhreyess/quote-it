@@ -2,7 +2,6 @@ package com.example.quoteit.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -24,7 +23,5 @@ class MainActivity : AppCompatActivity() {
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.navbar) as NavigationBarView
         bottomNavigationView.setupWithNavController(navController)
-
-        bottomNavigationView.setOnItemReselectedListener { navController.navigate(it.itemId) }
     }
 }

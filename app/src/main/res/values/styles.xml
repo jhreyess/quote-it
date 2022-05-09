@@ -19,9 +19,24 @@
     <!-- Bottom Navbar -->
     <style name="Navbar" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="android:background">@drawable/bg_navbar</item>
-        <item name="itemRippleColor">@color/dark_gray</item>
+        <item name="itemRippleColor">@color/gray</item>
         <item name="labelVisibilityMode">unlabeled</item>
         <item name="itemIconSize">28dp</item>
+    </style>
+
+    <!-- PopUp Menu -->
+    <style name="PopupMenu" parent="@android:style/Widget.PopupMenu">
+        <item name="android:popupBackground">?attr/colorSurface</item>
+    </style>
+
+    <!-- Toolbar -->
+    <style name="Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:elevation">0dp</item>
+        <item name="titleTextAppearance">@style/SectionLabel</item>
+        <item name="android:layout_gravity">top</item>
+        <item name="android:paddingTop">28dp</item>
+        <item name="android:paddingBottom">18dp</item>
+        <item name="layout_scrollFlags">scroll</item>
     </style>
 
     <!-- Outlined TextInput Layout -->

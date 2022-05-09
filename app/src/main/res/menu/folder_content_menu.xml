@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/modify_folder"
-        android:title="@string/change_folder_name" />
-    <item android:id="@+id/add_to_folder"
-        android:title="@string/add_folder_quote" />
-    <item android:id="@+id/delete_folder"
-        android:title="@string/delete_folder" />
+    <item android:id="@+id/folder_settings"
+        android:icon="@drawable/ic_more_horiz"
+        android:title="@string/settings"
+        app:showAsAction="ifRoom"
+        android:menuCategory="container">
+        <menu>
+            <item android:id="@+id/modify_folder"
+                android:title="@string/change_folder_name" />
+            <item android:id="@+id/add_to_folder"
+                android:title="@string/add_folder_quote" />
+            <item android:id="@+id/delete_folder"
+                android:title="@string/delete_folder" />
+        </menu>
+    </item>
 </menu>

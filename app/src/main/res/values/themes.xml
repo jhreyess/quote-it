@@ -13,7 +13,7 @@
         <item name="errorTextColor">@color/coral</item>
 
         <!-- Cards background -->
-        <item name="colorSurface">@color/lighter_gray</item>
+        <item name="colorSurface">@color/lighter_gray_no_alpha</item>
         <item name="colorSurfaceVariant">@color/light_gray</item>
 
         <!-- Navbar inactive items -->
@@ -26,6 +26,7 @@
         <!-- Prefs -->
         <item name="bottomSheetDialogTheme">@style/Theme.BottomSheetDialog</item>
         <item name="bottomNavigationStyle">@style/Navbar</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu</item>
     </style>
 
     <style name="Theme.Splash" parent="Theme.SplashScreen">

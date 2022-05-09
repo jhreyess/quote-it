@@ -41,6 +41,7 @@ class SignInFragment : Fragment(), SignInContract.View {
       // Bindings
       binding.registerLink.setOnClickListener { goToRegister() }
       binding.loginButton.setOnClickListener {
+         hideSoftKeyboard(view)
          binding.errorView.text = ""
          val email = binding.userEmail.text.toString()
          val password = binding.userPassword.text.toString()
@@ -70,5 +71,11 @@ class SignInFragment : Fragment(), SignInContract.View {
    override fun onDestroyView() {
       super.onDestroyView()
       _binding = null
+   }
+
+   private fun hideSoftKeyboard(view: View){
+      val inputMethodManager =
+         requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+      inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
    }
 }

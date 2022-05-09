@@ -1,11 +1,13 @@
 package com.example.quoteit.ui.signin
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.quoteit.R
@@ -40,6 +42,7 @@ class RegisterFragment : Fragment(), RegisterContract.View {
         // Bindings
         binding.loginLink.setOnClickListener { goToLogin() }
         binding.registerButton.setOnClickListener {
+            hideSoftKeyboard(view)
             binding.errorView.text = ""
             val email = binding.userEmail.text.toString()
             val username = binding.userName.text.toString()
@@ -69,5 +72,11 @@ class RegisterFragment : Fragment(), RegisterContract.View {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun hideSoftKeyboard(view: View){
+        val inputMethodManager =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

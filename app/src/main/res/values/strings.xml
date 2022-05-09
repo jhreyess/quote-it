@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">Quote It!</string>
 
     <!-- LOGIN -->
@@ -59,10 +59,10 @@
     <string name="delete_quote">Eliminar frase</string>
     <string name="add_quote_to_folder">Añadir a otro grupo</string>
     <string name="share_quote">Compartir frase</string>
-    <string name="add_to_widgets">Añadir a widgets</string>
 
     <!-- WIDGETS -->
     <string name="widget_description">Descubre una frase nueva cada día</string>
     <string name="widget_qod_prompt">Frase del día</string>
+    <string name="settings">Ajustes</string>
 
 </resources>
