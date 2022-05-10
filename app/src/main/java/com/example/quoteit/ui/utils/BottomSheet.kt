@@ -8,11 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import androidx.core.widget.doOnTextChanged
 import com.example.quoteit.R
-import com.example.quoteit.databinding.FragmentSignInBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
@@ -21,17 +18,17 @@ class BottomSheet(
     private val dialogTitle: String
 ) : BottomSheetDialogFragment() {
 
-    private var mListener: DialogCallback? = null
+    private var inputListener: ((input: String) -> Unit)? = null
 
-    fun onActionCompleteListener(listener: DialogCallback){
-        mListener = listener
+    fun setOnInputConfirmListener(callback: (input: String) -> Unit){
+        inputListener = callback
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.new_folder_dialog, container, false)
+    ): View? = inflater.inflate(R.layout.dialog_new_folder, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,7 +47,7 @@ class BottomSheet(
                     EditorInfo.IME_ACTION_DONE -> {
                         if(confirm.isEnabled) {
                             dismiss()
-                            mListener?.onConfirm(input.editText?.text.toString())
+                            inputListener?.invoke(input.editText?.text.toString())
                         }
                         true
                     }
@@ -73,18 +70,15 @@ class BottomSheet(
             })
         }
         confirm?.setOnClickListener {
+            inputListener?.invoke(input.editText?.text.toString())
             dismiss()
-            mListener?.onConfirm(input?.editText?.text.toString())
         }
-        cancel?.setOnClickListener {
-            dismiss()
-            mListener?.onCancel()
-        }
+        cancel?.setOnClickListener { dismiss() }
     }
 
     override fun onDetach() {
+        inputListener = null
         super.onDetach()
-        mListener = null
     }
 
 }

@@ -54,8 +54,10 @@ abstract class AppDatabase: RoomDatabase() {
         }
 
         fun populateDatabase(folderDao: FolderDAO) {
-            val folder = DatabaseFolder(0, "Mis favoritos", 0)
-            folderDao.insertFolder(folder)
+            val favFolder = DatabaseFolder(0, "Mis favoritos", 0)
+            val userFolder = DatabaseFolder(0, "Hechas por mi", 0)
+            folderDao.insertFolder(favFolder)
+            folderDao.insertFolder(userFolder)
         }
     }
 }

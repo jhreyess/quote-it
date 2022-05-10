@@ -11,10 +11,10 @@ class ConfirmDialog(
     private val title: String
 ): DialogFragment() {
 
-    private var mListener: DialogCallback? = null
+    private var confirmListener: (() -> Unit)? = null
 
-    fun onActionCompleteListener(listener: DialogCallback){
-        mListener = listener
+    fun setOnConfirmListener(callback: () -> Unit){
+        confirmListener = callback
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -23,7 +23,7 @@ class ConfirmDialog(
             val builder = AlertDialog.Builder(it)
             builder.setMessage(title)
                 .setPositiveButton(R.string.confirm) { _, _ ->
-                    mListener?.onConfirm(null)
+                    confirmListener?.invoke()
                 }
                 .setNegativeButton(R.string.cancel) { dialog, _ ->
                     dialog.dismiss()
@@ -34,7 +34,7 @@ class ConfirmDialog(
     }
 
     override fun onDetach() {
+        confirmListener = null
         super.onDetach()
-        mListener = null
     }
 }

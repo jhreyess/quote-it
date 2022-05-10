@@ -3,7 +3,7 @@ package com.example.quoteit.ui
 import android.app.Application
 import com.example.quoteit.data.FolderQuoteRepository
 import com.example.quoteit.data.FoldersRepository
-import com.example.quoteit.data.QuotesRespository
+import com.example.quoteit.data.QuotesRepository
 import com.example.quoteit.data.UsersRepository
 import com.example.quoteit.data.local.AppDatabase
 import com.example.quoteit.data.network.DatabaseApi
@@ -18,5 +18,5 @@ class QuoteItApp : Application() {
     val usersRepository by lazy { UsersRepository(DatabaseApi.retrofitService) }
     val foldersRepository by lazy { FoldersRepository(database.folderDao()) }
     val foldersQuoteRepository by lazy { FolderQuoteRepository(database.folderQuoteDao()) }
-    val quotesRepository by lazy { QuotesRespository(database.quoteDao()) }
+    val quotesRepository by lazy { QuotesRepository(database.quoteDao()) }
 }

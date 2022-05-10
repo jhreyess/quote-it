@@ -16,4 +16,9 @@ interface FolderQuoteDAO {
     @Delete
     fun deleteFolderQuote(join: FolderQuoteCrossRef)
 
+    @Query("DELETE FROM folderquotecrossref WHERE folderId = :id")
+    fun deleteAllFromFolder(id: Long)
+
+    @Query("DELETE FROM folderquotecrossref WHERE quoteId = :id")
+    fun deleteAllFromQuote(id: Long)
 }

@@ -3,15 +3,16 @@ package com.example.quoteit.data.local
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.quoteit.domain.models.Quote
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface QuoteDAO {
 
     @Query("SELECT * FROM quote")
-    fun getAllQuotes(): List<DatabaseQuote>
+    fun getAllQuotes(): Flow<List<DatabaseQuote>>
 
     @Query("SELECT * FROM quote WHERE isFavorite = 1")
-    fun getAllFavQuotes(): LiveData<List<DatabaseQuote>>
+    fun getAllFavQuotes(): Flow<List<DatabaseQuote>>
 
     @Insert
     suspend fun insertQuote(quote: DatabaseQuote): Long
@@ -22,7 +23,7 @@ interface QuoteDAO {
     @Query("UPDATE quote SET isFavorite = :b WHERE quoteId = :id")
     suspend fun updateState(id: Long, b: Boolean)
 
-    @Delete
-    suspend fun deleteQuote(quote: DatabaseQuote)
+    @Query("DELETE FROM quote WHERE quoteId = :id")
+    suspend fun deleteQuote(id: Long)
 
 }

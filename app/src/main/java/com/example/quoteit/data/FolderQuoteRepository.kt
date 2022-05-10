@@ -28,4 +28,16 @@ class FolderQuoteRepository(
             folderQuotesDao.deleteFolderQuote(FolderQuoteCrossRef(folderId, quoteId))
         }
     }
+
+    suspend fun deleteAllFolder(folderId: Long){
+        withContext(ioDispatcher){
+            folderQuotesDao.deleteAllFromFolder(folderId)
+        }
+    }
+
+    suspend fun deleteAllQuote(quoteId: Long){
+        withContext(ioDispatcher){
+            folderQuotesDao.deleteAllFromQuote(quoteId)
+        }
+    }
 }

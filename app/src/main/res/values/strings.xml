@@ -20,13 +20,16 @@
     <string name="folder_quantity">%1$d elementos</string>
     <string name="dialog_folder_new">Crear un grupo</string>
     <string name="prompt_new">Nombre del nuevo grupo</string>
+    <string name="user_folder">Hechas por mi</string>
+    <string name="fav_folder">Mis favoritos</string>
 
     <!-- HOME QUOTES -->
     <string name="change_folder_name">Cambiar Nombre</string>
     <string name="add_folder_quote">Nueva frase</string>
     <string name="delete_folder">Eliminar grupo</string>
     <string name="dialog_folder_modify">Cambiar nombre</string>
-    <string name="confirm_delete">¿Estás seguro de que deseas eliminar este grupo y todo su contenido?</string>
+    <string name="confirm_folder_delete">¿Estás seguro de que deseas eliminar este grupo y todo su contenido?</string>
+    <string name="confirm_quote_delete">¿Estás seguro de que deseas eliminar esta frase? Se eliminará tambien en todas las carpetas</string>
 
     <!-- HOME QUOTE FORM -->
     <string name="tip_new_quote">Tip: Agita tu dispositivo para limpiar los campos</string>
@@ -59,6 +62,10 @@
     <string name="delete_quote">Eliminar frase</string>
     <string name="add_quote_to_folder">Añadir a otro grupo</string>
     <string name="share_quote">Compartir frase</string>
+    <string name="added_to_favorites">Añadido a favoritos</string>
+    <string name="removed_from_favorites">Eliminado de favoritos</string>
+    <string name="added_to_folder">Añadido exitosamente</string>
+    <string name="removed_from_folder">Removido exitosamente</string>
 
     <!-- WIDGETS -->
     <string name="widget_description">Descubre una frase nueva cada día</string>

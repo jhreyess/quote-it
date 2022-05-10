@@ -1,5 +1,6 @@
 package com.example.quoteit.ui.home
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,8 @@ import com.example.quoteit.ui.utils.AdapterCallback
 import com.google.android.material.card.MaterialCardView
 
 class FolderAdapter(
-    private val context: HomeFragment?,
+    private val context: Context?,
+    private val layout: Int = 0,
     private val callback: AdapterCallback
 ): RecyclerView.Adapter<FolderAdapter.FolderViewHolder>() {
 
@@ -26,10 +28,12 @@ class FolderAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FolderViewHolder {
-
-        // Inflate the layout
+        val layout = when(layout){
+            0 -> R.layout.folder_list_items
+            else -> R.layout.dialog_list_items
+        }
         val adapterLayout = LayoutInflater.from(parent.context)
-            .inflate(R.layout.folder_list_items, parent, false)
+            .inflate(layout, parent, false)
 
         return FolderViewHolder(adapterLayout)
     }

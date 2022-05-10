@@ -1,7 +1,5 @@
 package com.example.quoteit.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import com.example.quoteit.data.local.*
 import com.example.quoteit.domain.models.Folder
 import kotlinx.coroutines.CoroutineDispatcher
@@ -33,7 +31,17 @@ class FoldersRepository(
 
     suspend fun updateCount(folderId: Long){
         withContext(ioDispatcher){
-            folderDao.updateCount(folderId)
+            when(folderId) {
+                1L -> folderDao.updateFavCount(folderId)
+                2L -> folderDao.updateUserCount(folderId)
+                else -> folderDao.updateCount(folderId)
+            }
+        }
+    }
+
+    suspend fun updateAllCount(){
+        withContext(ioDispatcher){
+            folderDao.updateAllCount()
         }
     }
 

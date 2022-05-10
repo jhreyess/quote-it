@@ -3,13 +3,13 @@ package com.example.quoteit.ui.home
 import androidx.lifecycle.*
 import com.example.quoteit.data.FolderQuoteRepository
 import com.example.quoteit.data.FoldersRepository
-import com.example.quoteit.data.QuotesRespository
+import com.example.quoteit.data.QuotesRepository
 import com.example.quoteit.data.local.DatabaseQuote
 import kotlinx.coroutines.launch
 
 class NewQuoteViewModel(
     private val foldersQuoteRepo: FolderQuoteRepository,
-    private val quoteRepo: QuotesRespository,
+    private val quoteRepo: QuotesRepository,
     private val foldersRepo: FoldersRepository
     ) : ViewModel() {
 
@@ -29,6 +29,7 @@ class NewQuoteViewModel(
                 val quoteId = quoteRepo.insert(quote)
                 foldersQuoteRepo.insert(folderId, quoteId)
                 foldersRepo.updateCount(folderId)
+                foldersRepo.updateCount(2L)
                 _isLoading.value = false
             }
         }
@@ -41,7 +42,7 @@ class NewQuoteViewModel(
 
 class NewQuoteViewModelFactory(
     private val repo: FolderQuoteRepository,
-    private val repo2: QuotesRespository,
+    private val repo2: QuotesRepository,
     private val repo3: FoldersRepository
     ) : ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

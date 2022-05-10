@@ -19,6 +19,15 @@ interface FolderDAO {
     @Query("UPDATE folder SET folderQty = (SELECT COUNT(*) FROM folderquotecrossref WHERE folderId = :id) WHERE folderId = :id")
     fun updateCount(id: Long)
 
+    @Query("UPDATE folder SET folderQty = (SELECT COUNT(*) FROM folderquotecrossref WHERE folderId = folder.folderId)")
+    fun updateAllCount()
+
+    @Query("UPDATE folder SET folderQty = (SELECT COUNT(*) FROM quote WHERE quote.isFavorite = 1) WHERE folderId = :id")
+    fun updateFavCount(id: Long)
+
+    @Query("UPDATE folder SET folderQty = (SELECT COUNT(*) FROM quote) WHERE folderId = :id")
+    fun updateUserCount(id: Long)
+
     @Query("UPDATE folder SET folderName = :newName WHERE folderId = :id")
     fun updateName(id: Long, newName: String)
 }

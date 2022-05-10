@@ -6,14 +6,13 @@ import androidx.fragment.app.Fragment
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
 import com.example.quoteit.R
 import com.example.quoteit.databinding.FragmentHomeBinding
 import com.example.quoteit.ui.QuoteItApp
 import com.example.quoteit.ui.utils.AdapterCallback
 import com.example.quoteit.ui.utils.BottomSheet
-import com.example.quoteit.ui.utils.DialogCallback
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -40,7 +39,7 @@ class HomeFragment : Fragment() {
         val toolbar = binding.homeToolbar
         toolbar.title = resources.getString(R.string.home_label)
         toolbar.inflateMenu(R.menu.home_menu)
-        val adapter = FolderAdapter(this, object: AdapterCallback{
+        val adapter = FolderAdapter(context, callback = object : AdapterCallback{
             override fun onItemSelected(id: Long) {
                 val bundle = bundleOf("folder" to id)
                 val action = R.id.action_homeFragment_to_quotesListFragment
@@ -53,7 +52,7 @@ class HomeFragment : Fragment() {
         binding.folderRecycler.adapter = adapter
         binding.folderRecycler.setHasFixedSize(false)
 
-        lifecycle.coroutineScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             model.getFolders().collect {
                 adapter.setData(it)
             }
@@ -74,10 +73,7 @@ class HomeFragment : Fragment() {
 
     private fun showDialog(){
         val bottomSheet = BottomSheet(resources.getString(R.string.dialog_folder_new))
-        bottomSheet.onActionCompleteListener(object : DialogCallback {
-            override fun onConfirm(str: String?) { model.insertFolder(str!!) }
-            override fun onCancel() {}
-        })
+        bottomSheet.setOnInputConfirmListener { model.insertFolder(it) }
         bottomSheet.show(parentFragmentManager, "new_folder_bottom_sheet")
     }
 

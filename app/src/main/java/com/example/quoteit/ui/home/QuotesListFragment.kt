@@ -8,11 +8,15 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.quoteit.R
 import com.example.quoteit.databinding.FragmentQuotesListBinding
 import com.example.quoteit.ui.QuoteItApp
 import com.example.quoteit.ui.utils.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class QuotesListFragment : Fragment(){
 
@@ -20,11 +24,15 @@ class QuotesListFragment : Fragment(){
         const val FOLDER = "folder"
     }
 
+    private enum class FolderType{
+        FAVORITES, PERSONAL, REGULAR
+    }
+
     private var _binding: FragmentQuotesListBinding? = null
     private val binding get() = _binding!!
 
     private var folderId: Long = 0L
-    private var isfavFolder: Boolean = false
+    private lateinit var folderType: FolderType
     private lateinit var placeholderView: TextView
 
     private var mToast: Toast? = null
@@ -39,7 +47,12 @@ class QuotesListFragment : Fragment(){
 
         // Retrieve the FOLDER ID from the Fragment arguments
         folderId = arguments?.getLong(FOLDER) ?: 0L
-        isfavFolder = (folderId == 1L)
+        folderType = when(folderId){
+            1L -> FolderType.FAVORITES
+            2L -> FolderType.PERSONAL
+            else -> FolderType.REGULAR
+        }
+
     }
 
     override fun onCreateView(
@@ -53,16 +66,18 @@ class QuotesListFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val toolbar = binding.quotesListToolbar
-        if(!isfavFolder) toolbar.inflateMenu(R.menu.folder_content_menu)
-        placeholderView = if(isfavFolder) binding.emptyFavsView else binding.emptyView
+
+        if(folderType == FolderType.REGULAR) toolbar.inflateMenu(R.menu.folder_content_menu)
+        placeholderView = if(folderType == FolderType.FAVORITES) binding.emptyFavsView else binding.emptyView
+
         val adapter = QuoteAdapter(object: AdapterCallback{
             override fun onItemSelected(id: Long) { /* TODO: Possible share screen? */ }
             override fun onDetailsClicked(view: View, id: Long) {
-                showPopUp(view, R.menu.quote_detail_menu)
+                showPopUp(view, R.menu.quote_detail_menu, id)
             }
             override fun onFavoriteClicked(id: Long, b: Boolean) {
-                val msg = if(b){ "Añadido a favoritos"
-                }else{ "Eliminado de favoritos" }
+                val msg = if(b) resources.getString(R.string.added_to_favorites)
+                else resources.getString(R.string.removed_from_favorites)
                 model.updateFavQuote(id, b)
                 mToast?.cancel()
                 mToast = Toast.makeText(requireActivity(), msg, Toast.LENGTH_SHORT)
@@ -77,26 +92,79 @@ class QuotesListFragment : Fragment(){
         binding.quotesRecycler.adapter = adapter
         binding.quotesRecycler.setHasFixedSize(false)
 
-        model.getQuotes(folderId).observe(viewLifecycleOwner) {
-            placeholderView.visibility = if (it.quotes.isEmpty()) View.VISIBLE else View.GONE
-            toolbar.title = it.parentFolder
-            adapter.setData(it.quotes)
+        when(folderType){
+            FolderType.REGULAR -> {
+                model.getFolderQuotes(folderId).observe(viewLifecycleOwner) {
+                    placeholderView.visibility = if (it.quotes.isEmpty()) View.VISIBLE else View.GONE
+                    toolbar.title = it.parentFolder
+                    adapter.setData(it.quotes)
+                }
+            }
+            FolderType.FAVORITES -> {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    model.getFavQuotes().collect {
+                        placeholderView.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+                        toolbar.title = resources.getString(R.string.fav_folder)
+                        adapter.setData(it)
+                    }
+                }
+            }
+            FolderType.PERSONAL -> {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    model.getQuotes().collect {
+                        placeholderView.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+                        toolbar.title = resources.getString(R.string.user_folder)
+                        adapter.setData(it)
+                    }
+                }
+            }
         }
     }
 
-    private fun showPopUp(view: View, menu: Int){
+    private fun showPopUp(view: View, menu: Int, itemId: Long){
         PopupMenu(requireContext(), view).apply {
-            setOnMenuItemClickListener { popUpMenuItem(it) }
+            setOnMenuItemClickListener { popUpMenuItem(it, itemId) }
             inflate(menu)
             show()
         }
     }
 
-    private fun popUpMenuItem(item: MenuItem): Boolean {
+    private fun popUpMenuItem(item: MenuItem, quoteId: Long): Boolean {
         return when(item.itemId){
-            R.id.delete_quote -> { true }
-            R.id.add_quote_to_folder -> { true }
-            R.id.share_quote -> { true }
+            R.id.delete_quote -> {
+                if(folderType == FolderType.PERSONAL) {
+                    showAlert(resources.getString(R.string.confirm_quote_delete)) {
+                        mToast?.cancel()
+                        mToast = Toast.makeText(requireContext(), resources.getString(R.string.removed_from_folder), Toast.LENGTH_SHORT)
+                        mToast?.show()
+                        model.deleteQuoteFromFolder(quoteId, folderId)
+                    }
+                }else{
+                    model.deleteQuoteFromFolder(quoteId, folderId)
+                }
+                true
+            }
+            R.id.add_quote_to_folder -> {
+                val bottom = BottomSheetList(resources.getString(R.string.add_quote_to_folder))
+                val adapter = FolderAdapter(requireContext(), 1, object:AdapterCallback{
+                    override fun onItemSelected(id: Long) {
+                        mToast?.cancel()
+                        mToast = Toast.makeText(requireContext(), resources.getString(R.string.added_to_folder), Toast.LENGTH_SHORT)
+                        mToast?.show()
+                        model.addQuoteToFolder(quoteId, id)
+                        bottom.dismiss()
+                    }
+                })
+                lifecycle.coroutineScope.launch {
+                    model.getFolders().collect {
+                        adapter.setData(it.drop(2))
+                    }
+                }
+                bottom.setList(adapter)
+                bottom.show(parentFragmentManager, "add_quote_to_folder_dialog")
+                true
+            }
+            R.id.share_quote -> { /* TODO: navigate to share screen */ true }
             else -> false
         }
     }
@@ -114,7 +182,10 @@ class QuotesListFragment : Fragment(){
                 true
             }
             R.id.delete_folder -> {
-                showAlert()
+                showAlert(resources.getString(R.string.confirm_folder_delete)) {
+                    findNavController().popBackStack()
+                    model.deleteFolder(folderId)
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -123,20 +194,13 @@ class QuotesListFragment : Fragment(){
 
     private fun showBottomDialog(){
         val bottomSheet = BottomSheet(resources.getString(R.string.dialog_folder_modify))
-        bottomSheet.onActionCompleteListener(object : DialogCallback {
-            override fun onConfirm(str: String?) { model.modifyFolder(folderId, str!!) }
-        })
+        bottomSheet.setOnInputConfirmListener { newName -> model.modifyFolder(folderId, newName) }
         bottomSheet.show(parentFragmentManager, "new_folder_bottom_sheet")
     }
 
-    private fun showAlert(){
-        val dialog = ConfirmDialog(resources.getString(R.string.confirm_delete))
-        dialog.onActionCompleteListener(object : DialogCallback{
-            override fun onConfirm(str: String?) {
-                findNavController().popBackStack()
-                model.deleteFolder(folderId)
-            }
-        })
+    private fun showAlert(message: String, callback: () -> Unit){
+        val dialog = ConfirmDialog(message)
+        dialog.setOnConfirmListener(callback)
         dialog.show(parentFragmentManager, "confirm_delete_dialog")
     }
 
