@@ -30,6 +30,7 @@
             android:id="@+id/dialog_list"
             android:layout_width="match_parent"
             android:layout_height="300dp"
+            android:overScrollMode="never"
             tools:listitem="@layout/dialog_list_items"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 

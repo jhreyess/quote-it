@@ -14,6 +14,9 @@ interface QuoteDAO {
     @Query("SELECT * FROM quote WHERE isFavorite = 1")
     fun getAllFavQuotes(): Flow<List<DatabaseQuote>>
 
+    @Query("SELECT * FROM quote WHERE quoteId = :id")
+    fun getQuote(id: Long): DatabaseQuote
+
     @Insert
     suspend fun insertQuote(quote: DatabaseQuote): Long
 

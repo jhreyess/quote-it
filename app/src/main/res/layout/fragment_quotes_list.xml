@@ -56,7 +56,7 @@
         android:gravity="center"
         android:visibility="gone"
         android:layout_marginTop="128dp"
-        app:drawableBottomCompat="@drawable/ic_favorite_75"
+        app:drawableBottomCompat="@drawable/ic_star_75"
         android:drawablePadding="16dp"
         app:drawableTint="@color/gray"/>
 

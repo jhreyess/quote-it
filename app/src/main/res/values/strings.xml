@@ -38,6 +38,10 @@
     <string name="form_quote_author_placeholder">Autor (Ej. Einstein, Roosevelt, Anónimo)</string>
     <string name="form_quote_content_placeholder">Introduce la nueva frase</string>
 
+    <!-- IMAGE PREVIEW -->
+    <string name="image_preview">Vista previa</string>
+    <string name="confirm_cancel">¿Estás seguro que deseas salir? Los cambios se verán deshechos</string>
+
     <!-- COMMUNITY -->
     <string name="likes_count">A %1$d personas le gustaron esto</string>
 
@@ -62,14 +66,15 @@
     <string name="delete_quote">Eliminar frase</string>
     <string name="add_quote_to_folder">Añadir a otro grupo</string>
     <string name="share_quote">Compartir frase</string>
+    <string name="do_image">Hacer imagen</string>
     <string name="added_to_favorites">Añadido a favoritos</string>
     <string name="removed_from_favorites">Eliminado de favoritos</string>
     <string name="added_to_folder">Añadido exitosamente</string>
     <string name="removed_from_folder">Removido exitosamente</string>
+    <string name="select_image">Seleccionar una Imagen</string>
 
     <!-- WIDGETS -->
     <string name="widget_description">Descubre una frase nueva cada día</string>
     <string name="widget_qod_prompt">Frase del día</string>
     <string name="settings">Ajustes</string>
-
 </resources>

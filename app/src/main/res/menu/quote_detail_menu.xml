@@ -7,4 +7,6 @@
         android:title="@string/add_quote_to_folder" />
     <item android:id="@+id/share_quote"
         android:title="@string/share_quote" />
+    <item android:id="@+id/convert_quote"
+        android:title="@string/do_image" />
 </menu>

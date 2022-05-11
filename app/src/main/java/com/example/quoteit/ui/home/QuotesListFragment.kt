@@ -1,5 +1,6 @@
 package com.example.quoteit.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
@@ -13,10 +14,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.quoteit.R
 import com.example.quoteit.databinding.FragmentQuotesListBinding
+import com.example.quoteit.ui.EditImageActivity
 import com.example.quoteit.ui.QuoteItApp
 import com.example.quoteit.ui.utils.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+
 
 class QuotesListFragment : Fragment(){
 
@@ -52,7 +55,6 @@ class QuotesListFragment : Fragment(){
             2L -> FolderType.PERSONAL
             else -> FolderType.REGULAR
         }
-
     }
 
     override fun onCreateView(
@@ -165,6 +167,10 @@ class QuotesListFragment : Fragment(){
                 true
             }
             R.id.share_quote -> { /* TODO: navigate to share screen */ true }
+            R.id.convert_quote -> {
+                pickImage(quoteId)
+                true
+            }
             else -> false
         }
     }
@@ -202,6 +208,13 @@ class QuotesListFragment : Fragment(){
         val dialog = ConfirmDialog(message)
         dialog.setOnConfirmListener(callback)
         dialog.show(parentFragmentManager, "confirm_delete_dialog")
+    }
+
+    private fun pickImage(id: Long){
+        val intent = Intent(requireActivity(), EditImageActivity::class.java)
+        intent.putExtra("quote", id)
+        startActivity(intent)
+        activity?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     override fun onDestroyView() {

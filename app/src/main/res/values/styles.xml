@@ -37,6 +37,7 @@
         <item name="android:paddingTop">28dp</item>
         <item name="android:paddingBottom">18dp</item>
         <item name="layout_scrollFlags">scroll</item>
+        <item name="titleTextColor">@color/white</item>
     </style>
 
     <!-- Outlined TextInput Layout -->
@@ -69,6 +70,11 @@
 
     <style name="LikeIcon" parent="Theme.QuoteIt">
         <item name="colorSecondary">@color/pink</item>
+        <item name="android:textColorSecondary">@color/light_gray</item>
+    </style>
+
+    <style name="FavIcon" parent="Theme.QuoteIt">
+        <item name="colorSecondary">@color/mustard</item>
         <item name="android:textColorSecondary">@color/light_gray</item>
     </style>
 

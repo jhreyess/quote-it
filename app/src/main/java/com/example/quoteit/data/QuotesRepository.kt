@@ -31,6 +31,13 @@ class QuotesRepository(
         }
     }
 
+    suspend fun get(id: Long): Quote {
+        val data = withContext(ioDispatcher){
+            quoteDao.getQuote(id).asQuoteDomainModel()
+        }
+        return data
+    }
+
     suspend fun delete(id: Long){
         withContext(ioDispatcher){
             quoteDao.deleteQuote(id)

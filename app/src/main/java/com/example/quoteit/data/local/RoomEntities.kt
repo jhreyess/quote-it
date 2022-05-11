@@ -44,6 +44,10 @@ fun List<DatabaseQuote>.asQuoteDomainModel(): List<Quote> {
     return map { Quote(it.quoteId, it.author, it.content, it.isFavorite) }
 }
 
+fun DatabaseQuote.asQuoteDomainModel(): Quote {
+    return Quote(quoteId, author, content, isFavorite)
+}
+
 fun FolderWithQuotes.asFolderWQuotesDomainModel(): FolderWQuotes {
     val copyQuotes = quotes.map { Quote(it.quoteId, it.author, it.content, it.isFavorite) }
     return FolderWQuotes(folder.folderName, copyQuotes)

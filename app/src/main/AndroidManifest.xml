@@ -3,6 +3,8 @@
     package="com.example.quoteit">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
 
     <application
         android:name=".ui.QuoteItApp"
@@ -12,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.QuoteIt">
-
+        <activity
+            android:name=".ui.EditImageActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.MainActivity"
             android:exported="false" />
