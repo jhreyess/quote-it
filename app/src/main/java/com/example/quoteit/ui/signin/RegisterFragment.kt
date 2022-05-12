@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.quoteit.R
 import com.example.quoteit.data.PreferencesDataStore
+import com.example.quoteit.data.dataStore
 import com.example.quoteit.databinding.FragmentRegisterBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,7 +39,7 @@ class RegisterFragment : Fragment(), RegisterContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userPreferences = PreferencesDataStore(requireContext())
+        userPreferences = PreferencesDataStore(requireContext().dataStore)
         // Bindings
         binding.loginLink.setOnClickListener { goToLogin() }
         binding.registerButton.setOnClickListener {
@@ -65,7 +66,10 @@ class RegisterFragment : Fragment(), RegisterContract.View {
     override fun showWrongCredentialsError(error: String?) { binding.errorView.text = error ?: "" }
     override fun launchApp() {
         CoroutineScope(Dispatchers.IO).launch {
+            val email = binding.userEmail.text.toString()
+            val password = binding.userPassword.text.toString()
             userPreferences.saveLogInPreference(true, requireContext())
+            userPreferences.saveLogInCredentials(email, password, requireContext())
         }
     }
 

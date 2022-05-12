@@ -2,7 +2,6 @@ package com.example.quoteit.ui.signin
 
 import android.content.Context
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.quoteit.R
 import com.example.quoteit.data.PreferencesDataStore
+import com.example.quoteit.data.dataStore
 import com.example.quoteit.databinding.FragmentSignInBinding
 import kotlinx.coroutines.*
 
@@ -36,7 +36,7 @@ class SignInFragment : Fragment(), SignInContract.View {
 
    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
       super.onViewCreated(view, savedInstanceState)
-      userPreferences = PreferencesDataStore(requireContext())
+      userPreferences = PreferencesDataStore(requireContext().dataStore)
 
       // Bindings
       binding.registerLink.setOnClickListener { goToRegister() }
@@ -64,7 +64,10 @@ class SignInFragment : Fragment(), SignInContract.View {
    }
    override fun launchApp() {
       CoroutineScope(Dispatchers.IO).launch {
+         val email = binding.userEmail.text.toString()
+         val password = binding.userPassword.text.toString()
          userPreferences.saveLogInPreference(true, requireContext())
+         userPreferences.saveLogInCredentials(email, password, requireContext())
       }
    }
 

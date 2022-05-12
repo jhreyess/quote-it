@@ -1,14 +1,9 @@
 package com.example.quoteit.ui.edit
 
-import android.content.ContentValues
 import android.content.Intent
 import android.graphics.*
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
-import android.provider.MediaStore.Images
 import android.util.TypedValue
 import android.view.*
 import androidx.core.content.ContextCompat
@@ -18,10 +13,8 @@ import androidx.fragment.app.activityViewModels
 import com.example.quoteit.R
 import com.example.quoteit.databinding.FragmentImagePreviewBinding
 import com.example.quoteit.ui.MainActivity
-import com.example.quoteit.ui.QuoteItApp
 import com.example.quoteit.ui.utils.ConfirmDialog
 import com.google.android.material.slider.Slider
-import java.io.OutputStream
 
 class ImagePreviewFragment : Fragment() {
 
@@ -39,7 +32,7 @@ class ImagePreviewFragment : Fragment() {
     private var isTextWhite: Boolean = true
 
     private val model: ImageEditViewModel by activityViewModels {
-        ImageEditViewModelFactory((requireActivity().application as QuoteItApp).quotesRepository)
+        ImageEditViewModelFactory(requireActivity().application)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -155,56 +148,20 @@ class ImagePreviewFragment : Fragment() {
     }
 
     private fun saveImage() {
-        val bmp = createAndMergeBitmap()
-        val filename = "IMG_${System.currentTimeMillis()}.jpg"
-        createFile(bmp, filename)
+        val bmp = createAndMergeBitmap(binding.imagePreview, binding.imageText)
+        model.saveImage(bmp)
     }
 
-    private fun createFile(bmp: Bitmap, filename: String){
-
-        var imageUri: Uri?
-        var out: OutputStream?
-
-        val contentResolver = requireActivity().applicationContext.contentResolver
-
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
-            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                put(MediaStore.MediaColumns.DATE_TAKEN, System.currentTimeMillis())
-                put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
-                put(MediaStore.MediaColumns.IS_PENDING, 1)
-            }else{
-                put(Images.Media.DATE_TAKEN, System.currentTimeMillis())
-            }
-        }
-
-        contentResolver.also { resolver ->
-            imageUri = resolver.insert(Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-            out = imageUri?.let { resolver.openOutputStream(it) }
-        }
-
-        out?.use {
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, it )
-            it.close()
-        }
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            contentValues.clear()
-            contentValues.put(MediaStore.MediaColumns.IS_PENDING, 0)
-        }
-        imageUri?.let { contentResolver.update(it, contentValues, null, null) }
-    }
-
-    private fun createAndMergeBitmap(): Bitmap{
-        val background = getBitmapFromView(binding.imagePreview)
-        val foreground = getBitmapFromView(binding.imageText)
-        val bmp = Bitmap.createBitmap(background.width, background.height, background.config)
+    private fun createAndMergeBitmap(background: View, foreground: View): Bitmap{
+        val backgroundBitmap = getBitmapFromView(background)
+        val foregroundBitmap = getBitmapFromView(foreground)
+        val bmp = Bitmap.createBitmap(background.width, backgroundBitmap.height, backgroundBitmap.config)
         val canvas = Canvas(bmp)
         val heightBack = background.height
         val heightFront = foreground.height
         val move = ((heightBack - heightFront) / 2).toFloat()
-        canvas.drawBitmap(background, 0f, 0f, null)
-        canvas.drawBitmap(foreground, 0f, move, null)
+        canvas.drawBitmap(backgroundBitmap, 0f, 0f, null)
+        canvas.drawBitmap(foregroundBitmap, 0f, move, null)
         return bmp
     }
 
@@ -214,7 +171,6 @@ class ImagePreviewFragment : Fragment() {
         view.draw(canvas)
         return bitmap
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

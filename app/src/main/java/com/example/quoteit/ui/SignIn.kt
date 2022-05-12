@@ -1,6 +1,5 @@
 package com.example.quoteit.ui
 
-import android.app.ActivityOptions
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,8 +7,14 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.asLiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.work.*
 import com.example.quoteit.R
 import com.example.quoteit.data.PreferencesDataStore
+import com.example.quoteit.data.dataStore
+import com.example.quoteit.workers.SyncDataWorker
+import java.util.concurrent.TimeUnit
+
+private const val SYNC_DATA_WORKER = "quote-it-sync-worker"
 
 class SignIn : AppCompatActivity() {
 
@@ -22,15 +27,39 @@ class SignIn : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
-        val prefs = PreferencesDataStore(this)
-        prefs.preferenceFlow.asLiveData().observe(this) { value ->
-            if (value) {
+        val constraint = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .setRequiresBatteryNotLow(true)
+            .build()
+
+        val prefs = PreferencesDataStore(baseContext.dataStore)
+        prefs.preferenceFlow.asLiveData().observe(this) { pref ->
+            if (pref.isUserLoggedIn) {
                 val intent = Intent(this, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
                 overridePendingTransition(0, android.R.anim.fade_out)
+
+                val data = workDataOf("email" to pref.userEmail, "pass" to pref.userPassword)
+
+                val syncWorkRequest = PeriodicWorkRequest.Builder(
+                    SyncDataWorker::class.java,
+                    1, TimeUnit.DAYS)
+                    .setConstraints(constraint)
+                    .setInputData(data)
+                    .addTag(SYNC_DATA_WORKER)
+                    .build()
+
+                WorkManager.getInstance(applicationContext)
+                    .enqueueUniquePeriodicWork(
+                        SYNC_DATA_WORKER,
+                        ExistingPeriodicWorkPolicy.KEEP,
+                        syncWorkRequest)
+
             }else{
                 isLoading = false
+                WorkManager.getInstance(applicationContext)
+                    .cancelAllWorkByTag(SYNC_DATA_WORKER)
             }
         }
 

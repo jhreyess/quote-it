@@ -13,9 +13,13 @@ private const val USER_LOGIN_PREFS = "login_prefs"
 
 val Context.dataStore : DataStore<Preferences> by preferencesDataStore(name = USER_LOGIN_PREFS)
 
-class PreferencesDataStore(context: Context) {
+class PreferencesDataStore(dataStore: DataStore<Preferences>) {
+
     private val isUserLoggedIn = booleanPreferencesKey("is_user_logged_in")
-    val preferenceFlow: Flow<Boolean> = context.dataStore.data
+    private val userLoginEmail = stringPreferencesKey("user_login_email")
+    private val userLoginPassword = stringPreferencesKey("user_login_password")
+
+    val preferenceFlow: Flow<UserPreferences> = dataStore.data
         .catch {
             if (it is IOException) {
                 emit(emptyPreferences())
@@ -23,13 +27,33 @@ class PreferencesDataStore(context: Context) {
                 throw it
             }
         }
-        .map { preferences ->
-            preferences[isUserLoggedIn] ?: false
+        .map {
+            mapUserPreferences(it)
         }
+
+    private fun mapUserPreferences(preferences: Preferences): UserPreferences{
+        val loginPref = preferences[isUserLoggedIn] ?: false
+        val emailPref = preferences[userLoginEmail] ?: ""
+        val passwordPref = preferences[userLoginPassword] ?: ""
+        return UserPreferences(loginPref, emailPref, passwordPref)
+    }
 
     suspend fun saveLogInPreference(isLoggedIn: Boolean, context: Context) {
         context.dataStore.edit { preferences ->
             preferences[isUserLoggedIn] = isLoggedIn
         }
     }
+
+    suspend fun saveLogInCredentials(email: String, password: String, context: Context){
+        context.dataStore.edit { preferences ->
+            preferences[userLoginEmail] = email
+            preferences[userLoginPassword] = password
+        }
+    }
 }
+
+data class UserPreferences(
+    val isUserLoggedIn: Boolean = false,
+    val userEmail: String = "",
+    val userPassword: String = "",
+)

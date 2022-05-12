@@ -16,7 +16,7 @@ class EditImageActivity : AppCompatActivity() {
     private lateinit var navController: NavController
 
     private val model: ImageEditViewModel by viewModels {
-        ImageEditViewModelFactory((application as QuoteItApp).quotesRepository)
+        ImageEditViewModelFactory(application)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

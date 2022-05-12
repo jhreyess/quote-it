@@ -62,8 +62,8 @@ class HomeViewModel(
                 foldersRepo.updateAllCount()
             }else{
                 foldersQuoteRepo.delete(folderId, quoteId)
-                foldersRepo.updateCount(folderId)
             }
+            foldersRepo.updateCount(folderId)
         }
     }
 

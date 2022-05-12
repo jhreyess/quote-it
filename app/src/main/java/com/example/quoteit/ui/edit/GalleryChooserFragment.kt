@@ -30,7 +30,7 @@ class GalleryChooserFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val model by activityViewModels<ImageEditViewModel>{
-        ImageEditViewModelFactory((requireActivity().application as QuoteItApp).quotesRepository)
+        ImageEditViewModelFactory(requireActivity().application)
     }
 
     override fun onCreateView(
