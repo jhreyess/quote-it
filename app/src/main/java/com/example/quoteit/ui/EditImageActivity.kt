@@ -7,7 +7,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.quoteit.R
 import com.example.quoteit.ui.edit.ImageEditViewModel
-import com.example.quoteit.ui.edit.ImageEditViewModelFactory
 
 private const val QUOTE_ID = "quote"
 
@@ -15,9 +14,7 @@ class EditImageActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
 
-    private val model: ImageEditViewModel by viewModels {
-        ImageEditViewModelFactory(application)
-    }
+    private val model: ImageEditViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

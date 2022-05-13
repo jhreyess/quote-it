@@ -14,7 +14,6 @@ import java.lang.Exception
 
 class QuoteViewModel : ViewModel() {
 
-
     private val quote: MutableLiveData<QuoteApi> by lazy {
         MutableLiveData<QuoteApi>().also { fetchQuote() }
     }
@@ -30,7 +29,7 @@ class QuoteViewModel : ViewModel() {
                 }
                 setQuote(data)
             }catch (e: Exception){
-
+                e.printStackTrace()
             }
         }
     }

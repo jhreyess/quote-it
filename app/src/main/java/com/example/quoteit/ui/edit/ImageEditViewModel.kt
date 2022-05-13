@@ -7,23 +7,21 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
-import androidx.work.WorkManager
 import com.example.quoteit.domain.models.Quote
 import com.example.quoteit.ui.QuoteItApp
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 
-class ImageEditViewModel(
-    private val application: Application
-    ) : ViewModel() {
+private const val FOLDER_NAME = "/QuoteIt"
 
-    private val quoteRepo = (application as QuoteItApp).quotesRepository
+class ImageEditViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val quoteRepo = getApplication<QuoteItApp>().quotesRepository
 
     private val _quote = MutableLiveData<Quote>()
     val quote: LiveData<Quote> get() = _quote
@@ -33,6 +31,9 @@ class ImageEditViewModel(
 
     private val _selectedImage = MutableLiveData<String>()
     val selectedImage get() = _selectedImage
+
+    private val _imageSaved = MutableLiveData<Boolean>()
+    val imageSaved get() = _imageSaved
 
     fun getQuote(id: Long) {
         viewModelScope.launch {
@@ -45,62 +46,64 @@ class ImageEditViewModel(
 
     internal fun saveImage(bmp: Bitmap){
         viewModelScope.launch {
-            withContext(Dispatchers.IO){
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    saveInGallery(bmp)
-                }else{
-                    saveInGalleryAsLegacy(bmp)
-                }
+            _imageSaved.value = false
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                saveInGallery(bmp)
+            }else{
+                saveInGalleryAsLegacy(bmp)
             }
+            _imageSaved.value = true
         }
     }
 
     private fun saveInGalleryAsLegacy(bmp: Bitmap){
         val filename = "IMG_${System.currentTimeMillis()}.jpg"
-        val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-        val file = File(dir, filename)
+        val dir = Environment.DIRECTORY_PICTURES + FOLDER_NAME
+        val path = Environment.getExternalStoragePublicDirectory(dir)
+        val file = File(path, filename)
+        file.parentFile?.let { if(!it.exists()) it.mkdir() }
+        Log.d("Debug", file.toString())
         val out = FileOutputStream(file)
-        out.use { bmp.compress(Bitmap.CompressFormat.JPEG, 100, it)}
+        out.use {
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, it)
+            it.close()
+        }
+        Log.d("File", file.path)
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun saveInGallery(bmp: Bitmap): Uri?{
-        val contentResolver = application.applicationContext.contentResolver
+        val contentResolver = getApplication<QuoteItApp>().contentResolver
         val filename = "IMG_${System.currentTimeMillis()}.jpg"
-        var fos: OutputStream?
+        val dir = Environment.DIRECTORY_PICTURES + FOLDER_NAME
+        val path = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        val folder = File(path.path, dir).also { if(!it.exists()) it.mkdir() }
+        Log.d("Debug", folder.absolutePath)
+        var out: OutputStream?
         var imageUri: Uri?
 
         // File metadata
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
             put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
-            put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+            put(MediaStore.MediaColumns.RELATIVE_PATH, dir)
             put(MediaStore.Video.Media.IS_PENDING, 1)
         }
 
         contentResolver.also { resolver ->
             imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-            fos = imageUri?.let { resolver.openOutputStream(it) }
+            out = imageUri?.let { resolver.openOutputStream(it) }
         }
 
-        fos?.use { bmp.compress(Bitmap.CompressFormat.JPEG, 70, it) }
+        out?.use {
+            bmp.compress(Bitmap.CompressFormat.JPEG, 70, it)
+            it.close()
+        }
 
         contentValues.clear()
         contentValues.put(MediaStore.Video.Media.IS_PENDING, 0)
         imageUri?.let { contentResolver.update(it, contentValues, null, null) }
-
+        Log.d("File", imageUri!!.path!!)
         return imageUri
-    }
-}
-
-class ImageEditViewModelFactory(
-    private val app: Application,
-    ) : ViewModelProvider.Factory{
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ImageEditViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return ImageEditViewModel(app) as T
-        }
-        throw IllegalArgumentException("Unable to construct viewmodel")
     }
 }

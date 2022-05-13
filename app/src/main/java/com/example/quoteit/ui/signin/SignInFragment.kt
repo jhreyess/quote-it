@@ -39,6 +39,7 @@ class SignInFragment : Fragment(), SignInContract.View {
       userPreferences = PreferencesDataStore(requireContext().dataStore)
 
       // Bindings
+      binding.loadingScreen.setOnClickListener { /* This will prevent clicks from behind views */ }
       binding.registerLink.setOnClickListener { goToRegister() }
       binding.loginButton.setOnClickListener {
          hideSoftKeyboard(view)

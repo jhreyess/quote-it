@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.*
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
@@ -31,9 +32,7 @@ class ImagePreviewFragment : Fragment() {
 
     private var isTextWhite: Boolean = true
 
-    private val model: ImageEditViewModel by activityViewModels {
-        ImageEditViewModelFactory(requireActivity().application)
-    }
+    private val model: ImageEditViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,6 +83,16 @@ class ImagePreviewFragment : Fragment() {
                 .appendLine()
                 .append("- "+it.author)
             binding.imageText.text = text
+        }
+        model.imageSaved.observe(viewLifecycleOwner) { saved ->
+            if(saved) {
+                Toast.makeText(
+                    activity?.applicationContext,
+                    resources.getString(R.string.image_saved),
+                    Toast.LENGTH_SHORT
+                ).show()
+                activity?.finish()
+            }
         }
     }
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,4 +15,33 @@
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="4"/>
 
-</LinearLayout>
+    <LinearLayout android:id="@+id/permission_denied_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:text="@string/prompt_permissions"
+            android:textColor="@color/gray"
+            android:gravity="center"
+            android:drawablePadding="16dp"
+            app:drawableTint="@color/gray"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/grant_permission_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="32dp"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:text="@string/activate"/>
+
+    </LinearLayout>
+
+
+</FrameLayout>

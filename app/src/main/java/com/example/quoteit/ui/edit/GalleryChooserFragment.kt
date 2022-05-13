@@ -4,10 +4,11 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,18 +21,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.quoteit.R
 import com.example.quoteit.databinding.FragmentGalleryBinding
-import com.example.quoteit.ui.QuoteItApp
 import com.example.quoteit.ui.utils.LocalImages
-import com.google.android.material.snackbar.Snackbar
 
 class GalleryChooserFragment : Fragment() {
 
     private var _binding: FragmentGalleryBinding? = null
     private val binding get() = _binding!!
 
-    private val model by activityViewModels<ImageEditViewModel>{
-        ImageEditViewModelFactory(requireActivity().application)
-    }
+    private val model: ImageEditViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,13 +39,14 @@ class GalleryChooserFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) requestPermission()
-        else binding()
+    override fun onStart() {
+        super.onStart()
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) { requestPermission() }
+        else { binding() }
     }
 
     private fun binding(){
+        binding.permissionDeniedView.visibility = View.GONE
         val data = LocalImages.getImages()
         val recycler = binding.galleryRecycler
         val adapter = GalleryAdapter(data, requireContext())
@@ -78,11 +76,14 @@ class GalleryChooserFragment : Fragment() {
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ){ isGranted ->
-            if (isGranted) {
-                Log.i("DEBUG", "====== Granted ======")
-                binding()
-            } else {
-                Log.i("DEBUG", "====== Denied ======")
+            if (isGranted) binding()
+            else {
+                binding.grantPermissionBtn.setOnClickListener {
+                    val intent = Intent()
+                    intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                    intent.data = Uri.fromParts("package", activity?.packageName, null)
+                    startActivity(intent)
+                }
             }
         }
 
@@ -101,9 +102,10 @@ class GalleryChooserFragment : Fragment() {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             ) -> {
                 // Permission was denied before
-                Snackbar.make(requireView(), "Permission required", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("ok") { requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE) }
-                    .show()
+                binding.permissionDeniedView.visibility = View.VISIBLE
+                binding.grantPermissionBtn.setOnClickListener {
+                    requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                }
             }
 
             else -> {

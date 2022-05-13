@@ -39,12 +39,10 @@ class SyncDataWorker(ctx: Context,params: WorkerParameters) : CoroutineWorker(ct
                 }
                 else -> {
                     makeNotification("Failed to login", applicationContext)
-                    logout()
                     Result.failure()
                 }
             }
         }catch (e: Exception){
-            logout()
             Result.failure()
         }
     }

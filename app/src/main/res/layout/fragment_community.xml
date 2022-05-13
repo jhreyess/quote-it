@@ -8,25 +8,113 @@
     tools:context=".ui.community.CommunityFragment"
     android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/community_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/darker_gray"
-        app:elevation="0dp">
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/community_toolbar"
+        style="@style/Toolbar"
+        tools:title="@string/community_label"
+        tools:titleTextColor="@color/white" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Toolbar"
-            tools:title="@string/community_label"
-            tools:titleTextColor="@color/white" />
-    </com.google.android.material.appbar.AppBarLayout>
+            android:background="@color/darker_gray"
+            app:elevation="0dp">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/postsRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/posts_list_items" />
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="24dp"
+                    android:background="@color/black_modal">
+
+                    <TextView
+                        android:text="@string/new_post_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_marginBottom="16dp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/post_content_author"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/OutlinedTextInputLayout"
+                        app:placeholderText="@string/form_quote_author_placeholder">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:backgroundTint="@color/gray"
+                            android:autofillHints="name"
+                            android:inputType="text|textPersonName"
+                            android:maxLines="1"
+                            android:textColor="@color/white"
+                            android:maxLength="25"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/post_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        app:placeholderText="@string/form_quote_content_placeholder"
+                        style="@style/OutlinedTextInputLayout">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:backgroundTint="@color/gray"
+                            android:textColor="@color/white"
+                            android:importantForAutofill="no"
+                            android:lines="7"
+                            android:maxLines="7"
+                            android:inputType="textMultiLine"
+                            android:maxLength="250"
+                            android:gravity="start" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/post_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="32dp"
+                        android:enabled="false"
+                        style="@style/MaterialButton"
+                        android:text="@string/prompt_post"
+                        android:textAllCaps="false" />
+
+
+                </LinearLayout>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/postsRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/posts_list_items" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </LinearLayout>

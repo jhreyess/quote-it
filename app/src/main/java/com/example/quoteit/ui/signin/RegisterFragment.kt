@@ -41,6 +41,7 @@ class RegisterFragment : Fragment(), RegisterContract.View {
         super.onViewCreated(view, savedInstanceState)
         userPreferences = PreferencesDataStore(requireContext().dataStore)
         // Bindings
+        binding.loadingScreen.setOnClickListener { /* This will prevent clicks from behind views */ }
         binding.loginLink.setOnClickListener { goToLogin() }
         binding.registerButton.setOnClickListener {
             hideSoftKeyboard(view)
@@ -60,7 +61,7 @@ class RegisterFragment : Fragment(), RegisterContract.View {
     override fun showLoadingScreen() { binding.loadingScreen.visibility = View.VISIBLE }
     override fun hideLoadingScreen() { binding.loadingScreen.visibility = View.GONE }
     override fun showExceptionError(exception: Exception) {
-        Toast.makeText(requireActivity(),
+        Toast.makeText(activity?.applicationContext,
             exception.message, Toast.LENGTH_LONG).show()
     }
     override fun showWrongCredentialsError(error: String?) { binding.errorView.text = error ?: "" }

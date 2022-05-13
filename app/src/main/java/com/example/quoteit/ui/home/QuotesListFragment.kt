@@ -151,7 +151,7 @@ class QuotesListFragment : Fragment(){
                 val adapter = FolderAdapter(requireContext(), 1, object:AdapterCallback{
                     override fun onItemSelected(id: Long) {
                         mToast?.cancel()
-                        mToast = Toast.makeText(requireContext(), resources.getString(R.string.added_to_folder), Toast.LENGTH_SHORT)
+                        mToast = Toast.makeText(requireActivity(), resources.getString(R.string.added_to_folder), Toast.LENGTH_SHORT)
                         mToast?.show()
                         model.addQuoteToFolder(quoteId, id)
                         bottom.dismiss()

@@ -6,12 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.coroutineScope
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.quoteit.databinding.FragmentNewQuoteBinding
 import com.example.quoteit.ui.QuoteItApp
-import kotlinx.coroutines.launch
 
 class NewQuoteFragment : Fragment() {
 
