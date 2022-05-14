@@ -7,7 +7,7 @@ import androidx.room.*
 interface FolderQuoteDAO {
 
     @Transaction
-    @Query("SELECT * FROM folder WHERE folderId = :id")
+    @Query("SELECT * FROM folders WHERE folderId = :id")
     fun getFolderWithQuotes(id: Long): LiveData<FolderWithQuotes>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

@@ -4,15 +4,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.quoteit.R
-import com.example.quoteit.data.TestingDatasource
+import com.example.quoteit.domain.models.Folder
+import com.example.quoteit.domain.models.Post
 
 class PostAdapter(
     private val context: CommunityFragment?,
 ): RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
-    private val posts = TestingDatasource.posts
+    private var posts: List<Post> = listOf()
 
     class PostViewHolder(val view: View?): RecyclerView.ViewHolder(view!!) {
         // Declare and initialize all of the list item UI components
@@ -41,5 +43,30 @@ class PostAdapter(
         holder.quote.text = post.quote
         holder.author.text = post.author
         holder.likes.text = resources?.getString(R.string.likes_count, post.likes)
+    }
+
+    fun setData(newData: List<Post>){
+        val result = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+            override fun getOldListSize() = posts.size
+            override fun getNewListSize() = newData.size
+
+            override fun areContentsTheSame(
+                oldItemPosition: Int,
+                newItemPosition: Int
+            ): Boolean {
+                val oldItem = posts[oldItemPosition]
+                val newItem = newData[newItemPosition]
+                return oldItem.id == newItem.id
+                        && oldItem.user == newItem.user
+            }
+
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                val oldItem = posts[oldItemPosition]
+                val newItem = newData[newItemPosition]
+                return oldItem.id == newItem.id
+            }
+        })
+        posts = newData
+        result.dispatchUpdatesTo(this)
     }
 }

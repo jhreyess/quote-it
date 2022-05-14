@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.quoteit.data.FolderQuoteRepository
 import com.example.quoteit.data.FoldersRepository
 import com.example.quoteit.data.QuotesRepository
-import com.example.quoteit.data.local.DatabaseFolder
+import com.example.quoteit.data.local.FolderEntity
 import com.example.quoteit.domain.models.Folder
 import com.example.quoteit.domain.models.FolderWQuotes
 import com.example.quoteit.domain.models.Quote
@@ -26,7 +26,7 @@ class HomeViewModel(
 
     fun insertFolder(name: String) {
         viewModelScope.launch {
-            foldersRepo.insert(DatabaseFolder(folderName = name))
+            foldersRepo.insert(FolderEntity(folderName = name))
         }
     }
 

@@ -2,7 +2,6 @@ package com.example.quoteit.ui.signin
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -65,12 +64,13 @@ class RegisterFragment : Fragment(), RegisterContract.View {
             exception.message, Toast.LENGTH_LONG).show()
     }
     override fun showWrongCredentialsError(error: String?) { binding.errorView.text = error ?: "" }
-    override fun launchApp() {
+    override fun launchApp(token: String?) {
         CoroutineScope(Dispatchers.IO).launch {
             val email = binding.userEmail.text.toString()
             val password = binding.userPassword.text.toString()
             userPreferences.saveLogInPreference(true, requireContext())
             userPreferences.saveLogInCredentials(email, password, requireContext())
+            token?.let { userPreferences.saveToken(it ,requireContext()) }
         }
     }
 

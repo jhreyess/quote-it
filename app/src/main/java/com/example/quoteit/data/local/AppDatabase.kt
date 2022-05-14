@@ -10,8 +10,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Database(entities = [
-    DatabaseFolder::class,
-    DatabaseQuote::class,
+    FolderEntity::class,
+    QuoteEntity::class,
+    PostEntity::class,
     FolderQuoteCrossRef::class],
     version = 1, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
@@ -19,6 +20,7 @@ abstract class AppDatabase: RoomDatabase() {
     abstract fun folderDao(): FolderDAO
     abstract fun quoteDao(): QuoteDAO
     abstract fun folderQuoteDao(): FolderQuoteDAO
+    abstract fun postDao(): PostDao
 
     companion object {
         @Volatile
@@ -54,8 +56,8 @@ abstract class AppDatabase: RoomDatabase() {
         }
 
         fun populateDatabase(folderDao: FolderDAO) {
-            val favFolder = DatabaseFolder(0, "Mis favoritos", 0)
-            val userFolder = DatabaseFolder(0, "Hechas por mi", 0)
+            val favFolder = FolderEntity(0, "Mis favoritos", 0)
+            val userFolder = FolderEntity(0, "Hechas por mi", 0)
             folderDao.insertFolder(favFolder)
             folderDao.insertFolder(userFolder)
         }

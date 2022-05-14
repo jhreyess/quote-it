@@ -1,32 +1,30 @@
 package com.example.quoteit.data.local
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.quoteit.domain.models.Quote
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface QuoteDAO {
 
-    @Query("SELECT * FROM quote")
-    fun getAllQuotes(): Flow<List<DatabaseQuote>>
+    @Query("SELECT * FROM quotes")
+    fun getAllQuotes(): Flow<List<QuoteEntity>>
 
-    @Query("SELECT * FROM quote WHERE isFavorite = 1")
-    fun getAllFavQuotes(): Flow<List<DatabaseQuote>>
+    @Query("SELECT * FROM quotes WHERE isFavorite = 1")
+    fun getAllFavQuotes(): Flow<List<QuoteEntity>>
 
-    @Query("SELECT * FROM quote WHERE quoteId = :id")
-    fun getQuote(id: Long): DatabaseQuote
-
-    @Insert
-    suspend fun insertQuote(quote: DatabaseQuote): Long
+    @Query("SELECT * FROM quotes WHERE quoteId = :id")
+    fun getQuote(id: Long): QuoteEntity
 
     @Insert
-    suspend fun insertAll(quotes: List<DatabaseQuote>)
+    suspend fun insertQuote(quoteEntity: QuoteEntity): Long
 
-    @Query("UPDATE quote SET isFavorite = :b WHERE quoteId = :id")
+    @Insert
+    suspend fun insertAll(quoteEntities: List<QuoteEntity>)
+
+    @Query("UPDATE quotes SET isFavorite = :b WHERE quoteId = :id")
     suspend fun updateState(id: Long, b: Boolean)
 
-    @Query("DELETE FROM quote WHERE quoteId = :id")
+    @Query("DELETE FROM quotes WHERE quoteId = :id")
     suspend fun deleteQuote(id: Long)
 
 }

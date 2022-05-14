@@ -1,8 +1,6 @@
 package com.example.quoteit.ui.signin
 
 import android.app.Activity
-import com.example.quoteit.data.UsersRepository
-import com.example.quoteit.data.network.DatabaseApi
 import com.example.quoteit.data.network.LoginResponse
 import com.example.quoteit.data.network.Result
 import com.example.quoteit.ui.QuoteItApp
@@ -33,7 +31,7 @@ class SignInPresenter(
                     }
                     when (result) {
                         is Result.Success<LoginResponse> -> {
-                            if(result.data.success){ view?.launchApp()
+                            if(result.data.success){ view?.launchApp(result.data.token)
                             }else{ view?.showWrongCredentialsError(result.data.error) }
                         }
                         is Result.Error -> { view?.showExceptionError(result.exception) }

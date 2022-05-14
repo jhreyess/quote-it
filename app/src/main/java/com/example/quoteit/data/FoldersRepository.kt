@@ -17,9 +17,9 @@ class FoldersRepository(
             it.asFolderDomainModel()
         }
 
-    suspend fun insert(folder: DatabaseFolder){
+    suspend fun insert(folderEntity: FolderEntity){
         withContext(ioDispatcher){
-            folderDao.insertFolder(folder)
+            folderDao.insertFolder(folderEntity)
         }
     }
 

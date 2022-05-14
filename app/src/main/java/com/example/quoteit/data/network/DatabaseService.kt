@@ -1,5 +1,6 @@
 package com.example.quoteit.data.network
 
+import com.example.quoteit.domain.models.NewPost
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
@@ -28,8 +29,19 @@ interface DatabaseService {
     @GET("folders/:id")
     suspend fun getFolders() // TODO: Set Response Type
 
+    @POST("posts")
+    suspend fun insertPost(
+        @Header("x-access-token") token: String,
+        @Body newPost: NewPost
+    ) : PostResponse
+
+    @GET("posts")
+    suspend fun getPosts(@Header("x-access-token") token: String) : PostResponse
 }
 
 object DatabaseApi{
+    var JWT_TOKEN = ""
+    fun setToken(token: String) { JWT_TOKEN = token }
+    fun getToken() = JWT_TOKEN
     val retrofitService: DatabaseService by lazy { retrofit.create(DatabaseService::class.java) }
 }

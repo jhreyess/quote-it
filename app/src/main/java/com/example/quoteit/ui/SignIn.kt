@@ -3,6 +3,7 @@ package com.example.quoteit.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.asLiveData
 import androidx.navigation.NavController
@@ -11,6 +12,7 @@ import androidx.work.*
 import com.example.quoteit.R
 import com.example.quoteit.data.PreferencesDataStore
 import com.example.quoteit.data.dataStore
+import com.example.quoteit.data.network.DatabaseApi
 import com.example.quoteit.workers.SyncDataWorker
 import java.util.concurrent.TimeUnit
 
@@ -33,6 +35,7 @@ class SignIn : AppCompatActivity() {
             .build()
 
         val prefs = PreferencesDataStore(baseContext.dataStore)
+        prefs.preferenceToken.asLiveData().observe(this){ DatabaseApi.setToken(it) }
         prefs.preferenceFlow.asLiveData().observe(this) { pref ->
             if (pref.isUserLoggedIn) {
                 val intent = Intent(this, MainActivity::class.java)
@@ -40,21 +43,23 @@ class SignIn : AppCompatActivity() {
                 startActivity(intent)
                 overridePendingTransition(0, android.R.anim.fade_out)
 
-                val data = workDataOf("email" to pref.userEmail, "pass" to pref.userPassword)
+                if(pref.userEmail.isNotBlank() or pref.userPassword.isNotBlank()){
+                    val data = workDataOf("email" to pref.userEmail, "pass" to pref.userPassword)
 
-                val syncWorkRequest = PeriodicWorkRequest.Builder(
-                    SyncDataWorker::class.java,
-                    1, TimeUnit.DAYS)
-                    .setConstraints(constraint)
-                    .setInputData(data)
-                    .addTag(SYNC_DATA_WORKER)
-                    .build()
+                    val syncWorkRequest = PeriodicWorkRequest.Builder(
+                        SyncDataWorker::class.java,
+                        1, TimeUnit.DAYS)
+                        .setConstraints(constraint)
+                        .setInputData(data)
+                        .addTag(SYNC_DATA_WORKER)
+                        .build()
 
-                WorkManager.getInstance(applicationContext)
-                    .enqueueUniquePeriodicWork(
-                        SYNC_DATA_WORKER,
-                        ExistingPeriodicWorkPolicy.KEEP,
-                        syncWorkRequest)
+                    WorkManager.getInstance(applicationContext)
+                        .enqueueUniquePeriodicWork(
+                            SYNC_DATA_WORKER,
+                            ExistingPeriodicWorkPolicy.KEEP,
+                            syncWorkRequest)
+                }
 
             }else{
                 isLoading = false

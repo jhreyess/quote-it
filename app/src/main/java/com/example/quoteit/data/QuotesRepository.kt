@@ -1,10 +1,6 @@
 package com.example.quoteit.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.map
 import com.example.quoteit.data.local.*
-import com.example.quoteit.domain.models.Folder
 import com.example.quoteit.domain.models.Quote
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -25,9 +21,9 @@ class QuotesRepository(
         it.asQuoteDomainModel()
     }
 
-    suspend fun insert(quote: DatabaseQuote): Long{
+    suspend fun insert(quoteEntity: QuoteEntity): Long{
         return withContext(ioDispatcher){
-            quoteDao.insertQuote(quote)
+            quoteDao.insertQuote(quoteEntity)
         }
     }
 

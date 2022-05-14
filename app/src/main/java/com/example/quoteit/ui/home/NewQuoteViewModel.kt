@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import com.example.quoteit.data.FolderQuoteRepository
 import com.example.quoteit.data.FoldersRepository
 import com.example.quoteit.data.QuotesRepository
-import com.example.quoteit.data.local.DatabaseQuote
+import com.example.quoteit.data.local.QuoteEntity
 import kotlinx.coroutines.launch
 
 class NewQuoteViewModel(
@@ -25,7 +25,7 @@ class NewQuoteViewModel(
         if(isValid){
             viewModelScope.launch {
                 _isLoading.value = true
-                val quote = DatabaseQuote(author = author, content = content)
+                val quote = QuoteEntity(author = author, content = content)
                 val quoteId = quoteRepo.insert(quote)
                 foldersQuoteRepo.insert(folderId, quoteId)
                 foldersRepo.updateCount(folderId)

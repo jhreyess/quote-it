@@ -63,12 +63,13 @@ class SignInFragment : Fragment(), SignInContract.View {
    override fun showWrongCredentialsError(error: String?) {
       binding.errorView.text = error ?: ""
    }
-   override fun launchApp() {
+   override fun launchApp(token: String?) {
       CoroutineScope(Dispatchers.IO).launch {
          val email = binding.userEmail.text.toString()
          val password = binding.userPassword.text.toString()
          userPreferences.saveLogInPreference(true, requireContext())
          userPreferences.saveLogInCredentials(email, password, requireContext())
+         token?.let { userPreferences.saveToken(it ,requireContext()) }
       }
    }
 
