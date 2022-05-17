@@ -1,15 +1,8 @@
 package com.example.quoteit.data
 
-import android.util.Log
 import com.example.quoteit.data.network.*
-import com.squareup.moshi.Moshi
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.json.JSONObject
 import retrofit2.HttpException
 import java.io.IOException
 import java.lang.Exception
@@ -25,7 +18,14 @@ class UsersRepository(
             val response = try {
                 apiService.queryUser(body)
             } catch (e: HttpException) {
-                emit(Result.Error(e))
+                when(e.code()){
+                    400 -> emit(Result.Success(LoginResponse(false, error = "Entradas no válidas")))
+                    401 -> emit(Result.Success(LoginResponse(false, error = "Correo o contraseña no válido")))
+                    else -> emit(Result.Error(Exception("Algo salió mal, intenta de nuevo más tarde")))
+                }
+                null
+            } catch (e: IOException){
+                emit(Result.Error(Exception("Algo salió mal, intenta de nuevo más tarde")))
                 null
             }
             response?.let { emit(Result.Success(data = response)) }
@@ -40,7 +40,16 @@ class UsersRepository(
             val response = try {
                 apiService.insertUser(body)
             } catch (e: HttpException) {
-                emit(Result.Error(e))
+                when(e.code()){
+                    400 -> emit(Result.Success(LoginResponse(false, error = "Entradas no válidas")))
+                    409 -> emit(Result.Success(LoginResponse(false,
+                                error = "Ya existe una cuenta asociado a este correo o nombre de usuario"
+                            )))
+                    else -> emit(Result.Error(Exception("Algo salió mal, intenta de nuevo más tarde")))
+                }
+                null
+            } catch(e: IOException){
+                emit(Result.Error(Exception("Algo salió mal, intenta de nuevo más tarde")))
                 null
             }
             response?.let { emit(Result.Success(response)) }

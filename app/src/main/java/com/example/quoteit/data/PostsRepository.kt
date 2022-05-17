@@ -22,11 +22,11 @@ class PostsRepository(
 
     private val token = DatabaseApi.getToken()
 
-    suspend fun userPosts(user: String): Flow<List<Post>> {
+    fun userPosts(user: String): Flow<List<Post>> {
         return postsDao.getAllUserPosts(user).map { it.asPostDomainModel() }
     }
 
-    suspend fun likedPosts(): Flow<List<Post>> {
+    fun likedPosts(): Flow<List<Post>> {
         return postsDao.getLikedPosts().map { it.asPostDomainModel() }
     }
 
@@ -54,7 +54,7 @@ class PostsRepository(
                 apiService.getPosts(token)
             }catch (e: HttpException){
                 e.printStackTrace()
-                //TODO: HANDLE HTTP EXCEPTIONS
+                emit(Result.Error(Exception("Algo salió mal")))
                 null
             }catch (e: IOException){
                 e.printStackTrace()
@@ -113,7 +113,6 @@ class PostsRepository(
                     apiService.dislikePost(id, token)
                 }
             }catch (e: HttpException){
-                // TODO: HANDLE HTTP EXCEPTIONS
                 e.printStackTrace()
                 emit(Result.Error(Exception("Algo salió mal")))
                 null

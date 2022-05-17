@@ -6,7 +6,7 @@ data class Post(
     val quote: String,
     val author: String,
     var likes: Int,
-    val isLiked: Boolean
+    var isLiked: Boolean
 )
 
 data class NewPost(

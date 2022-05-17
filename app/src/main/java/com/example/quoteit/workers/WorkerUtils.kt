@@ -2,30 +2,17 @@ package com.example.quoteit.workers
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.ContentValues
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.net.Uri
 import android.os.Build
-import android.os.Environment
-import android.provider.MediaStore
-import android.view.View
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.quoteit.R
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.OutputStream
-import java.util.*
 
-const val VERBOSE_NOTIFICATION_CHANNEL_NAME = "Quote it notification channel"
+const val VERBOSE_NOTIFICATION_CHANNEL_NAME = "Quote it Worker channel"
 const val VERBOSE_NOTIFICATION_CHANNEL_DESCRIPTION = "Shows notifications when a worker starts"
 const val NOTIFICATION_ID = 1
 const val CHANNEL_ID = "QUOTE_IT_NOTIFICATION"
-const val NOTIFICATION_TITLE = "Work Request Starting..."
+const val NOTIFICATION_TITLE = "Executing work in background..."
 
 fun makeNotification(message: String, context: Context) {
 

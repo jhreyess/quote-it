@@ -27,9 +27,6 @@ interface DatabaseService {
     @POST("users/login")
     suspend fun queryUser(@Body body: UserLoginRequest) : LoginResponse
 
-    @GET("folders/:id")
-    suspend fun getFolders() // TODO: Set Response Type
-
     @POST("posts")
     suspend fun insertPost(@Body newPost: NewPost,
         @Header("x-access-token") token: String

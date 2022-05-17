@@ -38,6 +38,7 @@
         <item name="android:paddingBottom">18dp</item>
         <item name="layout_scrollFlags">scroll</item>
         <item name="titleTextColor">@color/white</item>
+        <item name="android:clipToPadding">false</item>
     </style>
 
     <!-- Outlined TextInput Layout -->

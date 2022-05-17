@@ -12,11 +12,11 @@ class SyncDataWorker(ctx: Context,params: WorkerParameters) : CoroutineWorker(ct
 
     override suspend fun doWork(): Result {
         return try{
-            makeNotification("Synced started", applicationContext)
             val posts = postsRepo.getUnsyncedPosts()
             // Sync posts and also update feed
             if(posts.isNotEmpty()) { postsRepo.syncPosts(posts) }
             postsRepo.getPosts(fetchFromRemote = true, appendContent = false)
+            makeNotification("Data synced", applicationContext)
             Result.success()
         }catch (e: Exception){
             e.printStackTrace()

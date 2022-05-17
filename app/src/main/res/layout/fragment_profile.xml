@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Toolbar"
-            tools:title="@string/profile_label"
+            tools:title="John Doe"
             tools:titleTextColor="@color/white" />
 
         <com.google.android.material.card.MaterialCardView
@@ -58,9 +58,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/userPostsRecycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:overScrollMode="never"
         tools:listitem="@layout/posts_list_items" />
 
     <TextView android:id="@+id/empty_profile_view"

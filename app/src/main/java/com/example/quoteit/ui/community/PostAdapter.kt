@@ -51,6 +51,7 @@ class PostAdapter(
         holder.isLiked.isChecked = post.isLiked
         holder.isLiked.setOnCheckedChangeListener { _, newState ->
             post.likes = post.likes.plus(if(newState) 1 else -1)
+            post.isLiked = newState
             holder.likes.text = resources?.getString(R.string.likes_count, post.likes)
             callback.onFavoriteClicked(post.id, newState)
         }
