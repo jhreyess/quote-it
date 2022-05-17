@@ -37,20 +37,19 @@ class SignIn : AppCompatActivity() {
         val prefs = PreferencesDataStore(baseContext.dataStore)
         prefs.preferenceToken.asLiveData().observe(this){ DatabaseApi.setToken(it) }
         prefs.preferenceFlow.asLiveData().observe(this) { pref ->
+            Log.d("Prefs", pref.toString())
             if (pref.isUserLoggedIn) {
                 val intent = Intent(this, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
                 overridePendingTransition(0, android.R.anim.fade_out)
 
-                if(pref.userEmail.isNotBlank() or pref.userPassword.isNotBlank()){
-                    val data = workDataOf("email" to pref.userEmail, "pass" to pref.userPassword)
+                if(pref.token.isNotBlank()){
 
                     val syncWorkRequest = PeriodicWorkRequest.Builder(
                         SyncDataWorker::class.java,
-                        1, TimeUnit.DAYS)
+                        30, TimeUnit.MINUTES)
                         .setConstraints(constraint)
-                        .setInputData(data)
                         .addTag(SYNC_DATA_WORKER)
                         .build()
 
@@ -59,8 +58,8 @@ class SignIn : AppCompatActivity() {
                             SYNC_DATA_WORKER,
                             ExistingPeriodicWorkPolicy.KEEP,
                             syncWorkRequest)
-                }
 
+                }
             }else{
                 isLoading = false
                 WorkManager.getInstance(applicationContext)

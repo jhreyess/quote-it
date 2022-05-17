@@ -1,11 +1,10 @@
 package com.example.quoteit.ui.signin
 
 import android.app.Activity
-import com.example.quoteit.data.network.LoginResponse
 import com.example.quoteit.data.network.Result
 import com.example.quoteit.ui.QuoteItApp
 import kotlinx.coroutines.*
-import java.lang.Exception
+import kotlinx.coroutines.flow.collect
 
 class SignInPresenter(
     override var view: SignInContract.View?,
@@ -20,21 +19,19 @@ class SignInPresenter(
             Validation.EMPTY_EMAIL -> { view?.showEmptyEmailError() }
             Validation.EMPTY_PASSWORD -> { view?.showEmptyPasswordError() }
             Validation.IS_VALID -> {
-                view?.showLoadingScreen()
                 CoroutineScope(Dispatchers.Main).launch {
-                    val result = try{
-                        usersDao.loginUser(email, password)
-                    }catch (e: Exception){
-                        Result.Error(Exception(e.message))
-                    }finally {
-                        view?.hideLoadingScreen()
-                    }
-                    when (result) {
-                        is Result.Success<LoginResponse> -> {
-                            if(result.data.success){ view?.launchApp(result.data.token)
-                            }else{ view?.showWrongCredentialsError(result.data.error) }
+                    usersDao.loginUser(email, password).collect { result ->
+                        when (result) {
+                            is Result.Success -> {
+                                if(result.data.success){
+                                    view?.launchApp(result.data.token)
+                                }else{
+                                    view?.showWrongCredentialsError(result.data.error)
+                                }
+                            }
+                            is Result.Error -> { view?.showExceptionError(result.exception) }
+                            is Result.Loading -> { view?.showLoadingScreen(result.isLoading) }
                         }
-                        is Result.Error -> { view?.showExceptionError(result.exception) }
                     }
                 }
             }

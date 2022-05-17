@@ -57,8 +57,9 @@ class RegisterFragment : Fragment(), RegisterContract.View {
     override fun showEmptyFieldsError() { binding.errorView.text = resources.getString(R.string.error_empty_fields) }
     override fun showInvalidPasswordsError() { binding.errorView.text = resources.getString(R.string.error_invalid_passwords) }
     override fun showWeakPasswordError() { binding.errorView.text = resources.getString(R.string.error_weak_password) }
-    override fun showLoadingScreen() { binding.loadingScreen.visibility = View.VISIBLE }
-    override fun hideLoadingScreen() { binding.loadingScreen.visibility = View.GONE }
+    override fun showLoadingScreen(loading: Boolean) {
+        binding.loadingScreen.visibility = if(loading) View.VISIBLE else View.GONE
+    }
     override fun showExceptionError(exception: Exception) {
         Toast.makeText(activity?.applicationContext,
             exception.message, Toast.LENGTH_LONG).show()
@@ -68,9 +69,9 @@ class RegisterFragment : Fragment(), RegisterContract.View {
         CoroutineScope(Dispatchers.IO).launch {
             val email = binding.userEmail.text.toString()
             val password = binding.userPassword.text.toString()
-            userPreferences.saveLogInPreference(true, requireContext())
             userPreferences.saveLogInCredentials(email, password, requireContext())
             token?.let { userPreferences.saveToken(it ,requireContext()) }
+            userPreferences.saveLogInPreference(true, requireContext())
         }
     }
 

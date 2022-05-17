@@ -42,7 +42,8 @@ class PreferencesDataStore(private val dataStore: DataStore<Preferences>) {
         val loginPref = preferences[isUserLoggedIn] ?: false
         val emailPref = preferences[userLoginEmail] ?: ""
         val passwordPref = preferences[userLoginPassword] ?: ""
-        return UserPreferences(loginPref, emailPref, passwordPref)
+        val userToken = preferences[userToken] ?: ""
+        return UserPreferences(loginPref, emailPref, passwordPref, userToken)
     }
 
     suspend fun saveLogInPreference(isLoggedIn: Boolean, context: Context) {

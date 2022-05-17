@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.NewPostActivity"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/black_modal">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginBottom="16dp">
+
+        <ImageButton
+            android:id="@+id/back_to_posts_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:backgroundTint="@android:color/transparent"
+            android:importantForAccessibility="no"
+            android:minHeight="48dp"
+            android:src="@drawable/ic_arrow_back" />
+
+        <TextView
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:text="@string/prompt_new_post"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/post_content_author"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/OutlinedTextInputLayout"
+        app:placeholderText="@string/form_quote_author_placeholder">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/gray"
+            android:autofillHints="name"
+            android:inputType="text|textPersonName"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:maxLength="25"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/post_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:placeholderText="@string/form_quote_content_placeholder"
+        style="@style/OutlinedTextInputLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/gray"
+            android:textColor="@color/white"
+            android:importantForAutofill="no"
+            android:lines="7"
+            android:maxLines="7"
+            android:inputType="textMultiLine"
+            android:maxLength="250"
+            android:gravity="start" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/post_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="32dp"
+        android:enabled="false"
+        style="@style/MaterialButton"
+        android:text="@string/prompt_post"
+        android:textAllCaps="false" />
+
+</LinearLayout>

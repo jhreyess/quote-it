@@ -62,13 +62,11 @@ class ImageEditViewModel(application: Application) : AndroidViewModel(applicatio
         val path = Environment.getExternalStoragePublicDirectory(dir)
         val file = File(path, filename)
         file.parentFile?.let { if(!it.exists()) it.mkdir() }
-        Log.d("Debug", file.toString())
         val out = FileOutputStream(file)
         out.use {
             bmp.compress(Bitmap.CompressFormat.JPEG, 100, it)
             it.close()
         }
-        Log.d("File", file.path)
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -77,8 +75,7 @@ class ImageEditViewModel(application: Application) : AndroidViewModel(applicatio
         val filename = "IMG_${System.currentTimeMillis()}.jpg"
         val dir = Environment.DIRECTORY_PICTURES + FOLDER_NAME
         val path = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-        val folder = File(path.path, dir).also { if(!it.exists()) it.mkdir() }
-        Log.d("Debug", folder.absolutePath)
+        File(path.path, dir).also { if(!it.exists()) it.mkdir() }
         var out: OutputStream?
         var imageUri: Uri?
 
@@ -103,7 +100,6 @@ class ImageEditViewModel(application: Application) : AndroidViewModel(applicatio
         contentValues.clear()
         contentValues.put(MediaStore.Video.Media.IS_PENDING, 0)
         imageUri?.let { contentResolver.update(it, contentValues, null, null) }
-        Log.d("File", imageUri!!.path!!)
         return imageUri
     }
 }

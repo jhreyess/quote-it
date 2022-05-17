@@ -5,6 +5,8 @@ import com.example.quoteit.data.network.*
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -16,32 +18,33 @@ class UsersRepository(
     private val apiService: DatabaseService,
 ) {
 
-    suspend fun loginUser(email: String, password: String): Result<LoginResponse>{
+    suspend fun loginUser(email: String, password: String): Flow<Result<LoginResponse>>{
         val body = UserLoginRequest(email, password)
-        return try {
-            val response = apiService.queryUser(body)
-            Result.Success(response)
-        } catch (e: HttpException) {
-            when(e.code()){
-                400 -> Result.Success(LoginResponse(false, "Entradas no válidas"))
-                401 -> Result.Success(LoginResponse(false, "Correo o contraseña invalido"))
-                else -> Result.Error(Exception("Algo salió mal, intenta de nuevo más tarde"))
+        return flow {
+            emit(Result.Loading(true))
+            val response = try {
+                apiService.queryUser(body)
+            } catch (e: HttpException) {
+                emit(Result.Error(e))
+                null
             }
+            response?.let { emit(Result.Success(data = response)) }
+            emit(Result.Loading(false))
         }
     }
 
-    suspend fun registerUser(username: String, email: String, password: String): Result<LoginResponse> {
+    suspend fun registerUser(username: String, email: String, password: String): Flow<Result<LoginResponse>> {
         val body = UserRegisterRequest(username, email, password)
-        return try {
-            val response = apiService.insertUser(body)
-            Result.Success(response)
-        } catch (e: HttpException) {
-            when(e.code()){
-                400 -> Result.Success(LoginResponse(false, "Entradas no válidas"))
-                409 -> Result.Success(LoginResponse(false,
-                    "Ya existe una cuenta asociado a este correo o nombre de usuario"))
-                else -> Result.Error(Exception("Algo salió mal, intenta de nuevo más tarde"))
+        return flow {
+            emit(Result.Loading(true))
+            val response = try {
+                apiService.insertUser(body)
+            } catch (e: HttpException) {
+                emit(Result.Error(e))
+                null
             }
+            response?.let { emit(Result.Success(response)) }
+            emit(Result.Loading(false))
         }
     }
 

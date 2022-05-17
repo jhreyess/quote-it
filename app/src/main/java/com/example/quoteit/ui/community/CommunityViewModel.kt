@@ -1,5 +1,6 @@
 package com.example.quoteit.ui.community
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.quoteit.data.FolderQuoteRepository
 import com.example.quoteit.data.FoldersRepository
@@ -25,12 +26,15 @@ class CommunityViewModel(private val postsRepo: PostsRepository) : ViewModel() {
     }
     val posts: LiveData<List<Post>> get() = _posts
 
-    fun getPosts(fetchFromRemote: Boolean = false) {
+    fun getPosts(
+        fetchFromRemote: Boolean = false,
+        appendContent: Boolean = false
+    ) {
         viewModelScope.launch {
             _error.value = false
-            postsRepo.getPosts(fetchFromRemote).collect { result ->
+            postsRepo.getPosts(fetchFromRemote, appendContent).collect { result ->
                 when(result){
-                    is Result.Success -> { _posts.value = result.data }
+                    is Result.Success -> { _posts.value = result.data.reversed() }
                     is Result.Error -> { _error.value = true }
                     is Result.Loading -> { _isLoading.value = result.isLoading }
                 }
@@ -38,15 +42,13 @@ class CommunityViewModel(private val postsRepo: PostsRepository) : ViewModel() {
         }
     }
 
-    fun upload(post: NewPost){
+    fun likePost(postId: Long, like: Boolean){
         viewModelScope.launch {
-            postsRepo.upload(post).collect { result ->
+            postsRepo.likePost(postId, like).collect { result ->
                 when(result){
-                    is Result.Success -> {
-                        _posts.value = _posts.value?.plus(result.data) ?: listOf(result.data)
-                    }
-                    is Result.Error -> { _error.value = true }
-                    is Result.Loading -> { _isLoading.value = result.isLoading }
+                    is Result.Success -> {}
+                    is Result.Error -> {}
+                    is Result.Loading -> {}
                 }
             }
         }

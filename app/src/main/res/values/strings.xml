@@ -82,4 +82,5 @@
     <string name="activate">Activar</string>
     <string name="new_post_title">Comparte algo que inspire a los demás</string>
     <string name="prompt_post">Publicar</string>
+    <string name="prompt_new_post">Nueva publicación</string>
 </resources>

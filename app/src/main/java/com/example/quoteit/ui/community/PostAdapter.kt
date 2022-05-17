@@ -3,15 +3,18 @@ package com.example.quoteit.ui.community
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.quoteit.R
 import com.example.quoteit.domain.models.Folder
 import com.example.quoteit.domain.models.Post
+import com.example.quoteit.ui.utils.AdapterCallback
 
 class PostAdapter(
     private val context: CommunityFragment?,
+    private val callback: AdapterCallback
 ): RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
     private var posts: List<Post> = listOf()
@@ -22,6 +25,7 @@ class PostAdapter(
         val quote: TextView = view!!.findViewById(R.id.post_quote)
         val author: TextView = view!!.findViewById(R.id.post_quote_author)
         val likes: TextView = view!!.findViewById(R.id.post_likes)
+        val isLiked: CheckBox = view!!.findViewById(R.id.favorite_button)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
@@ -43,6 +47,12 @@ class PostAdapter(
         holder.quote.text = post.quote
         holder.author.text = post.author
         holder.likes.text = resources?.getString(R.string.likes_count, post.likes)
+        holder.isLiked.isChecked = post.isLiked
+        holder.isLiked.setOnCheckedChangeListener { _, newState ->
+            post.likes = post.likes.plus(if(newState) 1 else -1)
+            holder.likes.text = resources?.getString(R.string.likes_count, post.likes)
+            callback.onFavoriteClicked(post.id, newState)
+        }
     }
 
     fun setData(newData: List<Post>){

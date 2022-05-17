@@ -1,55 +1,27 @@
 package com.example.quoteit.workers
 
 import android.content.Context
-import android.util.Log
-import androidx.room.Database
 import androidx.work.CoroutineWorker
-import androidx.work.Data
 import androidx.work.WorkerParameters
-import com.example.quoteit.data.PreferencesDataStore
-import com.example.quoteit.data.dataStore
-import com.example.quoteit.data.network.LoginResponse
-import com.example.quoteit.data.network.Result as DatabaseResult
 import com.example.quoteit.ui.QuoteItApp
-import retrofit2.HttpException
 import java.lang.Exception
 
 class SyncDataWorker(ctx: Context,params: WorkerParameters) : CoroutineWorker(ctx, params){
 
-    private val userRepo = (applicationContext as QuoteItApp).usersRepository
+    private val postsRepo = (applicationContext as QuoteItApp).postsRepository
 
     override suspend fun doWork(): Result {
-
-        val email = inputData.getString("email") ?: ""
-        val pass = inputData.getString("pass") ?: ""
-
         return try{
-            val response = userRepo.loginUser(email, pass)
-            Log.d("Debug", response.toString())
-            when(response){
-                is DatabaseResult.Success<LoginResponse> -> {
-                    if(response.data.success){
-                        makeNotification("Data synced successfully", applicationContext)
-                        Result.success()
-                    }else{
-                        makeNotification("Failed to login", applicationContext)
-                        logout()
-                        Result.failure()
-                    }
-                }
-                else -> {
-                    makeNotification("Failed to login", applicationContext)
-                    Result.failure()
-                }
-            }
+            makeNotification("Synced started", applicationContext)
+            val posts = postsRepo.getUnsyncedPosts()
+            // Sync posts and also update feed
+            if(posts.isNotEmpty()) { postsRepo.syncPosts(posts) }
+            postsRepo.getPosts(fetchFromRemote = true, appendContent = false)
+            Result.success()
         }catch (e: Exception){
+            e.printStackTrace()
+            makeNotification("Synced failed", applicationContext)
             Result.failure()
         }
-    }
-
-    private suspend fun logout(){
-        val prefs = PreferencesDataStore(applicationContext.dataStore)
-        prefs.saveLogInPreference(false, applicationContext)
-        makeNotification("Login failed", applicationContext)
     }
 }

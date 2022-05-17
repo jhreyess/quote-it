@@ -37,14 +37,15 @@ data class PostResponse(
 
 data class DatabasePost(
     val post_id: Long,
-    val no_likes: Int,
+    val no_likes: Int = 0,
     val quote_author: String,
     val quote_desc: String,
     val post_by: String,
+    val liked: Boolean = false
 )
 
 fun DatabasePost.asPostEntity(): PostEntity {
-    return PostEntity(post_id, post_by, no_likes, quote_desc, quote_author )
+    return PostEntity(post_id, post_by, no_likes, quote_desc, quote_author, liked, true)
 }
 
 

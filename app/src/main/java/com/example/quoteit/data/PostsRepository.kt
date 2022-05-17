@@ -1,6 +1,7 @@
 package com.example.quoteit.data
 
 import com.example.quoteit.data.local.PostDao
+import com.example.quoteit.data.local.PostEntity
 import com.example.quoteit.data.local.asPostDomainModel
 import com.example.quoteit.data.network.*
 import com.example.quoteit.domain.models.NewPost
@@ -20,6 +21,7 @@ class PostsRepository(
 
     suspend fun getPosts(
         fetchFromRemote: Boolean,
+        appendContent: Boolean
     ): Flow<Result<List<Post>>> {
         return flow {
             emit(Result.Loading(true))
@@ -36,7 +38,7 @@ class PostsRepository(
                 return@flow
             }
 
-            // If no local posts
+            // If no local posts or fetchFromRemote
             val remotePosts = try {
                 apiService.getPosts(token)
             }catch (e: HttpException){
@@ -50,7 +52,7 @@ class PostsRepository(
             }
 
             remotePosts?.let { posts ->
-                postsDao.deleteAll()
+                if(!appendContent) { postsDao.deleteAll() }
                 postsDao.insertPosts(
                     posts.data.map { it.asPostEntity() }
                 )
@@ -66,13 +68,75 @@ class PostsRepository(
     suspend fun upload(post: NewPost): Flow<Result<Post>>{
         return flow {
             emit(Result.Loading(true))
-            val newPost = apiService.insertPost(token, post)
-            val localPost = newPost.data.first().asPostEntity()
-            postsDao.insertNewPost(localPost)
-            emit(Result.Success(
-                data = localPost.asPostDomainModel()
-            ))
+
+            val newPost = try {
+                apiService.insertPost(post, token)
+            }catch (e: HttpException){
+                e.printStackTrace()
+                emit(Result.Error(Exception("Algo salió mal")))
+                null
+            }catch (e: IOException){
+                e.printStackTrace()
+                emit(Result.Error(Exception("Algo salió mal")))
+                null
+            }
+
+            newPost?.let {
+                val localPost = it.data.first().asPostEntity()
+                postsDao.insertNewPost(localPost)
+                emit(Result.Success(
+                    data = localPost.asPostDomainModel()
+                ))
+            }
             emit(Result.Loading(false))
+        }
+    }
+
+    suspend fun likePost(id: Long, like: Boolean): Flow<Result<Post>> {
+        return flow {
+            emit(Result.Loading(true))
+            val result = try{
+                if(like){
+                    apiService.likePost(id, token)
+                }else{
+                    apiService.dislikePost(id, token)
+                }
+            }catch (e: HttpException){
+                // TODO: HANDLE HTTP EXCEPTIONS
+                e.printStackTrace()
+                emit(Result.Error(Exception("Algo salió mal")))
+                null
+            }catch (e: IOException){
+                e.printStackTrace()
+                emit(Result.Error(Exception("Algo salió mal")))
+                null
+            }
+
+            result.let {
+                val synced = it?.success ?: false
+                val diff = if(like) 1 else -1
+                val syncedPost = postsDao.getPost(
+                    postsDao.syncPost(id, like, synced, diff).toLong()
+                )
+                emit(Result.Success( data = syncedPost.first().asPostDomainModel() ))
+            }
+            emit(Result.Loading(false))
+        }
+    }
+    
+    suspend fun getUnsyncedPosts(): List<PostEntity> {
+        return postsDao.getUnsyncedPosts()
+    }
+
+    suspend fun syncPosts(posts: List<PostEntity>){
+        try{
+            apiService.insertLikes(posts.map { it.asPostDomainModel().id }, token)
+            posts.forEach { it.likeSynced = true }
+            postsDao.syncPost(posts)
+        }catch (e: HttpException){
+            e.printStackTrace()
+        }catch (e: IOException){
+            e.printStackTrace()
         }
     }
 

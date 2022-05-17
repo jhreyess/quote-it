@@ -19,7 +19,9 @@ data class PostEntity(
     val postBy: String,
     val noLikes: Int = 0,
     val quoteContent: String,
-    val quoteAuthor: String
+    val quoteAuthor: String,
+    val isLiked: Boolean,
+    var likeSynced: Boolean
 )
 
 @Entity(tableName = "quotes")
@@ -55,7 +57,7 @@ fun List<QuoteEntity>.asQuoteDomainModel(): List<Quote> {
 }
 
 fun PostEntity.asPostDomainModel(): Post {
-    return Post(postId, postBy, quoteContent, quoteAuthor, noLikes)
+    return Post(postId, postBy, quoteContent, quoteAuthor, noLikes, isLiked)
 }
 
 fun QuoteEntity.asQuoteDomainModel(): Quote {

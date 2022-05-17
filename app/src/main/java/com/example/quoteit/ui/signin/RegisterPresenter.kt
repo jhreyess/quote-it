@@ -6,6 +6,7 @@ import com.example.quoteit.data.network.Result
 import com.example.quoteit.ui.QuoteItApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -24,21 +25,17 @@ class RegisterPresenter(
             Validation.WEAK_PASSWORD -> { view?.showWeakPasswordError() }
             Validation.IS_VALID -> {
                 CoroutineScope(Dispatchers.Main).launch {
-                    view?.showLoadingScreen()
-                    val result = try{
-                        usersDao.registerUser(username, email, password)
-                    }catch (e: Exception){
-                        Result.Error(Exception("Fallo en la solicitud..."))
-                    }finally {
-                        view?.hideLoadingScreen()
-                    }
-
-                    when (result) {
-                        is Result.Success<LoginResponse> -> {
-                            if(result.data.success){ view?.launchApp(result.data.token)
-                            }else{ view?.showWrongCredentialsError(result.data.error) }
-                        }
-                        is Result.Error -> { view?.showExceptionError(result.exception)
+                    usersDao.registerUser(username, email, password).collect { result ->
+                        when(result) {
+                            is Result.Success -> {
+                                if (result.data.success) {
+                                    view?.launchApp(result.data.token)
+                                } else {
+                                    view?.showWrongCredentialsError(result.data.error)
+                                }
+                            }
+                            is Result.Error -> { view?.showExceptionError(result.exception) }
+                            is Result.Loading -> { view?.showLoadingScreen(result.isLoading) }
                         }
                     }
                 }
