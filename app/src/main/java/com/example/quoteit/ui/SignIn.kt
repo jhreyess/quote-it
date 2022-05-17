@@ -37,7 +37,6 @@ class SignIn : AppCompatActivity() {
         val prefs = PreferencesDataStore(baseContext.dataStore)
         prefs.preferenceToken.asLiveData().observe(this){ DatabaseApi.setToken(it) }
         prefs.preferenceFlow.asLiveData().observe(this) { pref ->
-            Log.d("Prefs", pref.toString())
             if (pref.isUserLoggedIn) {
                 val intent = Intent(this, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

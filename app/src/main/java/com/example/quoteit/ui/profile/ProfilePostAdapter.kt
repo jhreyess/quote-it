@@ -1,4 +1,4 @@
-package com.example.quoteit.ui.community
+package com.example.quoteit.ui.profile
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -11,12 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.quoteit.R
 import com.example.quoteit.domain.models.Folder
 import com.example.quoteit.domain.models.Post
+import com.example.quoteit.ui.community.CommunityFragment
 import com.example.quoteit.ui.utils.AdapterCallback
 
-class PostAdapter(
+class ProfilePostAdapter(
     private val context: Context?,
     private val callback: AdapterCallback
-): RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
+): RecyclerView.Adapter<ProfilePostAdapter.PostViewHolder>() {
 
     private var posts: List<Post> = listOf()
 

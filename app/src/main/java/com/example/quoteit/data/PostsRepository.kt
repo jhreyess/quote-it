@@ -2,12 +2,15 @@ package com.example.quoteit.data
 
 import com.example.quoteit.data.local.PostDao
 import com.example.quoteit.data.local.PostEntity
+import com.example.quoteit.data.local.asFolderDomainModel
 import com.example.quoteit.data.local.asPostDomainModel
 import com.example.quoteit.data.network.*
+import com.example.quoteit.domain.models.Folder
 import com.example.quoteit.domain.models.NewPost
 import com.example.quoteit.domain.models.Post
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import retrofit2.HttpException
 import java.io.IOException
 import java.lang.Exception
@@ -18,6 +21,14 @@ class PostsRepository(
 ) {
 
     private val token = DatabaseApi.getToken()
+
+    suspend fun userPosts(user: String): Flow<List<Post>> {
+        return postsDao.getAllUserPosts(user).map { it.asPostDomainModel() }
+    }
+
+    suspend fun likedPosts(): Flow<List<Post>> {
+        return postsDao.getLikedPosts().map { it.asPostDomainModel() }
+    }
 
     suspend fun getPosts(
         fetchFromRemote: Boolean,

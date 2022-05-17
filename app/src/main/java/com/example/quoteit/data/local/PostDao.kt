@@ -2,6 +2,7 @@ package com.example.quoteit.data.local
 
 import androidx.room.*
 import com.example.quoteit.domain.models.Post
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PostDao {
@@ -10,7 +11,10 @@ interface PostDao {
     suspend fun getAllPosts(): List<PostEntity>
 
     @Query("SELECT * FROM posts WHERE isLiked = 1")
-    suspend fun getLikedPosts(): List<PostEntity>
+    fun getLikedPosts(): Flow<List<PostEntity>>
+
+    @Query("SELECT * FROM posts WHERE postBy = :username")
+    fun getAllUserPosts(username: String): Flow<List<PostEntity>>
 
     @Query("SELECT * FROM posts WHERE likeSynced = 0")
     suspend fun getUnsyncedPosts(): List<PostEntity>

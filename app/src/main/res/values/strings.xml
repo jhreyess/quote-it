@@ -83,4 +83,8 @@
     <string name="new_post_title">Comparte algo que inspire a los demás</string>
     <string name="prompt_post">Publicar</string>
     <string name="prompt_new_post">Nueva publicación</string>
+    <string name="prompt_my_likes">Mis me gusta</string>
+    <string name="empty_profile">Aquí se mostrarán las publicaciones que hagas</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

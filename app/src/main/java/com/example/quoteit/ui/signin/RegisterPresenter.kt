@@ -1,14 +1,12 @@
 package com.example.quoteit.ui.signin
 
 import android.app.Activity
-import com.example.quoteit.data.network.LoginResponse
 import com.example.quoteit.data.network.Result
 import com.example.quoteit.ui.QuoteItApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class RegisterPresenter(
     override var view: RegisterContract.View?,
@@ -29,7 +27,7 @@ class RegisterPresenter(
                         when(result) {
                             is Result.Success -> {
                                 if (result.data.success) {
-                                    view?.launchApp(result.data.token)
+                                    view?.launchApp(result.data.token, result.data.username!!)
                                 } else {
                                     view?.showWrongCredentialsError(result.data.error)
                                 }

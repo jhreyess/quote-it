@@ -56,6 +56,10 @@ fun List<QuoteEntity>.asQuoteDomainModel(): List<Quote> {
     return map { Quote(it.quoteId, it.author, it.content, it.isFavorite) }
 }
 
+fun List<PostEntity>.asPostDomainModel(): List<Post> {
+    return map { Post(it.postId, it.postBy, it.quoteContent, it.quoteAuthor, it.noLikes, it.isLiked) }
+}
+
 fun PostEntity.asPostDomainModel(): Post {
     return Post(postId, postBy, quoteContent, quoteAuthor, noLikes, isLiked)
 }

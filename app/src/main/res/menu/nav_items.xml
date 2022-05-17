@@ -20,7 +20,7 @@
         android:icon="@drawable/ic_explore" />
 
     <item
-        android:id="@+id/profileFragment"
+        android:id="@+id/profileNavigation"
         android:title="@string/profile_label"
         android:enabled="true"
         android:icon="@drawable/ic_profile" />

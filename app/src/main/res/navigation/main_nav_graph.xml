@@ -15,11 +15,6 @@
         android:name="com.example.quoteit.ui.discover.DiscoverFragment"
         android:label="@string/discover_label"
         tools:layout="@layout/fragment_discover" />
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.example.quoteit.ui.profile.ProfileFragment"
-        android:label="@string/profile_label"
-        tools:layout="@layout/fragment_profile" />
 
     <navigation android:id="@+id/homeNavigation"
         app:startDestination="@id/homeFragment">
@@ -49,6 +44,27 @@
             android:name="com.example.quoteit.ui.home.NewQuoteFragment"
             android:label="@string/add_folder_quote"
             tools:layout="@layout/fragment_new_quote" />
+    </navigation>
+    <navigation android:id="@+id/profileNavigation"
+        app:startDestination="@id/profileFragment">
+        <fragment
+            android:id="@+id/profileFragment"
+            android:name="com.example.quoteit.ui.profile.ProfileFragment"
+            android:label="@string/profile_label"
+            tools:layout="@layout/fragment_profile" >
+            <action
+                android:id="@+id/action_profileFragment_to_likedPostsFragment"
+                app:destination="@id/likedPostsFragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"/>
+        </fragment>
+        <fragment
+            android:id="@+id/likedPostsFragment"
+            android:name="com.example.quoteit.ui.profile.LikedPostsFragment"
+            android:label="fragment_liked_posts"
+            tools:layout="@layout/fragment_liked_posts" />
     </navigation>
 
 </navigation>

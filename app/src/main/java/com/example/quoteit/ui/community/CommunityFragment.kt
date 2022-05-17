@@ -54,7 +54,7 @@ class CommunityFragment : Fragment() {
         toolbar.navigationIcon = null
 
         // Recycler Viewer
-        val adapter = PostAdapter(this, object: AdapterCallback {
+        val adapter = PostAdapter(context, object: AdapterCallback {
             override fun onFavoriteClicked(id: Long, b: Boolean) {
                 model.likePost(id, b)
             }
