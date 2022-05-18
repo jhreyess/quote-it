@@ -9,6 +9,7 @@
     <string name="prompt_register">Registrarse</string>
     <string name="prompt_username">Introduce un nombre de usuario</string>
     <string name="prompt_confirm_password">Confirma la contraseña</string>
+    <string name="prompt_confirm_new_password">Confirma la nueva contraseña</string>
 
     <!-- MENU ITEMS -->
     <string name="home_label">Mis frases</string>
@@ -23,7 +24,6 @@
     <string name="close_session_settings">Cerrar Sesión</string>
     <string name="about_settings">Acerca de</string>
     <string name="collaborators_settings">Colaboradores</string>
-
 
     <!-- HOME FOLDERS -->
     <string name="folder_quantity">%1$d elementos</string>
@@ -95,7 +95,8 @@
     <string name="added_to_folder">Añadido exitosamente</string>
     <string name="removed_from_folder">Removido exitosamente</string>
     <string name="select_image">Seleccionar una Imagen</string>
+    <string name="share_with">Compartir</string>
     <string name="activate">Activar</string>
-    <string name="prompt_confirm_new_password">Confirma la nueva contraseña</string>
+    <string name="shared_label">Enviado desde Quote it!</string>
 
 </resources>

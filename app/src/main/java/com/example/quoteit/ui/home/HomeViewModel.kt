@@ -1,9 +1,6 @@
 package com.example.quoteit.ui.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.quoteit.data.FolderQuoteRepository
 import com.example.quoteit.data.FoldersRepository
 import com.example.quoteit.data.QuotesRepository
@@ -72,6 +69,14 @@ class HomeViewModel(
             foldersQuoteRepo.insert(folderId, quoteId)
             foldersRepo.updateCount(folderId)
         }
+    }
+
+    fun getQuote(quoteId: Long): LiveData<Quote>{
+        val quote = MutableLiveData<Quote>()
+        viewModelScope.launch {
+            quote.value = quotesRepo.get(quoteId)
+        }
+        return quote
     }
 
 }

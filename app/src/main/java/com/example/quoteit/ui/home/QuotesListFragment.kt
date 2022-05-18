@@ -2,6 +2,7 @@ package com.example.quoteit.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.PopupMenu
 import android.widget.TextView
@@ -166,11 +167,8 @@ class QuotesListFragment : Fragment(){
                 bottom.show(parentFragmentManager, "add_quote_to_folder_dialog")
                 true
             }
-            R.id.share_quote -> { /* TODO: navigate to share screen */ true }
-            R.id.convert_quote -> {
-                pickImage(quoteId)
-                true
-            }
+            R.id.share_quote -> { shareQuote(quoteId) }
+            R.id.convert_quote -> { pickImage(quoteId) }
             else -> false
         }
     }
@@ -210,11 +208,25 @@ class QuotesListFragment : Fragment(){
         dialog.show(parentFragmentManager, "confirm_delete_dialog")
     }
 
-    private fun pickImage(id: Long){
+    private fun pickImage(id: Long): Boolean{
         val intent = Intent(requireActivity(), EditImageActivity::class.java)
         intent.putExtra("quote", id)
         startActivity(intent)
         activity?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        return true
+    }
+
+    private fun shareQuote(id: Long): Boolean{
+        model.getQuote(id).observe(viewLifecycleOwner){
+            val intent = Intent(Intent.ACTION_SEND);
+            val shareBody = StringBuilder()
+                .appendLine(it.quote).appendLine()
+                .append("-").appendLine(it.author).appendLine(resources.getString(R.string.shared_label))
+            intent.type = "text/plain"
+            intent.putExtra(Intent.EXTRA_TEXT, shareBody.toString())
+            startActivity(Intent.createChooser(intent, resources.getString(R.string.share_with)))
+        }
+        return true
     }
 
     override fun onDestroyView() {

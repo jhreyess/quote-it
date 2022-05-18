@@ -17,6 +17,8 @@ class QuotesRepository(
             it.asQuoteDomainModel()
         }
 
+    val get = {id: Long -> quoteDao.getQuote(id)}
+
     val favQuotes: Flow<List<Quote>> = quoteDao.getAllFavQuotes().map {
         it.asQuoteDomainModel()
     }
