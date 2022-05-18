@@ -15,6 +15,15 @@
     <string name="discover_label">Descubrir</string>
     <string name="community_label">Comunidad</string>
     <string name="profile_label">Perfil</string>
+    <string name="settings_label">Configuración</string>
+
+    <!-- SETTINGS MENU -->
+    <string name="account_settings">Cuenta</string>
+    <string name="change_password_settings">Cambiar contraseña</string>
+    <string name="close_session_settings">Cerrar Sesión</string>
+    <string name="about_settings">Acerca de</string>
+    <string name="collaborators_settings">Colaboradores</string>
+
 
     <!-- HOME FOLDERS -->
     <string name="folder_quantity">%1$d elementos</string>
@@ -87,5 +96,6 @@
     <string name="removed_from_folder">Removido exitosamente</string>
     <string name="select_image">Seleccionar una Imagen</string>
     <string name="activate">Activar</string>
+    <string name="prompt_confirm_new_password">Confirma la nueva contraseña</string>
 
 </resources>

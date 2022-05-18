@@ -1,6 +1,7 @@
 package com.example.quoteit.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.core.os.bundleOf
@@ -39,6 +40,7 @@ class HomeFragment : Fragment() {
         val toolbar = binding.homeToolbar
         toolbar.title = resources.getString(R.string.home_label)
         toolbar.inflateMenu(R.menu.home_menu)
+        toolbar.setOnMenuItemClickListener { onItemSelected(it) }
         val adapter = FolderAdapter(context, callback = object : AdapterCallback{
             override fun onItemSelected(id: Long) {
                 val bundle = bundleOf("folder" to id)
@@ -59,12 +61,16 @@ class HomeFragment : Fragment() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId){
-            R.id.home_settings -> { /* TODO: Settings Fragment */ true }
-            else -> super.onOptionsItemSelected(item)
+    private fun onItemSelected(item: MenuItem) = when(item.itemId) {
+        R.id.home_settings -> {
+            Log.d("Navigation", "Settings fragment...")
+            val action = R.id.action_homeFragment_to_settingsFragment
+            findNavController().navigate(action)
+            true
         }
+        else -> super.onOptionsItemSelected(item)
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

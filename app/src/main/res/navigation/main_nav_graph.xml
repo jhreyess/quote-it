@@ -38,12 +38,39 @@
                 app:exitAnim="@anim/slide_out_left"
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right" />
+            <action
+                android:id="@+id/action_homeFragment_to_settingsFragment"
+                app:destination="@id/settingsNavigation" />
         </fragment>
         <fragment
             android:id="@+id/newQuote"
             android:name="com.example.quoteit.ui.home.NewQuoteFragment"
             android:label="@string/add_folder_quote"
             tools:layout="@layout/fragment_new_quote" />
+        <navigation android:id="@+id/settingsNavigation"
+            app:startDestination="@id/settingsFragment">
+            <fragment
+                android:id="@+id/settingsFragment"
+                android:name="com.example.quoteit.ui.settings.SettingsFragment"
+                android:label="SettingsFragment" >
+                <action
+                    android:id="@+id/action_settingsFragment_to_aboutUsFragment"
+                    app:destination="@id/aboutUsFragment" />
+                <action
+                    android:id="@+id/action_settingsFragment_to_changePasswordFragment"
+                    app:destination="@id/changePasswordFragment" />
+            </fragment>
+            <fragment
+                android:id="@+id/aboutUsFragment"
+                android:name="com.example.quoteit.ui.settings.AboutUsFragment"
+                android:label="AboutUsFragment"
+                tools:layout="@layout/fragment_about_us"/>
+            <fragment
+                android:id="@+id/changePasswordFragment"
+                android:name="com.example.quoteit.ui.settings.ChangePasswordFragment"
+                android:label="fragment_change_password"
+                tools:layout="@layout/fragment_change_password" />
+        </navigation>
     </navigation>
     <navigation android:id="@+id/profileNavigation"
         app:startDestination="@id/profileFragment">

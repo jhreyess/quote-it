@@ -4,6 +4,7 @@ import com.example.quoteit.data.local.PostEntity
 import com.example.quoteit.domain.models.Post
 import com.squareup.moshi.Json
 
+// User HTTP Bodies
 data class UserLoginRequest(
     val email: String = "",
     val password: String = ""
@@ -13,6 +14,10 @@ data class UserRegisterRequest(
     val username: String = "",
     val email: String =  "",
     val password: String = ""
+)
+
+data class UpdatePasswordRequest(
+    val password: String = "",
 )
 
 

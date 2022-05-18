@@ -1,5 +1,6 @@
 package com.example.quoteit.data.network
 
+import androidx.room.Update
 import com.example.quoteit.domain.models.NewPost
 import com.example.quoteit.domain.models.Post
 import com.squareup.moshi.Moshi
@@ -26,6 +27,10 @@ interface DatabaseService {
 
     @POST("users/login")
     suspend fun queryUser(@Body body: UserLoginRequest) : LoginResponse
+
+    @POST("users/password")
+    suspend fun updateUserPassword(@Body body: UpdatePasswordRequest,
+        @Header("x-access-token") token: String) : LoginResponse
 
     @POST("posts")
     suspend fun insertPost(@Body newPost: NewPost,

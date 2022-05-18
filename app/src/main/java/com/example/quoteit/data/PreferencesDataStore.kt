@@ -2,6 +2,7 @@ package com.example.quoteit.data
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.datastore.dataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
@@ -37,6 +38,9 @@ class PreferencesDataStore(dataStore: DataStore<Preferences>) {
     val preferenceUsername: Flow<String> = dataStore.data
         .map { it[userName] ?: "" }
 
+    val preferencePassword: Flow<String> = dataStore.data
+        .map { it[userLoginPassword] ?: "" }
+
     private fun mapUserPreferences(preferences: Preferences): UserPreferences{
         val loginPref = preferences[isUserLoggedIn] ?: false
         val emailPref = preferences[userLoginEmail] ?: ""
@@ -69,6 +73,10 @@ class PreferencesDataStore(dataStore: DataStore<Preferences>) {
             preferences[userLoginEmail] = email
             preferences[userLoginPassword] = password
         }
+    }
+
+    suspend fun clearDataStore(context: Context){
+        context.dataStore.edit { it.clear() }
     }
 }
 
