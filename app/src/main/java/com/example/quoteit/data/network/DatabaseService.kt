@@ -1,8 +1,6 @@
 package com.example.quoteit.data.network
 
-import androidx.room.Update
 import com.example.quoteit.domain.models.NewPost
-import com.example.quoteit.domain.models.Post
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit

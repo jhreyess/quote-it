@@ -20,8 +20,6 @@ class PostsRepository(
     private val apiService: DatabaseService,
 ) {
 
-    private val token = DatabaseApi.getToken()
-
     fun userPosts(user: String): Flow<List<Post>> {
         return postsDao.getAllUserPosts(user).map { it.asPostDomainModel() }
     }
@@ -51,7 +49,7 @@ class PostsRepository(
 
             // If no local posts or fetchFromRemote
             val remotePosts = try {
-                apiService.getPosts(token)
+                apiService.getPosts(DatabaseApi.getToken())
             }catch (e: HttpException){
                 e.printStackTrace()
                 emit(Result.Error(Exception("Algo salió mal")))
@@ -81,6 +79,7 @@ class PostsRepository(
             emit(Result.Loading(true))
 
             val newPost = try {
+                val token = DatabaseApi.getToken()
                 apiService.insertPost(post, token)
             }catch (e: HttpException){
                 e.printStackTrace()
@@ -106,6 +105,7 @@ class PostsRepository(
     suspend fun likePost(id: Long, like: Boolean): Flow<Result<Post>> {
         return flow {
             emit(Result.Loading(true))
+            val token = DatabaseApi.getToken()
             val result = try{
                 if(like){
                     apiService.likePost(id, token)
@@ -140,6 +140,7 @@ class PostsRepository(
 
     suspend fun syncPosts(posts: List<PostEntity>){
         try{
+            val token = DatabaseApi.getToken()
             apiService.insertLikes(posts.map { it.asPostDomainModel().id }, token)
             posts.forEach { it.likeSynced = true }
             postsDao.syncPost(posts)

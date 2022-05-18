@@ -11,8 +11,6 @@ class UsersRepository(
     private val apiService: DatabaseService,
 ) {
 
-    private val token = DatabaseApi.getToken()
-
     suspend fun loginUser(email: String, password: String): Flow<Result<LoginResponse>>{
         val body = UserLoginRequest(email, password)
         return flow {
@@ -64,7 +62,7 @@ class UsersRepository(
         return flow {
             emit(Result.Loading(true))
             val response = try {
-                apiService.updateUserPassword(body, token)
+                apiService.updateUserPassword(body, DatabaseApi.getToken())
             }catch(e: Exception){
                 emit(Result.Error(Exception("Algo salió mal, intenta de nuevo más tarde")))
                 null
