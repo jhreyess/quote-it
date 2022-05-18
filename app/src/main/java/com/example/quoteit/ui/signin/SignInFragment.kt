@@ -72,8 +72,8 @@ class SignInFragment : Fragment(), SignInContract.View {
          with(loginCredentials){
             userPreferences.saveLogInCredentials(
                email,
-               password,
                username!!,
+               password,
                userId!!,
                requireContext()
             )
