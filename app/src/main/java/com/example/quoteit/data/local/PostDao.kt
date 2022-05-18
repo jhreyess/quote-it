@@ -7,14 +7,14 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PostDao {
 
-    @Query("SELECT * FROM posts")
-    suspend fun getAllPosts(): List<PostEntity>
+    @Query("SELECT * FROM posts WHERE date BETWEEN :startDate AND :endDate")
+    suspend fun getFeedPosts(startDate: Long, endDate: Long): List<PostEntity>
 
     @Query("SELECT * FROM posts WHERE isLiked = 1")
-    fun getLikedPosts(): Flow<List<PostEntity>>
+    suspend fun getLikedPosts(): List<PostEntity>
 
-    @Query("SELECT * FROM posts WHERE postBy = :username")
-    fun getAllUserPosts(username: String): Flow<List<PostEntity>>
+    @Query("SELECT * FROM posts WHERE userId = :id")
+    suspend fun getAllUserPosts(id: Long): List<PostEntity>
 
     @Query("SELECT * FROM posts WHERE likeSynced = 0")
     suspend fun getUnsyncedPosts(): List<PostEntity>
@@ -34,7 +34,7 @@ interface PostDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNewPost(post: PostEntity)
 
-    @Query("DELETE FROM posts")
-    suspend fun deleteAll()
+    @Query("DELETE FROM posts WHERE isLiked = 0 AND likeSynced = 1 AND isFromUser = 0")
+    suspend fun deleteAllFeed()
 
 }

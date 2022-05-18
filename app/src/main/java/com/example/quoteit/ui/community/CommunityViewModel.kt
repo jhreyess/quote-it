@@ -28,7 +28,7 @@ class CommunityViewModel(private val postsRepo: PostsRepository) : ViewModel() {
 
     fun getPosts(
         fetchFromRemote: Boolean = false,
-        appendContent: Boolean = false
+        appendContent: Boolean = false,
     ) {
         viewModelScope.launch {
             _error.value = false

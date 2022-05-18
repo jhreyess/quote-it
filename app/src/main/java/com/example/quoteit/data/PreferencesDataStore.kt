@@ -21,6 +21,7 @@ class PreferencesDataStore(dataStore: DataStore<Preferences>) {
     private val userLoginPassword = stringPreferencesKey("user_login_password")
     private val userToken = stringPreferencesKey("user_token")
     private val userName = stringPreferencesKey("user_name")
+    private val userId = longPreferencesKey("user_id")
 
     val preferenceFlow: Flow<UserPreferences> = dataStore.data
         .catch {
@@ -35,19 +36,14 @@ class PreferencesDataStore(dataStore: DataStore<Preferences>) {
     val preferenceToken: Flow<String> = dataStore.data
         .map { it[userToken] ?: "" }
 
-    val preferenceUsername: Flow<String> = dataStore.data
-        .map { it[userName] ?: "" }
-
-    val preferencePassword: Flow<String> = dataStore.data
-        .map { it[userLoginPassword] ?: "" }
-
     private fun mapUserPreferences(preferences: Preferences): UserPreferences{
         val loginPref = preferences[isUserLoggedIn] ?: false
         val emailPref = preferences[userLoginEmail] ?: ""
         val usernamePref = preferences[userName] ?: ""
         val passwordPref = preferences[userLoginPassword] ?: ""
+        val userId = preferences[userId] ?: 0L
         val userToken = preferences[userToken] ?: ""
-        return UserPreferences(loginPref, emailPref, passwordPref, usernamePref, userToken)
+        return UserPreferences(loginPref, emailPref, passwordPref, userId, usernamePref, userToken)
     }
 
     suspend fun saveLogInPreference(isLoggedIn: Boolean, context: Context) {
@@ -62,16 +58,18 @@ class PreferencesDataStore(dataStore: DataStore<Preferences>) {
         }
     }
 
-    suspend fun saveUsernamePreference(username: String, context: Context){
-        context.dataStore.edit { preferences ->
-            preferences[userName] = username
-        }
-    }
-
-    suspend fun saveLogInCredentials(email: String, password: String, context: Context){
+    suspend fun saveLogInCredentials(
+        email: String,
+        username: String,
+        password: String,
+        id: Long,
+        context: Context
+    ){
         context.dataStore.edit { preferences ->
             preferences[userLoginEmail] = email
+            preferences[userName] = username
             preferences[userLoginPassword] = password
+            preferences[userId] = id
         }
     }
 
@@ -84,6 +82,7 @@ data class UserPreferences(
     val isUserLoggedIn: Boolean = false,
     val userEmail: String = "",
     val userPassword: String = "",
+    val userId: Long = 0L,
     val username: String = "",
     val token: String = ""
 )

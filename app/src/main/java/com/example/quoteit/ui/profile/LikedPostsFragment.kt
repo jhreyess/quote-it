@@ -7,11 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.quoteit.R
 import com.example.quoteit.databinding.FragmentLikedPostsBinding
-import com.example.quoteit.databinding.FragmentProfileBinding
 import com.example.quoteit.ui.QuoteItApp
-import com.example.quoteit.ui.community.PostAdapter
+import com.example.quoteit.ui.utils.PostAdapter
 import com.example.quoteit.ui.utils.AdapterCallback
 
 class LikedPostsFragment : Fragment() {
@@ -41,9 +39,7 @@ class LikedPostsFragment : Fragment() {
                 // TODO: Settings
             }
 
-            override fun onFavoriteClicked(id: Long, b: Boolean) {
-                // TODO:
-            }
+            override fun onFavoriteClicked(id: Long, b: Boolean) { model.likePost(id, b) }
         })
         binding.backToProfileBtn.setOnClickListener { findNavController().popBackStack() }
         binding.likedPostsRecycler.adapter = adapter

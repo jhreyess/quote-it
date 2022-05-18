@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.quoteit.R
 import com.example.quoteit.data.PreferencesDataStore
 import com.example.quoteit.data.dataStore
+import com.example.quoteit.data.network.LoginResponse
 import com.example.quoteit.databinding.FragmentRegisterBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -65,14 +66,21 @@ class RegisterFragment : Fragment(), RegisterContract.View {
             exception.message, Toast.LENGTH_LONG).show()
     }
     override fun showWrongCredentialsError(error: String?) { binding.errorView.text = error ?: "" }
-    override fun launchApp(token: String?, username: String) {
+    override fun launchApp(loginCredentials: LoginResponse) {
         CoroutineScope(Dispatchers.IO).launch {
             val email = binding.userEmail.text.toString()
             val password = binding.userPassword.text.toString()
-            userPreferences.saveLogInCredentials(email, password, requireContext())
-            userPreferences.saveUsernamePreference(username, requireContext())
-            token?.let { userPreferences.saveToken(it ,requireContext()) }
-            userPreferences.saveLogInPreference(true, requireContext())
+            with(loginCredentials){
+                userPreferences.saveLogInCredentials(
+                    email,
+                    password,
+                    username!!,
+                    userId!!,
+                    requireContext()
+                )
+                token?.let { userPreferences.saveToken(it, requireContext()) }
+                userPreferences.saveLogInPreference(true, requireContext())
+            }
         }
     }
 

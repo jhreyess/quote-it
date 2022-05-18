@@ -27,7 +27,7 @@ class RegisterPresenter(
                         when(result) {
                             is Result.Success -> {
                                 if (result.data.success) {
-                                    view?.launchApp(result.data.token, result.data.username!!)
+                                    view?.launchApp(result.data)
                                 } else {
                                     view?.showWrongCredentialsError(result.data.error)
                                 }

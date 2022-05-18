@@ -20,39 +20,45 @@ private val retrofit = Retrofit.Builder()
 
 // Endpoints ~ Api DataSource
 interface DatabaseService {
-    @POST("users/register")
+    @POST("session/register")
     suspend fun insertUser(@Body body: UserRegisterRequest) : LoginResponse
 
-    @POST("users/login")
+    @POST("session/login")
     suspend fun queryUser(@Body body: UserLoginRequest) : LoginResponse
 
-    @POST("users/password")
+    @POST("session/password")
     suspend fun updateUserPassword(@Body body: UpdatePasswordRequest,
         @Header("x-access-token") token: String) : LoginResponse
 
-    @POST("posts")
+    @GET("me/feed")
+    suspend fun getUserPosts(@Header("x-access-token") token: String) : PostResponse
+
+    @GET("me/likes")
+    suspend fun getLikedPosts(@Header("x-access-token") token: String) : PostResponse
+
+    @POST("feed")
     suspend fun insertPost(@Body newPost: NewPost,
         @Header("x-access-token") token: String
     ) : PostResponse
 
-    @GET("posts")
+    @GET("feed")
     suspend fun getPosts(@Header("x-access-token") token: String) : PostResponse
 
-    @POST("posts/{postId}/likes")
+    @POST("feed/{postId}/likes")
     suspend fun likePost( @Path("postId") id: Long,
         @Header("x-access-token") token: String) : PostResponse
 
-    @DELETE("posts/{postId}/likes")
+    @DELETE("feed/{postId}/likes")
     suspend fun dislikePost(@Path("postId") id: Long,
         @Header("x-access-token") token: String) : PostResponse
 
-    @DELETE("posts/sync")
+    @DELETE("feed/sync")
     suspend fun insertLikes(@Body values: List<Long>,
         @Header("x-access-token") token: String) : PostResponse
 }
 
 object DatabaseApi{
-    var JWT_TOKEN = ""
+    private var JWT_TOKEN = ""
     fun setToken(token: String) { JWT_TOKEN = token }
     fun getToken() = JWT_TOKEN
     val retrofitService: DatabaseService by lazy { retrofit.create(DatabaseService::class.java) }

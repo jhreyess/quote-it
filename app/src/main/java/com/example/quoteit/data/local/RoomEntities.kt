@@ -5,6 +5,7 @@ import com.example.quoteit.domain.models.Folder
 import com.example.quoteit.domain.models.FolderWQuotes
 import com.example.quoteit.domain.models.Post
 import com.example.quoteit.domain.models.Quote
+import java.util.*
 
 @Entity(tableName = "folders")
 data class FolderEntity(
@@ -17,11 +18,14 @@ data class FolderEntity(
 data class PostEntity(
     @PrimaryKey(autoGenerate = true) val postId: Long = 0,
     val postBy: String,
+    val userId: Long,
     val noLikes: Int = 0,
     val quoteContent: String,
     val quoteAuthor: String,
+    val date: Long,
     val isLiked: Boolean,
-    var likeSynced: Boolean
+    var likeSynced: Boolean,
+    var isFromUser: Boolean
 )
 
 @Entity(tableName = "quotes")

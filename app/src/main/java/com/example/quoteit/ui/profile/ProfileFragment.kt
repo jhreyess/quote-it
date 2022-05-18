@@ -13,8 +13,8 @@ import com.example.quoteit.data.PreferencesDataStore
 import com.example.quoteit.data.dataStore
 import com.example.quoteit.databinding.FragmentProfileBinding
 import com.example.quoteit.ui.QuoteItApp
-import com.example.quoteit.ui.community.PostAdapter
 import com.example.quoteit.ui.utils.AdapterCallback
+import com.example.quoteit.ui.utils.PostAdapter
 import kotlinx.coroutines.flow.collect
 
 class ProfileFragment : Fragment() {
@@ -37,16 +37,18 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val preferences = PreferencesDataStore(requireContext().dataStore)
-        val adapter = ProfilePostAdapter(context, object: AdapterCallback {
+        val adapter = PostAdapter(context, object: AdapterCallback {
             override fun onDetailsClicked(view: View, id: Long) {
                 // TODO: POST SETTINGS
             }
+
+            override fun onFavoriteClicked(id: Long, b: Boolean) { model.likePost(id, b) }
         })
 
         binding.userPostsRecycler.adapter = adapter
-        preferences.preferenceUsername.asLiveData().observe(viewLifecycleOwner) {
-            binding.profileToolbar.title = it
-            model.getUserPosts(it)
+        preferences.preferenceFlow.asLiveData().observe(viewLifecycleOwner) {
+            binding.profileToolbar.title = it.username
+            model.getUserPosts(fromUser = it.userId)
         }
         binding.likeFolder.setOnClickListener {
             val action = R.id.action_profileFragment_to_likedPostsFragment

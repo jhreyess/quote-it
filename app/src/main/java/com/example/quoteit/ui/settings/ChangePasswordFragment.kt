@@ -39,8 +39,8 @@ class ChangePasswordFragment : Fragment() {
         // Bindings
         context?.let {
             val prefs = PreferencesDataStore(it.dataStore)
-            prefs.preferencePassword.asLiveData().observe(viewLifecycleOwner){ pass ->
-                binding.userOldPassword.setText(pass)
+            prefs.preferenceFlow.asLiveData().observe(viewLifecycleOwner){ pref ->
+                binding.userOldPassword.setText(pref.userPassword)
             }
         }
         binding.loadingScreen.setOnClickListener { /* This will prevent clicks from behind views */ }

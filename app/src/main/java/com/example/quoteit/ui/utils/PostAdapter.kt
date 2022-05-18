@@ -1,4 +1,4 @@
-package com.example.quoteit.ui.profile
+package com.example.quoteit.ui.utils
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,15 +9,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.quoteit.R
-import com.example.quoteit.domain.models.Folder
 import com.example.quoteit.domain.models.Post
-import com.example.quoteit.ui.community.CommunityFragment
-import com.example.quoteit.ui.utils.AdapterCallback
 
-class ProfilePostAdapter(
+class PostAdapter(
     private val context: Context?,
     private val callback: AdapterCallback
-): RecyclerView.Adapter<ProfilePostAdapter.PostViewHolder>() {
+): RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
     private var posts: List<Post> = listOf()
 
@@ -52,6 +49,7 @@ class ProfilePostAdapter(
         holder.isLiked.isChecked = post.isLiked
         holder.isLiked.setOnCheckedChangeListener { _, newState ->
             post.likes = post.likes.plus(if(newState) 1 else -1)
+            post.isLiked = newState
             holder.likes.text = resources?.getString(R.string.likes_count, post.likes)
             callback.onFavoriteClicked(post.id, newState)
         }

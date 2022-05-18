@@ -1,8 +1,9 @@
 package com.example.quoteit.data.network
 
 import com.example.quoteit.data.local.PostEntity
-import com.example.quoteit.domain.models.Post
 import com.squareup.moshi.Json
+import java.text.SimpleDateFormat
+import java.util.*
 
 // User HTTP Bodies
 data class UserLoginRequest(
@@ -31,8 +32,9 @@ sealed class Result<out R> {
 data class LoginResponse(
     @Json(name = "success") val success: Boolean,
     @Json(name = "username") val username: String? = null,
-    @Json(name = "error") var error: String? = null,
-    @Json(name = "token") var token: String? = null
+    @Json(name = "userId") val userId: Long? = null,
+    @Json(name = "token") var token: String? = null,
+    @Json(name = "error") var error: String? = null
 )
 
 data class PostResponse(
@@ -47,11 +49,16 @@ data class DatabasePost(
     val quote_author: String,
     val quote_desc: String,
     val post_by: String,
-    val liked: Boolean = false
+    val user_id: Long,
+    val timestamp: String,
+    val liked: Boolean = false,
+    val creatorActions: Boolean
 )
 
 fun DatabasePost.asPostEntity(): PostEntity {
-    return PostEntity(post_id, post_by, no_likes, quote_desc, quote_author, liked, true)
+    val date = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(timestamp)
+    return PostEntity(post_id, post_by, user_id, no_likes,
+        quote_desc, quote_author, date!!.time, liked, true, creatorActions)
 }
 
 
