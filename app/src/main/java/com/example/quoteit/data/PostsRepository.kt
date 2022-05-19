@@ -38,7 +38,7 @@ class PostsRepository(
 
             // If no local liked posts
             val remoteLikedPosts = try {
-                apiService.getLikedPosts(DatabaseApi.getToken())
+                apiService.getLikedPosts()
             }catch (e: HttpException){
                 e.printStackTrace()
                 emit(Result.Error(Exception("Algo salió mal")))
@@ -84,7 +84,7 @@ class PostsRepository(
             }
 
             val remoteUserPosts = try{
-                apiService.getUserPosts(DatabaseApi.getToken())
+                apiService.getUserPosts()
             }catch (e: Exception){
                 e.printStackTrace()
                 emit(Result.Error(Exception("Algo salió mal")))
@@ -127,7 +127,7 @@ class PostsRepository(
 
             // If no local posts or fetchFromRemote
             val remotePosts = try {
-                apiService.getPosts(DatabaseApi.getToken())
+                apiService.getPosts()
             }catch (e: HttpException){
                 e.printStackTrace()
                 emit(Result.Error(Exception("Algo salió mal")))
@@ -147,8 +147,8 @@ class PostsRepository(
                     data = postsDao.getFeedPosts(now, yesterday)
                         .map { it.asPostDomainModel() }
                 ))
-                emit(Result.Loading(false))
             }
+            emit(Result.Loading(false))
         }
     }
 
@@ -157,8 +157,7 @@ class PostsRepository(
             emit(Result.Loading(true))
 
             val newPost = try {
-                val token = DatabaseApi.getToken()
-                apiService.insertPost(post, token)
+                apiService.insertPost(post)
             }catch (e: HttpException){
                 e.printStackTrace()
                 emit(Result.Error(Exception("Algo salió mal")))
@@ -183,12 +182,11 @@ class PostsRepository(
     suspend fun likePost(id: Long, like: Boolean): Flow<Result<Post>> {
         return flow {
             emit(Result.Loading(true))
-            val token = DatabaseApi.getToken()
             val result = try{
                 if(like){
-                    apiService.likePost(id, token)
+                    apiService.likePost(id)
                 }else{
-                    apiService.dislikePost(id, token)
+                    apiService.dislikePost(id)
                 }
             }catch (e: HttpException){
                 e.printStackTrace()
@@ -218,8 +216,7 @@ class PostsRepository(
 
     suspend fun syncPosts(posts: List<PostEntity>){
         try{
-            val token = DatabaseApi.getToken()
-            apiService.insertLikes(posts.map { it.asPostDomainModel().id }, token)
+            apiService.insertLikes(posts.map { it.asPostDomainModel().id })
             posts.forEach { it.likeSynced = true }
             postsDao.syncPost(posts)
         }catch (e: HttpException){

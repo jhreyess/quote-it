@@ -5,23 +5,6 @@ import com.squareup.moshi.Json
 import java.text.SimpleDateFormat
 import java.util.*
 
-// User HTTP Bodies
-data class UserLoginRequest(
-    val email: String = "",
-    val password: String = ""
-)
-
-data class UserRegisterRequest(
-    val username: String = "",
-    val email: String =  "",
-    val password: String = ""
-)
-
-data class UpdatePasswordRequest(
-    val password: String = "",
-)
-
-
 // Responses
 sealed class Result<out R> {
     data class Success<out T>(val data: T) : Result<T>()
@@ -29,18 +12,10 @@ sealed class Result<out R> {
     data class Loading(val isLoading: Boolean) : Result<Nothing>()
 }
 
-data class LoginResponse(
-    @Json(name = "success") val success: Boolean,
-    @Json(name = "username") val username: String? = null,
-    @Json(name = "userId") val userId: Long? = null,
-    @Json(name = "token") var token: String? = null,
-    @Json(name = "error") var error: String? = null
-)
-
 data class PostResponse(
     @Json(name = "success") val success: Boolean,
-    @Json(name = "error") var error: String? = null,
-    @Json(name = "data") var data: List<DatabasePost> = listOf()
+    @Json(name = "error") val error: String? = null,
+    @Json(name = "data") val data: List<DatabasePost> = listOf()
 )
 
 data class DatabasePost(

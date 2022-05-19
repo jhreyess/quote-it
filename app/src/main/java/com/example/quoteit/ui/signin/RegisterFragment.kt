@@ -13,6 +13,7 @@ import com.example.quoteit.R
 import com.example.quoteit.data.PreferencesDataStore
 import com.example.quoteit.data.dataStore
 import com.example.quoteit.data.network.LoginResponse
+import com.example.quoteit.data.network.config.SessionManager
 import com.example.quoteit.databinding.FragmentRegisterBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -78,7 +79,8 @@ class RegisterFragment : Fragment(), RegisterContract.View {
                     userId!!,
                     requireContext()
                 )
-                token?.let { userPreferences.saveToken(it, requireContext()) }
+                token?.let { SessionManager.setAccessToken(it) }
+                refreshToken?.let { userPreferences.saveToken(it, requireContext()) }
                 userPreferences.saveLogInPreference(true, requireContext())
             }
         }

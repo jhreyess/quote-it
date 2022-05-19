@@ -63,7 +63,6 @@ class HomeFragment : Fragment() {
 
     private fun onItemSelected(item: MenuItem) = when(item.itemId) {
         R.id.home_settings -> {
-            Log.d("Navigation", "Settings fragment...")
             val action = R.id.action_homeFragment_to_settingsFragment
             findNavController().navigate(action)
             true

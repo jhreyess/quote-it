@@ -31,7 +31,6 @@ class LikedPostsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        model.getLikedPosts()
 
         // Bindings
         val adapter = PostAdapter(context, object: AdapterCallback {

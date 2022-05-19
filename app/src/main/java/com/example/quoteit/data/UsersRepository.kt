@@ -8,7 +8,7 @@ import java.io.IOException
 import java.lang.Exception
 
 class UsersRepository(
-    private val apiService: DatabaseService,
+    private val apiService: AuthenticationService,
 ) {
 
     suspend fun loginUser(email: String, password: String): Flow<Result<LoginResponse>>{
@@ -62,7 +62,7 @@ class UsersRepository(
         return flow {
             emit(Result.Loading(true))
             val response = try {
-                apiService.updateUserPassword(body, DatabaseApi.getToken())
+                apiService.updateUserPassword(body)
             }catch(e: Exception){
                 emit(Result.Error(Exception("Algo salió mal, intenta de nuevo más tarde")))
                 null
