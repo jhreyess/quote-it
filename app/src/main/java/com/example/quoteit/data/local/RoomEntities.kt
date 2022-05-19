@@ -5,7 +5,6 @@ import com.example.quoteit.domain.models.Folder
 import com.example.quoteit.domain.models.FolderWQuotes
 import com.example.quoteit.domain.models.Post
 import com.example.quoteit.domain.models.Quote
-import java.util.*
 
 @Entity(tableName = "folders")
 data class FolderEntity(
@@ -58,10 +57,6 @@ fun List<FolderEntity>.asFolderDomainModel(): List<Folder> {
 
 fun List<QuoteEntity>.asQuoteDomainModel(): List<Quote> {
     return map { Quote(it.quoteId, it.author, it.content, it.isFavorite) }
-}
-
-fun List<PostEntity>.asPostDomainModel(): List<Post> {
-    return map { Post(it.postId, it.postBy, it.quoteContent, it.quoteAuthor, it.noLikes, it.isLiked) }
 }
 
 fun PostEntity.asPostDomainModel(): Post {

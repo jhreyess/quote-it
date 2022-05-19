@@ -70,15 +70,16 @@
     </style>
 
     <style name="LikeIcon" parent="Theme.QuoteIt">
-        <item name="colorSecondary">@color/pink</item>
+        <item name="colorAccent">@color/pink</item>
         <item name="android:textColorSecondary">@color/light_gray</item>
     </style>
 
     <style name="FavIcon" parent="Theme.QuoteIt">
-        <item name="colorSecondary">@color/mustard</item>
+        <item name="colorAccent">@color/mustard</item>
         <item name="android:textColorSecondary">@color/light_gray</item>
     </style>
 
+    <!-- WIDGETS -->
     <style name="Widget.QuoteIt.AppWidget.Container" parent="android:Widget">
         <item name="android:id">@android:id/background</item>
         <item name="android:background">?android:attr/colorBackground</item>

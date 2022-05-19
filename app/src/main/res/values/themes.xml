@@ -5,6 +5,7 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/yellow</item>
         <item name="colorOnPrimary">@color/darker_gray</item>
+        <item name="colorAccent">@color/white</item>
 
         <!-- Widgets -->
         <item name="colorSecondary">@color/yellow</item>
@@ -43,9 +44,9 @@
         <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
-    <style name="SettingsFragmentStyle">
-        <item name="colorSecondary">@color/white</item>
-        <item name="colorPrimary">@color/white</item>
+    <style name="SettingsFragmentStyle" parent="@style/PreferenceThemeOverlay">
+        <item name="android:layout">@layout/fragment_settings</item>
+        <item name="preferenceCategoryTitleTextAppearance">@style/TextAppearance.MaterialComponents.Subtitle2</item>
         <item name="android:textColor">@color/white</item>
     </style>
 

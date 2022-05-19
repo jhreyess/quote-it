@@ -1,5 +1,6 @@
 package com.example.quoteit.data
 
+import android.util.Log
 import com.example.quoteit.data.local.PostDao
 import com.example.quoteit.data.local.PostEntity
 import com.example.quoteit.data.local.asPostDomainModel
@@ -113,7 +114,7 @@ class PostsRepository(
             val now = System.currentTimeMillis()
             val dayMillis = 24 * 60 * 60 * 1000
             val yesterday = now.minus(dayMillis)
-            val localPosts = postsDao.getFeedPosts(now, yesterday)
+            val localPosts = postsDao.getFeedPosts(yesterday, now)
             emit(Result.Success(
                 data = localPosts.map { it.asPostDomainModel() }
             ))
@@ -144,7 +145,7 @@ class PostsRepository(
                     posts.data.map { it.asPostEntity() }
                 )
                 emit(Result.Success(
-                    data = postsDao.getFeedPosts(now, yesterday)
+                    data = postsDao.getFeedPosts(yesterday, now)
                         .map { it.asPostDomainModel() }
                 ))
             }
@@ -179,9 +180,10 @@ class PostsRepository(
         }
     }
 
-    suspend fun likePost(id: Long, like: Boolean): Flow<Result<Post>> {
+    suspend fun likePost(id: Long, like: Boolean): Flow<Result<Boolean>> {
         return flow {
             emit(Result.Loading(true))
+            emit(Result.Success( data = false))
             val result = try{
                 if(like){
                     apiService.likePost(id)
@@ -201,10 +203,11 @@ class PostsRepository(
             result.let {
                 val synced = it?.success ?: false
                 val diff = if(like) 1 else -1
-                val syncedPost = postsDao.getPost(
-                    postsDao.syncPost(id, like, synced, diff).toLong()
-                )
-                emit(Result.Success( data = syncedPost.first().asPostDomainModel() ))
+                val unsyncedPost = postsDao.getPost(id).asPostDomainModel()
+                if(unsyncedPost.isLiked != like){
+                    postsDao.syncPost(id, like, synced, diff)
+                    emit(Result.Success( data = true ))
+                }
             }
             emit(Result.Loading(false))
         }
@@ -216,9 +219,10 @@ class PostsRepository(
 
     suspend fun syncPosts(posts: List<PostEntity>){
         try{
-            apiService.insertLikes(posts.map { it.asPostDomainModel().id })
+            val body = SyncPostRequest(posts.map { it.postId })
+            apiService.insertLikes(body)
             posts.forEach { it.likeSynced = true }
-            postsDao.syncPost(posts)
+            postsDao.syncListPost(posts)
         }catch (e: HttpException){
             e.printStackTrace()
         }catch (e: IOException){

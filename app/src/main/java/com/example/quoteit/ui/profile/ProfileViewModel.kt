@@ -1,5 +1,6 @@
 package com.example.quoteit.ui.profile
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.quoteit.data.PostsRepository
 import com.example.quoteit.data.network.Result
@@ -18,15 +19,18 @@ class ProfileViewModel(private val postsRepo: PostsRepository): ViewModel() {
     }
     val likedPosts: LiveData<List<Post>> get() = _likedPosts
 
+    private val _isLoading = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> get() = _isLoading
+
     fun getUserPosts(
-        fetchFromRemote: Boolean = false,
+        fetchFromRemoteUser: Boolean = false,
         fromUser: Long
     ) {
         viewModelScope.launch {
-            postsRepo.getUserPosts(fetchFromRemote, fromUser).collect { result ->
+            postsRepo.getUserPosts(fetchFromRemoteUser, fromUser).collect { result ->
                 when(result){
                     is Result.Success -> { setPosts(result.data) }
-                    else -> {}
+                    is Result.Loading -> { _isLoading.value = result.isLoading }
                 }
             }
         }
@@ -39,7 +43,7 @@ class ProfileViewModel(private val postsRepo: PostsRepository): ViewModel() {
             postsRepo.getLikedPosts(fetchFromRemote).collect { result ->
                 when(result){
                     is Result.Success -> { _likedPosts.value = result.data.reversed() }
-                    else -> {}
+                    is Result.Loading -> { _isLoading.value = result.isLoading }
                 }
             }
         }
@@ -47,13 +51,7 @@ class ProfileViewModel(private val postsRepo: PostsRepository): ViewModel() {
 
     fun likePost(postId: Long, like: Boolean){
         viewModelScope.launch {
-            postsRepo.likePost(postId, like).collect { result ->
-                when(result){
-                    is Result.Success -> {}
-                    is Result.Error -> {}
-                    is Result.Loading -> {}
-                }
-            }
+            postsRepo.likePost(postId, like).collect()
         }
     }
 

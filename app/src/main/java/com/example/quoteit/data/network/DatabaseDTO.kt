@@ -5,6 +5,11 @@ import com.squareup.moshi.Json
 import java.text.SimpleDateFormat
 import java.util.*
 
+// Http Bodies
+data class SyncPostRequest(
+    val values: List<Long>
+)
+
 // Responses
 sealed class Result<out R> {
     data class Success<out T>(val data: T) : Result<T>()

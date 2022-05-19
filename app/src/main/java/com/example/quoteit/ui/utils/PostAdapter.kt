@@ -67,6 +67,8 @@ class PostAdapter(
                 val oldItem = posts[oldItemPosition]
                 val newItem = newData[newItemPosition]
                 return oldItem.id == newItem.id
+                        && oldItem.isLiked == newItem.isLiked
+                        && oldItem.likes == newItem.likes
                         && oldItem.user == newItem.user
             }
 

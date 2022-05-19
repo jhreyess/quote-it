@@ -1,15 +1,9 @@
 package com.example.quoteit.ui.community
 
-import android.util.Log
 import androidx.lifecycle.*
-import com.example.quoteit.data.FolderQuoteRepository
-import com.example.quoteit.data.FoldersRepository
 import com.example.quoteit.data.PostsRepository
-import com.example.quoteit.data.QuotesRepository
 import com.example.quoteit.data.network.Result
-import com.example.quoteit.domain.models.NewPost
 import com.example.quoteit.domain.models.Post
-import com.example.quoteit.ui.home.HomeViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -44,13 +38,7 @@ class CommunityViewModel(private val postsRepo: PostsRepository) : ViewModel() {
 
     fun likePost(postId: Long, like: Boolean){
         viewModelScope.launch {
-            postsRepo.likePost(postId, like).collect { result ->
-                when(result){
-                    is Result.Success -> {}
-                    is Result.Error -> {}
-                    is Result.Loading -> {}
-                }
-            }
+            postsRepo.likePost(postId, like).collect()
         }
     }
 

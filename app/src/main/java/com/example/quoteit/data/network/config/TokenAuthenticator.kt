@@ -16,7 +16,6 @@ class TokenAuthenticator : Authenticator {
         val refreshResult = refreshToken()
         return if (refreshResult) {
             val newToken = SessionManager.getAccessToken()
-            Log.d("JWT_NEW", response.request().toString())
             response.request().newBuilder()
                 .header("x-access-token", newToken)
                 .build()

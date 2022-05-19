@@ -40,10 +40,12 @@ class LikedPostsFragment : Fragment() {
 
             override fun onFavoriteClicked(id: Long, b: Boolean) { model.likePost(id, b) }
         })
+        binding.profileLikesSwipeRefresh.setOnRefreshListener { model.getLikedPosts(fetchFromRemote = true) }
         binding.backToProfileBtn.setOnClickListener { findNavController().popBackStack() }
         binding.likedPostsRecycler.adapter = adapter
         binding.likedPostsRecycler.setHasFixedSize(true)
         model.likedPosts.observe(viewLifecycleOwner) { adapter.setData(it) }
+        model.isLoading.observe(viewLifecycleOwner) { binding.profileLikesSwipeRefresh.isRefreshing = it}
     }
 
     override fun onDestroyView() {

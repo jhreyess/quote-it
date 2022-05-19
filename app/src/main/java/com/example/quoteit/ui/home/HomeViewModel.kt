@@ -53,7 +53,7 @@ class HomeViewModel(
 
     fun deleteQuoteFromFolder(quoteId: Long, folderId: Long){
         viewModelScope.launch {
-            if(folderId == 2L) {
+            if(folderId == 1L || folderId == 2L) {
                 quotesRepo.delete(quoteId)
                 foldersQuoteRepo.deleteAllQuote(quoteId)
                 foldersRepo.updateAllCount()

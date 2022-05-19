@@ -135,7 +135,7 @@ class QuotesListFragment : Fragment(){
     private fun popUpMenuItem(item: MenuItem, quoteId: Long): Boolean {
         return when(item.itemId){
             R.id.delete_quote -> {
-                if(folderType == FolderType.PERSONAL) {
+                if(folderType != FolderType.REGULAR) {
                     showAlert(resources.getString(R.string.confirm_quote_delete)) {
                         mToast?.cancel()
                         mToast = Toast.makeText(requireContext(), resources.getString(R.string.removed_from_folder), Toast.LENGTH_SHORT)

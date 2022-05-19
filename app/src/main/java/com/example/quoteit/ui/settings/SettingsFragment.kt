@@ -2,6 +2,8 @@ package com.example.quoteit.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageButton
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceDataStore
@@ -18,7 +20,12 @@ import kotlinx.coroutines.withContext
 class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.root_preferences, rootKey)
+        addPreferencesFromResource(R.xml.root_preferences)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.findViewById<ImageButton>(R.id.back_to_home_btn).setOnClickListener { findNavController().popBackStack() }
         findPreference<Preference>("about")?.setOnPreferenceClickListener {
             findNavController().navigate(R.id.action_settingsFragment_to_aboutUsFragment)
             true

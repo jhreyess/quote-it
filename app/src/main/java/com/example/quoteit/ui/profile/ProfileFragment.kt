@@ -22,6 +22,8 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
+    private var userId: Long = 0L
+
     private val model: ProfileViewModel by viewModels {
         ProfileViewModelFactory((requireActivity().application as QuoteItApp).postsRepository)
     }
@@ -46,8 +48,10 @@ class ProfileFragment : Fragment() {
         })
 
         binding.userPostsRecycler.adapter = adapter
+        binding.profileSwipeRefresh.setOnRefreshListener { model.getUserPosts(fromUser = userId) }
         preferences.preferenceFlow.asLiveData().observe(viewLifecycleOwner) {
             binding.profileToolbar.title = it.username
+            userId = it.userId
             model.getUserPosts(fromUser = it.userId)
         }
         binding.likeFolder.setOnClickListener {
@@ -58,6 +62,7 @@ class ProfileFragment : Fragment() {
             binding.emptyProfileView.visibility = if(it.isEmpty()) View.VISIBLE else View.GONE
             if(it.isNotEmpty()){ adapter.setData(it) }
         }
+        model.isLoading.observe(viewLifecycleOwner) { binding.profileSwipeRefresh.isRefreshing = it}
     }
 
     override fun onDestroyView() {

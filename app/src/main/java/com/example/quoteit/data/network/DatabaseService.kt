@@ -1,5 +1,6 @@
 package com.example.quoteit.data.network
 
+import android.content.SyncRequest
 import android.util.Log
 import com.example.quoteit.data.network.config.SessionManager
 import com.example.quoteit.data.network.config.TokenAuthenticator
@@ -24,7 +25,6 @@ private val tokenInterceptor = Interceptor { chain ->
         .newBuilder()
         .header("x-access-token", SessionManager.getAccessToken())
         .build();
-    Log.d("JWT", request.header("x-access-token").toString())
     chain.proceed(request)
 }
 
@@ -56,13 +56,13 @@ interface DatabaseService {
     suspend fun getPosts() : PostResponse
 
     @POST("feed/{postId}/likes")
-    suspend fun likePost( @Path("postId") id: Long) : PostResponse
+    suspend fun likePost(@Path("postId") id: Long) : PostResponse
 
     @DELETE("feed/{postId}/likes")
     suspend fun dislikePost(@Path("postId") id: Long) : PostResponse
 
-    @DELETE("feed/sync")
-    suspend fun insertLikes(@Body values: List<Long>) : PostResponse
+    @POST("feed/sync")
+    suspend fun insertLikes(@Body values: SyncPostRequest) : PostResponse
 }
 
 object DatabaseApi {
