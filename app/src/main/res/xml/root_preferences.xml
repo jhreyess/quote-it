@@ -7,7 +7,7 @@
             app:key="about"
             app:title="@string/collaborators_settings"
             app:iconSpaceReserved="false"
-            app:fragment="com.example.quoteit.ui.settings.AboutUsFragment" />
+            app:fragment="com.quoteit.android.ui.settings.AboutUsFragment" />
 
     </PreferenceCategory>
 

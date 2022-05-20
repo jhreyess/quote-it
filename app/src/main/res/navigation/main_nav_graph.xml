@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/communityFragment"
-        android:name="com.example.quoteit.ui.community.CommunityFragment"
+        android:name="com.quoteit.android.ui.community.CommunityFragment"
         android:label="@string/community_label"
         tools:layout="@layout/fragment_community" />
     <fragment
         android:id="@+id/discoverFragment"
-        android:name="com.example.quoteit.ui.discover.DiscoverFragment"
+        android:name="com.quoteit.android.ui.discover.DiscoverFragment"
         android:label="@string/discover_label"
         tools:layout="@layout/fragment_discover" />
 
@@ -20,7 +20,7 @@
         app:startDestination="@id/homeFragment">
         <fragment
             android:id="@+id/quotesListFragment"
-            android:name="com.example.quoteit.ui.home.QuotesListFragment"
+            android:name="com.quoteit.android.ui.home.QuotesListFragment"
             tools:layout="@layout/fragment_quotes_list">
             <action
                 android:id="@+id/action_quotesListFragment_to_newQuote"
@@ -28,7 +28,7 @@
         </fragment>
         <fragment
             android:id="@+id/homeFragment"
-            android:name="com.example.quoteit.ui.home.HomeFragment"
+            android:name="com.quoteit.android.ui.home.HomeFragment"
             android:label="@string/home_label"
             tools:layout="@layout/fragment_home">
             <action
@@ -48,14 +48,14 @@
         </fragment>
         <fragment
             android:id="@+id/newQuote"
-            android:name="com.example.quoteit.ui.home.NewQuoteFragment"
+            android:name="com.quoteit.android.ui.home.NewQuoteFragment"
             android:label="@string/add_folder_quote"
             tools:layout="@layout/fragment_new_quote" />
         <navigation android:id="@+id/settingsNavigation"
             app:startDestination="@id/settingsFragment">
             <fragment
                 android:id="@+id/settingsFragment"
-                android:name="com.example.quoteit.ui.settings.SettingsFragment"
+                android:name="com.quoteit.android.ui.settings.SettingsFragment"
                 android:label="SettingsFragment" >
                 <action
                     android:id="@+id/action_settingsFragment_to_aboutUsFragment"
@@ -66,12 +66,12 @@
             </fragment>
             <fragment
                 android:id="@+id/aboutUsFragment"
-                android:name="com.example.quoteit.ui.settings.AboutUsFragment"
+                android:name="com.quoteit.android.ui.settings.AboutUsFragment"
                 android:label="AboutUsFragment"
                 tools:layout="@layout/fragment_about_us"/>
             <fragment
                 android:id="@+id/changePasswordFragment"
-                android:name="com.example.quoteit.ui.settings.ChangePasswordFragment"
+                android:name="com.quoteit.android.ui.settings.ChangePasswordFragment"
                 android:label="fragment_change_password"
                 tools:layout="@layout/fragment_change_password" />
         </navigation>
@@ -80,7 +80,7 @@
         app:startDestination="@id/profileFragment">
         <fragment
             android:id="@+id/profileFragment"
-            android:name="com.example.quoteit.ui.profile.ProfileFragment"
+            android:name="com.quoteit.android.ui.profile.ProfileFragment"
             android:label="@string/profile_label"
             tools:layout="@layout/fragment_profile" >
             <action
@@ -93,7 +93,7 @@
         </fragment>
         <fragment
             android:id="@+id/likedPostsFragment"
-            android:name="com.example.quoteit.ui.profile.LikedPostsFragment"
+            android:name="com.quoteit.android.ui.profile.LikedPostsFragment"
             android:label="fragment_liked_posts"
             tools:layout="@layout/fragment_liked_posts" />
     </navigation>

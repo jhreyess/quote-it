@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/galleryChooserFragment"
-        android:name="com.example.quoteit.ui.edit.GalleryChooserFragment"
+        android:name="com.quoteit.android.ui.edit.GalleryChooserFragment"
         tools:layout="@layout/fragment_gallery"
         android:label="fragment_gallery">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/imagePreviewFragment"
-        android:name="com.example.quoteit.ui.edit.ImagePreviewFragment"
+        android:name="com.quoteit.android.ui.edit.ImagePreviewFragment"
         tools:layout="@layout/fragment_image_preview"
         android:label="fragment_image_preview"/>
 </navigation>
