@@ -74,7 +74,6 @@ class QuotesListFragment : Fragment(){
         placeholderView = if(folderType == FolderType.FAVORITES) binding.emptyFavsView else binding.emptyView
 
         val adapter = QuoteAdapter(object: AdapterCallback{
-            //override fun onItemSelected(id: Long) { /* TODO: Possible share screen? */ }
             override fun onDetailsClicked(view: View, canEdit: Boolean, id: Long) {
                 showPopUp(view, R.menu.quote_detail_menu, id)
             }

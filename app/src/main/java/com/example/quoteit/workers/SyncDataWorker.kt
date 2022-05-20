@@ -16,11 +16,9 @@ class SyncDataWorker(ctx: Context,params: WorkerParameters) : CoroutineWorker(ct
     override suspend fun doWork(): Result {
         return try{
             syncPosts()
-            makeNotification("Data synced", applicationContext)
             Result.success()
         }catch (e: Exception){
             e.printStackTrace()
-            makeNotification("Synced failed", applicationContext)
             Result.failure()
         }
     }
