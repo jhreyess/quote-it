@@ -11,7 +11,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
+import com.example.quoteit.data.PreferencesDataStore
+import com.example.quoteit.data.dataStore
 import com.example.quoteit.databinding.FragmentNewQuoteBinding
 import com.example.quoteit.ui.QuoteItApp
 import kotlin.math.abs
@@ -28,8 +31,8 @@ class NewQuoteFragment : Fragment(), SensorEventListener {
     private var previousAcceleration = 0.0
     private var changeInAcceleration = 0.0
 
-    private lateinit var sensorManager: SensorManager
-    private lateinit var accelerometer: Sensor
+    private var sensorManager: SensorManager? = null
+    private var accelerometer: Sensor? = null
 
     companion object{
         const val FOLDER = "folder"
@@ -45,10 +48,6 @@ class NewQuoteFragment : Fragment(), SensorEventListener {
 
         // Retrieve folderID
         folderId = arguments?.getLong(FOLDER) ?: 0L
-
-        // Instancing accelerometer
-        sensorManager = activity?.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
     }
 
     override fun onCreateView(
@@ -63,6 +62,7 @@ class NewQuoteFragment : Fragment(), SensorEventListener {
         super.onViewCreated(view, savedInstanceState)
 
         // Bindings
+        val prefs = PreferencesDataStore(requireContext().dataStore)
         binding.backToFolderBtn.setOnClickListener { findNavController().popBackStack() }
         binding.confirmQuoteBtn.setOnClickListener {
             val author = binding.quoteAuthor.editText!!.text.toString()
@@ -75,9 +75,17 @@ class NewQuoteFragment : Fragment(), SensorEventListener {
         }
 
         model.isValidInput.observe(viewLifecycleOwner) { valid ->
-            if(!valid) { /* TODO: Show error message */}
+            binding.errorView.visibility = if(valid) View.GONE else View.VISIBLE
         }
-        // TODO: Hide tip if showTipPrefs is false
+
+        prefs.preferenceVibration.asLiveData().observe(viewLifecycleOwner) { allowed ->
+            binding.tipView.visibility = if(allowed) View.VISIBLE else View.GONE
+            if(allowed){
+                // Instancing accelerometer
+                sensorManager = activity?.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+                accelerometer = sensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+            }
+        }
     }
 
     override fun onSensorChanged(ev: SensorEvent) {
@@ -109,7 +117,7 @@ class NewQuoteFragment : Fragment(), SensorEventListener {
 
     override fun onResume() {
         super.onResume()
-        sensorManager.registerListener(
+        sensorManager?.registerListener(
             this,
             accelerometer,
             SensorManager.SENSOR_DELAY_NORMAL
@@ -118,7 +126,7 @@ class NewQuoteFragment : Fragment(), SensorEventListener {
 
     override fun onPause() {
         super.onPause()
-        sensorManager.unregisterListener(this)
+        sensorManager?.unregisterListener(this)
     }
 
     override fun onDestroyView() {

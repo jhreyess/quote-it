@@ -24,6 +24,8 @@
     <string name="close_session_settings">Cerrar Sesión</string>
     <string name="about_settings">Acerca de</string>
     <string name="collaborators_settings">Colaboradores</string>
+    <string name="general_settings">General</string>
+    <string name="vibrate_settings">Permitir vibración</string>
 
     <!-- HOME FOLDERS -->
     <string name="folder_quantity">%1$d elementos</string>

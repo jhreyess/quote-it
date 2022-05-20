@@ -26,4 +26,15 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="@string/general_settings"
+        app:iconSpaceReserved="false">
+
+        <SwitchPreference
+            app:key="vibrationPref"
+            app:iconSpaceReserved="false"
+            app:title="@string/vibrate_settings"
+            app:defaultValue="false" />
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

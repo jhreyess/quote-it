@@ -22,6 +22,7 @@ class PreferencesDataStore(dataStore: DataStore<Preferences>) {
     private val userToken = stringPreferencesKey("user_token")
     private val userName = stringPreferencesKey("user_name")
     private val userId = longPreferencesKey("user_id")
+    private val vibratePref = booleanPreferencesKey("allow_vibration")
 
     val preferenceFlow: Flow<UserPreferences> = dataStore.data
         .catch {
@@ -36,6 +37,9 @@ class PreferencesDataStore(dataStore: DataStore<Preferences>) {
     val preferenceToken: Flow<String> = dataStore.data
         .map { it[userToken] ?: "" }
 
+    val preferenceVibration: Flow<Boolean> = dataStore.data
+        .map { it[vibratePref] ?: false }
+
     private fun mapUserPreferences(preferences: Preferences): UserPreferences{
         val loginPref = preferences[isUserLoggedIn] ?: false
         val emailPref = preferences[userLoginEmail] ?: ""
@@ -43,12 +47,19 @@ class PreferencesDataStore(dataStore: DataStore<Preferences>) {
         val passwordPref = preferences[userLoginPassword] ?: ""
         val userId = preferences[userId] ?: 0L
         val userToken = preferences[userToken] ?: ""
-        return UserPreferences(loginPref, emailPref, passwordPref, userId, usernamePref, userToken)
+        val allowVibration = preferences[vibratePref] ?: false
+        return UserPreferences(loginPref, emailPref, passwordPref, userId, usernamePref, userToken, allowVibration)
     }
 
     suspend fun saveLogInPreference(isLoggedIn: Boolean, context: Context) {
         context.dataStore.edit { preferences ->
             preferences[isUserLoggedIn] = isLoggedIn
+        }
+    }
+
+    suspend fun saveVibrationPref(allow: Boolean, context: Context){
+        context.dataStore.edit { preferences ->
+            preferences[vibratePref] = allow
         }
     }
 
@@ -84,5 +95,6 @@ data class UserPreferences(
     val userPassword: String = "",
     val userId: Long = 0L,
     val username: String = "",
-    val token: String = ""
+    val token: String = "",
+    val allowVibration: Boolean = false
 )
