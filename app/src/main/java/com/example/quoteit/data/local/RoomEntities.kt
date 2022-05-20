@@ -60,7 +60,7 @@ fun List<QuoteEntity>.asQuoteDomainModel(): List<Quote> {
 }
 
 fun PostEntity.asPostDomainModel(): Post {
-    return Post(postId, postBy, quoteContent, quoteAuthor, noLikes, isLiked)
+    return Post(postId, postBy, quoteContent, quoteAuthor, noLikes, isLiked, isFromUser)
 }
 
 fun QuoteEntity.asQuoteDomainModel(): Quote {

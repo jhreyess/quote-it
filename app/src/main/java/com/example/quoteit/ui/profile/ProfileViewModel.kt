@@ -1,6 +1,5 @@
 package com.example.quoteit.ui.profile
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.quoteit.data.PostsRepository
 import com.example.quoteit.data.network.Result
@@ -22,6 +21,9 @@ class ProfileViewModel(private val postsRepo: PostsRepository): ViewModel() {
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> get() = _isLoading
 
+    private val _isRefreshing = MutableLiveData(false)
+    val isRefreshing: LiveData<Boolean> get() = _isRefreshing
+
     fun getUserPosts(
         fetchFromRemoteUser: Boolean = false,
         fromUser: Long
@@ -30,7 +32,7 @@ class ProfileViewModel(private val postsRepo: PostsRepository): ViewModel() {
             postsRepo.getUserPosts(fetchFromRemoteUser, fromUser).collect { result ->
                 when(result){
                     is Result.Success -> { setPosts(result.data) }
-                    is Result.Loading -> { _isLoading.value = result.isLoading }
+                    is Result.Loading -> { _isRefreshing.value = result.isLoading }
                 }
             }
         }
@@ -43,10 +45,30 @@ class ProfileViewModel(private val postsRepo: PostsRepository): ViewModel() {
             postsRepo.getLikedPosts(fetchFromRemote).collect { result ->
                 when(result){
                     is Result.Success -> { _likedPosts.value = result.data.reversed() }
+                    is Result.Loading -> { _isRefreshing.value = result.isLoading }
+                }
+            }
+        }
+    }
+
+    fun deletePost(postId: Long){
+        viewModelScope.launch {
+            postsRepo.delete(postId).collect { result ->
+                when(result){
+                    is Result.Success -> { _posts.value = _posts.value }
+                    is Result.Error -> {  }
                     is Result.Loading -> { _isLoading.value = result.isLoading }
                 }
             }
         }
+    }
+
+    fun getPost(postId: Long): LiveData<Post>{
+        val post = MutableLiveData<Post>()
+        viewModelScope.launch {
+            post.value = postsRepo.get(postId)
+        }
+        return post
     }
 
     fun likePost(postId: Long, like: Boolean){

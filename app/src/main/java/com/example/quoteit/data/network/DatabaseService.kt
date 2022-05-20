@@ -1,7 +1,5 @@
 package com.example.quoteit.data.network
 
-import android.content.SyncRequest
-import android.util.Log
 import com.example.quoteit.data.network.config.SessionManager
 import com.example.quoteit.data.network.config.TokenAuthenticator
 import com.example.quoteit.domain.models.NewPost
@@ -51,6 +49,9 @@ interface DatabaseService {
 
     @POST("feed")
     suspend fun insertPost(@Body newPost: NewPost) : PostResponse
+
+    @DELETE("feed/{postId}")
+    suspend fun deletePost(@Path("postId") id: Long) : PostResponse
 
     @GET("feed")
     suspend fun getPosts() : PostResponse

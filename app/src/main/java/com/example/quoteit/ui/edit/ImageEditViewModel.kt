@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import com.example.quoteit.domain.models.Quote
@@ -22,6 +21,7 @@ private const val FOLDER_NAME = "/QuoteIt"
 class ImageEditViewModel(application: Application) : AndroidViewModel(application) {
 
     private val quoteRepo = getApplication<QuoteItApp>().quotesRepository
+    private val postsRepo = getApplication<QuoteItApp>().postsRepository
 
     private val _quote = MutableLiveData<Quote>()
     val quote: LiveData<Quote> get() = _quote
@@ -38,6 +38,13 @@ class ImageEditViewModel(application: Application) : AndroidViewModel(applicatio
     fun getQuote(id: Long) {
         viewModelScope.launch {
             _quote.value = quoteRepo.get(id)
+        }
+    }
+
+    fun getPost(id: Long) {
+        viewModelScope.launch {
+            val post = postsRepo.get(id)
+            _quote.value = Quote(0, post.author, post.quote, false)
         }
     }
 

@@ -75,7 +75,7 @@ class QuotesListFragment : Fragment(){
 
         val adapter = QuoteAdapter(object: AdapterCallback{
             override fun onItemSelected(id: Long) { /* TODO: Possible share screen? */ }
-            override fun onDetailsClicked(view: View, id: Long) {
+            override fun onDetailsClicked(view: View, canEdit: Boolean, id: Long) {
                 showPopUp(view, R.menu.quote_detail_menu, id)
             }
             override fun onFavoriteClicked(id: Long, b: Boolean) {

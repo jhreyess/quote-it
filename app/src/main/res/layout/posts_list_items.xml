@@ -97,7 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toStartOf="@id/more_actions"
+                android:layout_toStartOf="@id/post_more_actions"
                 android:layout_toEndOf="@+id/favorite_button"
                 android:maxLines="1"
                 android:text="@string/likes_count"
@@ -107,7 +107,7 @@
                 tools:text="123 people liked this" />
 
             <ImageButton
-                android:id="@+id/more_actions"
+                android:id="@+id/post_more_actions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"

@@ -38,7 +38,7 @@ class QuoteAdapter(
         holder.preview.text = quote.quote
         holder.favorite.isChecked = quote.isFavorite
         holder.favorite.setOnCheckedChangeListener { _, b -> callback.onFavoriteClicked(quote.id, b) }
-        holder.more.setOnClickListener { callback.onDetailsClicked(holder.more, quote.id) }
+        holder.more.setOnClickListener { callback.onDetailsClicked(it, true, quote.id) }
     }
 
     fun setData(newData: List<Quote>){

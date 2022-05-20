@@ -1,14 +1,16 @@
 package com.example.quoteit.data
 
-import android.util.Log
 import com.example.quoteit.data.local.PostDao
 import com.example.quoteit.data.local.PostEntity
 import com.example.quoteit.data.local.asPostDomainModel
 import com.example.quoteit.data.network.*
 import com.example.quoteit.domain.models.NewPost
 import com.example.quoteit.domain.models.Post
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
 import java.lang.Exception
@@ -16,8 +18,15 @@ import java.lang.Exception
 class PostsRepository(
     private val postsDao: PostDao,
     private val apiService: DatabaseService,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
+    suspend fun get(id: Long): Post {
+        val data = withContext(ioDispatcher){
+            postsDao.getPost(id).asPostDomainModel()
+        }
+        return data
+    }
     suspend fun getLikedPosts(
         fetchFromRemote: Boolean
     ): Flow<Result<List<Post>>> {
@@ -175,6 +184,30 @@ class PostsRepository(
                 emit(Result.Success(
                     data = localPost.asPostDomainModel()
                 ))
+            }
+            emit(Result.Loading(false))
+        }
+    }
+
+    suspend fun delete(id: Long): Flow<Result<Boolean>>{
+        return flow {
+            emit(Result.Loading(true))
+
+            val didDelete = try{
+                apiService.deletePost(id)
+            }catch(e: HttpException){
+                e.printStackTrace()
+                emit(Result.Error(Exception("Algo salió mal")))
+                null
+            }catch(e: IOException){
+                e.printStackTrace()
+                emit(Result.Error(Exception("Algo salió mal")))
+                null
+            }
+
+            didDelete?.let {
+                if(it.success) postsDao.deletePost(id)
+                emit(Result.Success(it.success))
             }
             emit(Result.Loading(false))
         }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +26,7 @@ class PostAdapter(
         val author: TextView = view!!.findViewById(R.id.post_quote_author)
         val likes: TextView = view!!.findViewById(R.id.post_likes)
         val isLiked: CheckBox = view!!.findViewById(R.id.favorite_button)
+        val more: ImageButton = view!!.findViewById(R.id.post_more_actions)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
@@ -53,6 +55,7 @@ class PostAdapter(
             holder.likes.text = resources?.getString(R.string.likes_count, post.likes)
             callback.onFavoriteClicked(post.id, newState)
         }
+        holder.more.setOnClickListener { callback.onDetailsClicked(it, post.creatorActions, post.id) }
     }
 
     fun setData(newData: List<Post>){

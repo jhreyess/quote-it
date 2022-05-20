@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.example.quoteit.data.PostsRepository
 import com.example.quoteit.data.network.Result
 import com.example.quoteit.domain.models.Post
+import com.example.quoteit.domain.models.Quote
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -11,6 +12,9 @@ class CommunityViewModel(private val postsRepo: PostsRepository) : ViewModel() {
 
     private val _isLoading = MutableLiveData(true)
     val isLoading: LiveData<Boolean> get() = _isLoading
+
+    private val _isRefreshing = MutableLiveData(true)
+    val isRefreshing: LiveData<Boolean> get() = _isRefreshing
 
     private val _error = MutableLiveData(false)
     val error: LiveData<Boolean> get() = _error
@@ -29,6 +33,27 @@ class CommunityViewModel(private val postsRepo: PostsRepository) : ViewModel() {
             postsRepo.getPosts(fetchFromRemote, appendContent).collect { result ->
                 when(result){
                     is Result.Success -> { _posts.value = result.data.reversed() }
+                    is Result.Error -> { _error.value = true }
+                    is Result.Loading -> { _isRefreshing.value = result.isLoading }
+                }
+            }
+        }
+    }
+
+    fun getPost(postId: Long): LiveData<Post>{
+        val post = MutableLiveData<Post>()
+        viewModelScope.launch {
+            post.value = postsRepo.get(postId)
+        }
+        return post
+    }
+
+    fun deletePost(postId: Long){
+        viewModelScope.launch {
+            _error.value = false
+            postsRepo.delete(postId).collect { result ->
+                when(result){
+                    is Result.Success -> { _posts.value = _posts.value }
                     is Result.Error -> { _error.value = true }
                     is Result.Loading -> { _isLoading.value = result.isLoading }
                 }

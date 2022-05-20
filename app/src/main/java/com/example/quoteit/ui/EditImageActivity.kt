@@ -9,6 +9,7 @@ import com.example.quoteit.R
 import com.example.quoteit.ui.edit.ImageEditViewModel
 
 private const val QUOTE_ID = "quote"
+private const val POST_ID = "post"
 
 class EditImageActivity : AppCompatActivity() {
 
@@ -21,11 +22,13 @@ class EditImageActivity : AppCompatActivity() {
         setContentView(R.layout.activity_edit_image)
 
         val quoteId = intent.getLongExtra(QUOTE_ID, 0L)
+        val postId = intent.getLongExtra(POST_ID, 0L)
 
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.edit_image_nav_host) as NavHostFragment
         navController = navHostFragment.navController
 
-        model.getQuote(quoteId)
+        if(quoteId != 0L) { model.getQuote(quoteId) }
+        if(postId != 0L) { model.getPost(postId) }
     }
 }

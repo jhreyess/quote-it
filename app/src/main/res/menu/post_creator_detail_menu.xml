@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/share_post"
+        android:title="@string/share_quote" />
+    <item android:id="@+id/convert_post"
+        android:title="@string/do_image" />
+    <item android:id="@+id/delete_post"
+        android:title="@string/delete_post"/>
+</menu>
