@@ -33,9 +33,6 @@ interface AuthenticationService {
     @POST("session/login")
     suspend fun queryUser(@Body body: UserLoginRequest) : LoginResponse
 
-    @POST("session/password")
-    suspend fun updateUserPassword(@Body body: UpdatePasswordRequest) : LoginResponse
-
     @POST("session/refresh")
     suspend fun refreshToken(@Body body: RefreshTokenRequest) : TokenResponse
 }

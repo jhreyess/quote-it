@@ -13,7 +13,7 @@ class QuoteItApp : Application() {
     private val applicationScope = CoroutineScope(SupervisorJob())
 
     private val database by lazy { AppDatabase.getDatabase(this, applicationScope) }
-    val usersRepository by lazy { UsersRepository(AuthenticationApi.retrofitService) }
+    val usersRepository by lazy { UsersRepository(AuthenticationApi.retrofitService, DatabaseApi.retrofitService) }
     val foldersRepository by lazy { FoldersRepository(database.folderDao()) }
     val foldersQuoteRepository by lazy { FolderQuoteRepository(database.folderQuoteDao()) }
     val quotesRepository by lazy { QuotesRepository(database.quoteDao()) }

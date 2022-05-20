@@ -8,7 +8,8 @@ import java.io.IOException
 import java.lang.Exception
 
 class UsersRepository(
-    private val apiService: AuthenticationService,
+    private val apiAuthService: AuthenticationService,
+    private val apiDataService: DatabaseService
 ) {
 
     suspend fun loginUser(email: String, password: String): Flow<Result<LoginResponse>>{
@@ -16,7 +17,7 @@ class UsersRepository(
         return flow {
             emit(Result.Loading(true))
             val response = try {
-                apiService.queryUser(body)
+                apiAuthService.queryUser(body)
             } catch (e: HttpException) {
                 when(e.code()){
                     400 -> emit(Result.Success(LoginResponse(false, error = "Entradas no válidas")))
@@ -38,7 +39,7 @@ class UsersRepository(
         return flow {
             emit(Result.Loading(true))
             val response = try {
-                apiService.insertUser(body)
+                apiAuthService.insertUser(body)
             } catch (e: HttpException) {
                 when(e.code()){
                     400 -> emit(Result.Success(LoginResponse(false, error = "Entradas no válidas")))
@@ -62,7 +63,7 @@ class UsersRepository(
         return flow {
             emit(Result.Loading(true))
             val response = try {
-                apiService.updateUserPassword(body)
+                apiDataService.updateUserPassword(body)
             }catch(e: Exception){
                 emit(Result.Error(Exception("Algo salió mal, intenta de nuevo más tarde")))
                 null
