@@ -19,3 +19,30 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+#### OkHttp, Retrofit and Moshi
+-dontwarn okhttp3.**
+-dontwarn retrofit2.**
+-dontwarn okio.**
+-dontwarn javax.annotation.**
+-keepclasseswithmembers class * {
+    @retrofit2.http.* <methods>;
+}
+-keepclasseswithmembers class * {
+    @com.squareup.moshi.* <methods>;
+}
+-keep @com.squareup.moshi.JsonQualifier interface *
+-dontwarn org.jetbrains.annotations.**
+-keep class kotlin.Metadata { *; }
+-keepclassmembers class kotlin.Metadata {
+    public <methods>;
+}
+
+-keepclassmembers class ** {
+    @com.squareup.moshi.FromJson *;
+    @com.squareup.moshi.ToJson *;
+}
+
+-keepnames @kotlin.Metadata class com.quoteit.android.data.**
+-keep class com.quoteit.android.data.** { *; }
+-keepclassmembers class com.quoteit.android.data.** { *; }
