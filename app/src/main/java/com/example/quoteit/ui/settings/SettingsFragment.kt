@@ -4,11 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
-import android.widget.Switch
 import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
-import androidx.preference.PreferenceDataStore
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import com.example.quoteit.R
@@ -52,7 +50,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
         val prefs = PreferencesDataStore(requireContext().dataStore)
-        val vibrateSwitch = findPreference<SwitchPreference>("vibratePref")
+        val vibrateSwitch = findPreference<SwitchPreference>("vibrationPref")
         prefs.preferenceVibration.asLiveData().observe(viewLifecycleOwner){
             vibrateSwitch?.isChecked = it
         }
