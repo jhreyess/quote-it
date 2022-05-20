@@ -5,8 +5,8 @@ import androidx.room.*
 @Dao
 interface PostDao {
 
-    @Query("SELECT * FROM posts WHERE date BETWEEN :startDate AND :endDate")
-    suspend fun getFeedPosts(startDate: Long, endDate: Long): List<PostEntity>
+    @Query("SELECT * FROM posts WHERE date > :startDate")
+    suspend fun getFeedPosts(startDate: Long): List<PostEntity>
 
     @Query("SELECT * FROM posts WHERE isLiked = 1")
     suspend fun getLikedPosts(): List<PostEntity>

@@ -1,5 +1,6 @@
 package com.example.quoteit.data
 
+import android.util.Log
 import com.example.quoteit.data.local.PostDao
 import com.example.quoteit.data.local.PostEntity
 import com.example.quoteit.data.local.asPostDomainModel
@@ -123,7 +124,7 @@ class PostsRepository(
             val now = System.currentTimeMillis()
             val dayMillis = 24 * 60 * 60 * 1000
             val yesterday = now.minus(dayMillis)
-            val localPosts = postsDao.getFeedPosts(yesterday, now)
+            val localPosts = postsDao.getFeedPosts(yesterday)
             emit(Result.Success(
                 data = localPosts.map { it.asPostDomainModel() }
             ))
@@ -154,7 +155,7 @@ class PostsRepository(
                     posts.data.map { it.asPostEntity() }
                 )
                 emit(Result.Success(
-                    data = postsDao.getFeedPosts(yesterday, now)
+                    data = postsDao.getFeedPosts(yesterday)
                         .map { it.asPostDomainModel() }
                 ))
             }

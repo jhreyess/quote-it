@@ -1,5 +1,6 @@
 package com.example.quoteit.data.network
 
+import android.provider.Settings
 import com.example.quoteit.data.local.PostEntity
 import com.squareup.moshi.Json
 import java.text.SimpleDateFormat
@@ -36,9 +37,11 @@ data class DatabasePost(
 )
 
 fun DatabasePost.asPostEntity(): PostEntity {
-    val date = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(timestamp)
+    val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S", Locale.getDefault())
+    formatter.timeZone = TimeZone.getTimeZone("UTC")
+    val localDate = formatter.parse(timestamp)?.time ?: 0L
     return PostEntity(post_id, post_by, user_id, no_likes,
-        quote_desc, quote_author, date!!.time, liked, true, creatorActions)
+        quote_desc, quote_author, localDate, liked, true, creatorActions)
 }
 
 
