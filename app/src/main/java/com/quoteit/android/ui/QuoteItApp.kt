@@ -18,4 +18,9 @@ class QuoteItApp : Application() {
     val foldersQuoteRepository by lazy { FolderQuoteRepository(database.folderQuoteDao()) }
     val quotesRepository by lazy { QuotesRepository(database.quoteDao()) }
     val postsRepository by lazy { PostsRepository(database.postDao(), DatabaseApi.retrofitService) }
+
+    fun clearDatabase(){
+        database.clearAllTables()
+        AppDatabase.populateDatabase(database.folderDao())
+    }
 }

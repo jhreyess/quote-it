@@ -3,7 +3,6 @@ package com.quoteit.android.ui.newpost
 import androidx.lifecycle.*
 import com.quoteit.android.data.PostsRepository
 import com.quoteit.android.data.network.Result
-import com.quoteit.android.domain.models.NewPost
 import com.quoteit.android.domain.models.Post
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -20,9 +19,9 @@ class NewPostViewModel(private val postsRepo: PostsRepository): ViewModel() {
     private val _error = MutableLiveData(false)
     val error: LiveData<Boolean> get() = _error
 
-    fun upload(post: NewPost){
+    fun upload(author: String, content: String){
         viewModelScope.launch {
-            postsRepo.upload(post).collect { result ->
+            postsRepo.upload(author, content).collect { result ->
                 when(result){
                     is Result.Success -> { setResult(result.data) }
                     is Result.Error -> { _error.value = true }

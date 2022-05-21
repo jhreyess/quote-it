@@ -2,7 +2,6 @@ package com.quoteit.android.data.network
 
 import com.quoteit.android.data.network.config.SessionManager
 import com.quoteit.android.data.network.config.TokenAuthenticator
-import com.quoteit.android.domain.models.NewPost
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.Interceptor
@@ -22,7 +21,7 @@ private val tokenInterceptor = Interceptor { chain ->
     val request = chain.request()
         .newBuilder()
         .header("x-access-token", SessionManager.getAccessToken())
-        .build();
+        .build()
     chain.proceed(request)
 }
 
@@ -52,7 +51,7 @@ interface DatabaseService {
     suspend fun getLikedPosts() : PostResponse
 
     @POST("feed")
-    suspend fun insertPost(@Body newPost: NewPost) : PostResponse
+    suspend fun insertPost(@Body body: NewPostRequest) : PostResponse
 
     @DELETE("feed/{postId}")
     suspend fun deletePost(@Path("postId") id: Long) : PostResponse

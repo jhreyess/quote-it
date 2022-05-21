@@ -7,7 +7,7 @@ import com.quoteit.android.data.network.DatabaseService
 import com.quoteit.android.data.network.Result
 import com.quoteit.android.data.network.SyncPostRequest
 import com.quoteit.android.data.network.asPostEntity
-import com.quoteit.android.domain.models.NewPost
+import com.quoteit.android.data.network.NewPostRequest
 import com.quoteit.android.domain.models.Post
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -164,11 +164,12 @@ class PostsRepository(
         }
     }
 
-    suspend fun upload(post: NewPost): Flow<Result<Post>>{
+    suspend fun upload(author: String, content: String): Flow<Result<Post>>{
         return flow {
             emit(Result.Loading(true))
 
             val newPost = try {
+                val post = NewPostRequest(author, content)
                 apiService.insertPost(post)
             }catch (e: HttpException){
                 e.printStackTrace()

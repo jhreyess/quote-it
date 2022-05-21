@@ -15,7 +15,7 @@ data class FolderEntity(
 
 @Entity(tableName = "posts")
 data class PostEntity(
-    @PrimaryKey(autoGenerate = true) val postId: Long = 0,
+    @PrimaryKey val postId: Long,
     val postBy: String,
     val userId: Long,
     val noLikes: Int = 0,

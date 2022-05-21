@@ -10,6 +10,11 @@ data class SyncPostRequest(
     val values: List<Long>
 )
 
+data class NewPostRequest(
+    val quoteAuthor: String,
+    val quoteDesc: String
+)
+
 // Responses
 sealed class Result<out R> {
     data class Success<out T>(val data: T) : Result<T>()

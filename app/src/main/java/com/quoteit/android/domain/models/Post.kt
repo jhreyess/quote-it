@@ -9,8 +9,3 @@ data class Post(
     var isLiked: Boolean,
     val creatorActions: Boolean
 )
-
-data class NewPost(
-    val quoteAuthor: String,
-    val quoteDesc: String,
-)

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -56,8 +57,8 @@ abstract class AppDatabase: RoomDatabase() {
         }
 
         fun populateDatabase(folderDao: FolderDAO) {
-            val favFolder = FolderEntity(0, "Mis favoritos", 0)
-            val userFolder = FolderEntity(0, "Hechas por mi", 0)
+            val favFolder = FolderEntity(1, "Mis favoritos", 0)
+            val userFolder = FolderEntity(2, "Hechas por mi", 0)
             folderDao.insertFolder(favFolder)
             folderDao.insertFolder(userFolder)
         }

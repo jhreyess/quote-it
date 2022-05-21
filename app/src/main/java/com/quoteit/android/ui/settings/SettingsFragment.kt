@@ -12,6 +12,7 @@ import androidx.preference.SwitchPreference
 import com.quoteit.android.R
 import com.quoteit.android.data.PreferencesDataStore
 import com.quoteit.android.data.dataStore
+import com.quoteit.android.ui.QuoteItApp
 import com.quoteit.android.ui.SignIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,6 +41,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 val prefs = PreferencesDataStore(it.dataStore)
                 CoroutineScope(Dispatchers.IO).launch {
                     prefs.clearDataStore(requireContext())
+                    (requireActivity().application as QuoteItApp).clearDatabase()
                     withContext(Dispatchers.Main){
                         val intent = Intent(requireActivity(), SignIn::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.quoteit.android.R
 import com.quoteit.android.databinding.FragmentNewPostBinding
-import com.quoteit.android.domain.models.NewPost
 import com.quoteit.android.ui.QuoteItApp
 
 class NewPostFragment : Fragment() {
@@ -65,8 +64,7 @@ class NewPostFragment : Fragment() {
     private fun uploadPost() {
         val postAuthor = binding.postContentAuthor.editText?.text.toString()
         val postContent = binding.postContent.editText?.text.toString()
-        val newPost = NewPost(postAuthor, postContent)
-        model.upload(newPost)
+        model.upload(postAuthor, postContent)
     }
 
     override fun onDestroyView() {
