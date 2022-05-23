@@ -6,9 +6,11 @@ import android.view.View
 import android.widget.ImageButton
 import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
+import com.google.android.material.appbar.MaterialToolbar
 import com.quoteit.android.R
 import com.quoteit.android.data.PreferencesDataStore
 import com.quoteit.android.data.dataStore
@@ -27,7 +29,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.findViewById<ImageButton>(R.id.back_to_home_btn).setOnClickListener { findNavController().popBackStack() }
+        view.findViewById<MaterialToolbar>(R.id.settings_toolbar).setupWithNavController(findNavController())
         findPreference<Preference>("about")?.setOnPreferenceClickListener {
             findNavController().navigate(R.id.action_settingsFragment_to_aboutUsFragment)
             true

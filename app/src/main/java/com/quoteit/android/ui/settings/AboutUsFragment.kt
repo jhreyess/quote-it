@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.quoteit.android.databinding.FragmentAboutUsBinding
 
 class AboutUsFragment : Fragment() {
@@ -23,9 +24,7 @@ class AboutUsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Bindings
-        binding.backToSettingsBtn.setOnClickListener { findNavController().popBackStack() }
+        binding.settingsToolbar.setupWithNavController(findNavController())
     }
 
     override fun onDestroyView() {

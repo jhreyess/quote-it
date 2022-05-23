@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
+import com.quoteit.android.R
 import com.quoteit.android.data.PreferencesDataStore
 import com.quoteit.android.data.dataStore
 import com.quoteit.android.databinding.FragmentChangePasswordBinding
@@ -35,7 +37,12 @@ class ChangePasswordFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.settingsToolbar.setupWithNavController(findNavController())
+        binding.settingsToolbar.inflateMenu(R.menu.action_done_menu)
+        binding.settingsToolbar.setOnMenuItemClickListener {
+            if(it.itemId == R.id.action_done) updatePassword()
+            false
+        }
         // Bindings
         context?.let {
             val prefs = PreferencesDataStore(it.dataStore)
@@ -44,8 +51,7 @@ class ChangePasswordFragment : Fragment() {
             }
         }
         binding.loadingScreen.setOnClickListener { /* This will prevent clicks from behind views */ }
-        binding.backToSettingsBtn.setOnClickListener { findNavController().popBackStack() }
-        binding.confirmNewPasswordBtn.setOnClickListener { updatePassword() }
+
         model.isLoading.observe(viewLifecycleOwner) { loading ->
             val visibility = if(loading) View.VISIBLE else View.GONE
             binding.loadingScreen.visibility = visibility

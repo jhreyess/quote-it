@@ -41,6 +41,12 @@
         <item name="android:clipToPadding">false</item>
     </style>
 
+    <style name="ToolbarCentered" parent="Widget.MaterialComponents.Toolbar">
+        <item name="titleTextColor">@color/white</item>
+        <item name="titleTextAppearance">@style/TextAppearance.MaterialComponents.Subtitle1</item>
+        <item name="titleCentered">true</item>
+    </style>
+
     <!-- Outlined TextInput Layout -->
     <style name="OutlinedTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxCornerRadiusBottomStart">16dp</item>
