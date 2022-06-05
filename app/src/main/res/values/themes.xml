@@ -29,6 +29,9 @@
         <item name="bottomNavigationStyle">@style/Navbar</item>
         <item name="android:popupMenuStyle">@style/PopupMenu</item>
         <item name="preferenceTheme">@style/SettingsFragmentStyle</item>
+
+        <item name="actionMenuTextColor">@color/white</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
     </style>
 
     <style name="Theme.Splash" parent="Theme.SplashScreen">

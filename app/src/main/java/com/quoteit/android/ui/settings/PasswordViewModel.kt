@@ -6,7 +6,7 @@ import com.quoteit.android.data.network.Result
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class SettingsViewModel(private val usersRepo: UsersRepository): ViewModel() {
+class PasswordViewModel(private val usersRepo: UsersRepository): ViewModel() {
 
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> get() = _isLoading
@@ -51,13 +51,13 @@ class SettingsViewModel(private val usersRepo: UsersRepository): ViewModel() {
     }
 }
 
-class SettingsViewModelFactory(
+class PasswordViewModelFactory(
     private val repo: UsersRepository,
 ) : ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(SettingsViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(PasswordViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return SettingsViewModel(repo) as T
+            return PasswordViewModel(repo) as T
         }
         throw IllegalArgumentException("Unable to construct viewmodel")
     }

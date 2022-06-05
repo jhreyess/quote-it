@@ -72,4 +72,18 @@ class UsersRepository(
         }
     }
 
+    suspend fun deleteUserAccount(): Flow<Result<LoginResponse>>{
+        return flow {
+            emit(Result.Loading(true))
+            val response = try {
+                apiDataService.deleteAccount()
+            }catch(e: Exception){
+                emit(Result.Error(Exception("Algo salió mal, intenta de nuevo más tarde")))
+                null
+            }
+            response?.let { emit(Result.Success(data = response)) }
+            emit(Result.Loading(false))
+        }
+    }
+
 }

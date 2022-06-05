@@ -23,8 +23,8 @@ class ChangePasswordFragment : Fragment() {
     private var _binding: FragmentChangePasswordBinding? = null
     private val binding get() = _binding!!
 
-    private val model: SettingsViewModel by viewModels {
-        SettingsViewModelFactory((requireActivity().application as QuoteItApp).usersRepository)
+    private val model: PasswordViewModel by viewModels {
+        PasswordViewModelFactory((requireActivity().application as QuoteItApp).usersRepository)
     }
 
     override fun onCreateView(
@@ -37,11 +37,14 @@ class ChangePasswordFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.settingsToolbar.setupWithNavController(findNavController())
-        binding.settingsToolbar.inflateMenu(R.menu.action_done_menu)
-        binding.settingsToolbar.setOnMenuItemClickListener {
-            if(it.itemId == R.id.action_done) updatePassword()
-            false
+        binding.settingsToolbar.apply {
+            setupWithNavController(findNavController())
+            setNavigationIcon(R.drawable.ic_arrow_back)
+            inflateMenu(R.menu.action_done_menu)
+            setOnMenuItemClickListener {
+                if(it.itemId == R.id.action_done) updatePassword()
+                false
+            }
         }
         // Bindings
         context?.let {

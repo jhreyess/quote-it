@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.quoteit.android.R
 import com.quoteit.android.databinding.FragmentAboutUsBinding
 
 class AboutUsFragment : Fragment() {
@@ -25,6 +26,7 @@ class AboutUsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.settingsToolbar.setupWithNavController(findNavController())
+        binding.settingsToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
     }
 
     override fun onDestroyView() {

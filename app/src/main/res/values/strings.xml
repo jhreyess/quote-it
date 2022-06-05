@@ -21,6 +21,8 @@
     <!-- SETTINGS MENU -->
     <string name="account_settings">Cuenta</string>
     <string name="change_password_settings">Cambiar contraseña</string>
+    <string name="delete_account_settings">Eliminar cuenta</string>
+    <string name="confirm_delete_account">¿Estás seguro de que deseas eliminar esta cuenta? Todo el contenido será eliminado y no podrá ser recuperado</string>
     <string name="close_session_settings">Cerrar Sesión</string>
     <string name="about_settings">Acerca de</string>
     <string name="collaborators_settings">Colaboradores</string>
@@ -75,6 +77,7 @@
     <string name="error_empty_fields">Llena los campos correctamente</string>
     <string name="error_invalid_passwords">Las contraseñas no coinciden</string>
     <string name="error_weak_password">La contraseña debe contener al menos 6 digitos</string>
+    <string name="error">Algo salió mal, intenta de nuevo más tarde</string>
 
     <!-- WIDGETS -->
     <string name="widget_description">Descubre una frase nueva cada día</string>

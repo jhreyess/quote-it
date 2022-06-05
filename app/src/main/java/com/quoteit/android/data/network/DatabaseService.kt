@@ -41,6 +41,9 @@ private val retrofit = Retrofit.Builder()
 // Endpoints ~ Api DataSource
 interface DatabaseService {
 
+    @DELETE("session")
+    suspend fun deleteAccount() : LoginResponse
+
     @POST("session/password")
     suspend fun updateUserPassword(@Body body: UpdatePasswordRequest) : LoginResponse
 

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -93,6 +94,7 @@ class QuotesListFragment : Fragment(){
         })
 
         // Bindings
+        toolbar.overflowIcon?.setTint(ContextCompat.getColor(requireActivity(), R.color.white))
         toolbar.setOnMenuItemClickListener { optionItemSelected(it) }
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
         toolbar.setNavigationOnClickListener { findNavController().popBackStack() }
