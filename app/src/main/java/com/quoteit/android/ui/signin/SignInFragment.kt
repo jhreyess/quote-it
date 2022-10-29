@@ -2,11 +2,14 @@ package com.quoteit.android.ui.signin
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.quoteit.android.R
@@ -52,6 +55,7 @@ class SignInFragment : Fragment(), SignInContract.View {
          val password = binding.userPassword.text.toString()
          presenter.logIn(email, password)
       }
+      binding.agreement.movementMethod = LinkMovementMethod.getInstance()
    }
 
    override fun goToRegister() { findNavController().navigate(R.id.action_signInFragment_to_registerFragment) }

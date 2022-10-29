@@ -64,6 +64,17 @@
             android:text="@string/prompt_login"
             android:textAllCaps="false" />
 
+        <TextView
+            android:id="@+id/agreement"
+            android:text="@string/login_policy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.MaterialComponents.Subtitle2"
+            android:textColor="@color/white"
+            android:layout_marginTop="48dp"
+            android:gravity="center_horizontal"
+            />
+
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton

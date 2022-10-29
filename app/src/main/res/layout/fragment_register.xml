@@ -111,6 +111,17 @@
             android:inputType="textPassword"
             tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
+        <TextView
+            android:id="@+id/agreement"
+            android:text="@string/register_policy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.MaterialComponents.Subtitle2"
+            android:textColor="@color/white"
+            android:layout_marginTop="48dp"
+            android:gravity="center_horizontal"
+            />
+
     </LinearLayout>
 
     <FrameLayout

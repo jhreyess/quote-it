@@ -2,6 +2,7 @@ package com.quoteit.android.ui.signin
 
 import android.content.Context
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,6 +54,7 @@ class RegisterFragment : Fragment(), RegisterContract.View {
             val confirmPassword = binding.confirmPassword.text.toString()
             presenter.register(email, username, password, confirmPassword)
         }
+        binding.agreement.movementMethod = LinkMovementMethod.getInstance()
     }
 
     override fun goToLogin() { findNavController().popBackStack() }

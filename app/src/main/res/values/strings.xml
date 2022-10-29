@@ -105,5 +105,7 @@
     <string name="activate">Activar</string>
     <string name="shared_label">Enviado desde Quote it!</string>
     <string name="delete_post">Eliminar publicación</string>
+    <string name="login_policy">Al iniciar sesión estás aceptando los <a href='https://quote-it-app.herokuapp.com/terms'>Términos y condiciones</a>, así como la <a href='https://quote-it-app.herokuapp.com/privacy'>Política de privacidad</a></string>
+    <string name="register_policy">Al registrate estás aceptando los <a href='https://quote-it-app.herokuapp.com/terms'>Términos y condiciones</a>, así como la <a href='https://quote-it-app.herokuapp.com/privacy'>Política de privacidad</a></string>
 
 </resources>
